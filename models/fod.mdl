@@ -1,0 +1,3026 @@
+Library {
+  Name			  "fod"
+  Version		  8.0
+  MdlSubVersion		  0
+  SavedCharacterEncoding  "windows-1257"
+  LibraryType		  "BlockLibrary"
+  SaveDefaultBlockParams  on
+  ScopeRefreshTime	  0.035000
+  OverrideScopeRefreshTime on
+  DisableAllScopes	  off
+  FPTRunName		  "Run 1"
+  MaxMDLFileLineLength	  120
+  Object {
+    $PropName		    "BdWindowsInfo"
+    $ObjectID		    1
+    $ClassName		    "Simulink.BDWindowsInfo"
+    Object {
+      $PropName		      "WindowsInfo"
+      $ObjectID		      2
+      $ClassName	      "Simulink.WindowInfo"
+      IsActive		      [1]
+      Location		      [951.0, 114.0, 746.0, 928.0]
+      Object {
+	$PropName		"ModelBrowserInfo"
+	$ObjectID		3
+	$ClassName		"Simulink.ModelBrowserInfo"
+	Visible			[0]
+	DockPosition		"Left"
+	Width			[50]
+	Height			[50]
+	Filter			[11]
+      }
+      Object {
+	$PropName		"ExplorerBarInfo"
+	$ObjectID		4
+	$ClassName		"Simulink.ExplorerBarInfo"
+	Visible			[1]
+      }
+      Array {
+	Type			"Simulink.EditorInfo"
+	Dimension		3
+	Object {
+	  $ObjectID		  5
+	  IsActive		  [1]
+	  ViewObjType		  "SimulinkTopLevel"
+	  LoadSaveID		  "0"
+	  Extents		  [694.0, 757.0]
+	  ZoomFactor		  [1.0]
+	  Offset		  [0.0, 0.0]
+	}
+	Object {
+	  $ObjectID		  6
+	  IsActive		  [0]
+	  ViewObjType		  "SimulinkSubsys"
+	  LoadSaveID		  "64"
+	  Extents		  [659.0, 749.0]
+	  ZoomFactor		  [1.0]
+	  Offset		  [0.0, 0.0]
+	}
+	Object {
+	  $ObjectID		  7
+	  IsActive		  [0]
+	  ViewObjType		  "SimulinkSubsys"
+	  LoadSaveID		  "93"
+	  Extents		  [694.0, 757.0]
+	  ZoomFactor		  [1.0]
+	  Offset		  [0.0, 0.0]
+	}
+	PropName		"EditorsInfo"
+      }
+    }
+  }
+  Created		  "Sat May 15 23:43:21 2010"
+  Creator		  "Alex"
+  UpdateHistory		  "UpdateHistoryNever"
+  ModifiedByFormat	  "%<Auto>"
+  LastModifiedBy	  "Alex"
+  ModifiedDateFormat	  "%<Auto>"
+  LastModifiedDate	  "Tue Apr 05 19:50:17 2016"
+  RTWModifiedTimeStamp	  381785888
+  ModelVersionFormat	  "1.%<AutoIncrement:136>"
+  ConfigurationManager	  "None"
+  SampleTimeColors	  off
+  SampleTimeAnnotations	  off
+  LibraryLinkDisplay	  "none"
+  WideLines		  off
+  ShowLineDimensions	  off
+  ShowPortDataTypes	  off
+  ShowDesignRanges	  off
+  ShowLoopsOnError	  on
+  IgnoreBidirectionalLines off
+  ShowStorageClass	  off
+  ShowTestPointIcons	  on
+  ShowSignalResolutionIcons on
+  ShowViewerIcons	  on
+  SortedOrder		  off
+  ExecutionContextIcon	  off
+  ShowLinearizationAnnotations on
+  BlockNameDataTip	  off
+  BlockParametersDataTip  off
+  BlockDescriptionStringDataTip	off
+  ToolBar		  on
+  StatusBar		  on
+  BrowserShowLibraryLinks off
+  BrowserLookUnderMasks	  off
+  SimulationMode	  "normal"
+  LinearizationMsg	  "none"
+  Profile		  off
+  ParamWorkspaceSource	  "MATLABWorkspace"
+  RecordCoverage	  off
+  CovSaveName		  "covdata"
+  CovMetricSettings	  "dw"
+  CovNameIncrementing	  off
+  CovHtmlReporting	  on
+  CovForceBlockReductionOff on
+  covSaveCumulativeToWorkspaceVar on
+  CovSaveSingleToWorkspaceVar on
+  CovCumulativeReport	  off
+  CovReportOnPause	  on
+  CovModelRefEnable	  "Off"
+  CovExternalEMLEnable	  off
+  ExtModeBatchMode	  off
+  ExtModeEnableFloating	  on
+  ExtModeTrigType	  "manual"
+  ExtModeTrigMode	  "normal"
+  ExtModeTrigPort	  "1"
+  ExtModeTrigElement	  "any"
+  ExtModeTrigDuration	  1000
+  ExtModeTrigDurationFloating "auto"
+  ExtModeTrigHoldOff	  0
+  ExtModeTrigDelay	  0
+  ExtModeTrigDirection	  "rising"
+  ExtModeTrigLevel	  0
+  ExtModeArchiveMode	  "off"
+  ExtModeAutoIncOneShot	  off
+  ExtModeIncDirWhenArm	  off
+  ExtModeAddSuffixToVar	  off
+  ExtModeWriteAllDataToWs off
+  ExtModeArmWhenConnect	  on
+  ExtModeSkipDownloadWhenConnect off
+  ExtModeLogAll		  on
+  ExtModeAutoUpdateStatusClock on
+  ShowModelReferenceBlockVersion off
+  ShowModelReferenceBlockIO off
+  Array {
+    Type		    "Handle"
+    Dimension		    1
+    Simulink.ConfigSet {
+      $ObjectID		      8
+      Version		      "1.12.1"
+      Array {
+	Type			"Handle"
+	Dimension		8
+	Simulink.SolverCC {
+	  $ObjectID		  9
+	  Version		  "1.12.1"
+	  StartTime		  "0.0"
+	  StopTime		  "10.0"
+	  AbsTol		  "auto"
+	  FixedStep		  "auto"
+	  InitialStep		  "auto"
+	  MaxNumMinSteps	  "-1"
+	  MaxOrder		  5
+	  ZcThreshold		  "auto"
+	  ConsecutiveZCsStepRelTol "10*128*eps"
+	  MaxConsecutiveZCs	  "1000"
+	  ExtrapolationOrder	  4
+	  NumberNewtonIterations  1
+	  MaxStep		  "auto"
+	  MinStep		  "auto"
+	  MaxConsecutiveMinStep	  "1"
+	  RelTol		  "1e-3"
+	  SolverMode		  "SingleTasking"
+	  EnableConcurrentExecution off
+	  ConcurrentTasks	  off
+	  Solver		  "ode45"
+	  SolverName		  "ode45"
+	  SolverJacobianMethodControl "auto"
+	  ShapePreserveControl	  "DisableAll"
+	  ZeroCrossControl	  "UseLocalSettings"
+	  ZeroCrossAlgorithm	  "Nonadaptive"
+	  AlgebraicLoopSolver	  "TrustRegion"
+	  SolverResetMethod	  "Fast"
+	  PositivePriorityOrder	  off
+	  AutoInsertRateTranBlk	  off
+	  SampleTimeConstraint	  "Unconstrained"
+	  InsertRTBMode		  "Whenever possible"
+	}
+	Simulink.DataIOCC {
+	  $ObjectID		  10
+	  Version		  "1.12.1"
+	  Decimation		  "1"
+	  ExternalInput		  "[t, u]"
+	  FinalStateName	  "xFinal"
+	  InitialState		  "xInitial"
+	  LimitDataPoints	  on
+	  MaxDataPoints		  "1000"
+	  LoadExternalInput	  off
+	  LoadInitialState	  off
+	  SaveFinalState	  off
+	  SaveCompleteFinalSimState off
+	  SaveFormat		  "Array"
+	  SignalLoggingSaveFormat "ModelDataLogs"
+	  SaveOutput		  on
+	  SaveState		  off
+	  SignalLogging		  on
+	  DSMLogging		  on
+	  InspectSignalLogs	  off
+	  SaveTime		  on
+	  ReturnWorkspaceOutputs  off
+	  StateSaveName		  "xout"
+	  TimeSaveName		  "tout"
+	  OutputSaveName	  "yout"
+	  SignalLoggingName	  "logsout"
+	  DSMLoggingName	  "dsmout"
+	  OutputOption		  "RefineOutputTimes"
+	  OutputTimes		  "[]"
+	  ReturnWorkspaceOutputsName "out"
+	  Refine		  "1"
+	}
+	Simulink.OptimizationCC {
+	  $ObjectID		  11
+	  Version		  "1.12.1"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    4
+	    Cell		    "ZeroExternalMemoryAtStartup"
+	    Cell		    "ZeroInternalMemoryAtStartup"
+	    Cell		    "OptimizeModelRefInitCode"
+	    Cell		    "NoFixptDivByZeroProtection"
+	    PropName		    "DisabledProps"
+	  }
+	  BlockReduction	  off
+	  BooleanDataType	  off
+	  ConditionallyExecuteInputs on
+	  InlineParams		  off
+	  UseIntDivNetSlope	  off
+	  UseFloatMulNetSlope	  off
+	  UseSpecifiedMinMax	  off
+	  InlineInvariantSignals  off
+	  OptimizeBlockIOStorage  on
+	  BufferReuse		  on
+	  EnhancedBackFolding	  off
+	  StrengthReduction	  off
+	  ExpressionFolding	  on
+	  BooleansAsBitfields	  off
+	  BitfieldContainerType	  "uint_T"
+	  EnableMemcpy		  on
+	  MemcpyThreshold	  64
+	  PassReuseOutputArgsAs	  "Structure reference"
+	  ExpressionDepthLimit	  2147483647
+	  FoldNonRolledExpr	  on
+	  LocalBlockOutputs	  on
+	  RollThreshold		  5
+	  SystemCodeInlineAuto	  off
+	  StateBitsets		  off
+	  DataBitsets		  off
+	  UseTempVars		  off
+	  ZeroExternalMemoryAtStartup on
+	  ZeroInternalMemoryAtStartup on
+	  InitFltsAndDblsToZero	  off
+	  NoFixptDivByZeroProtection off
+	  EfficientFloat2IntCast  off
+	  EfficientMapNaN2IntZero on
+	  OptimizeModelRefInitCode off
+	  LifeSpan		  "inf"
+	  MaxStackSize		  "Inherit from target"
+	  BufferReusableBoundary  on
+	  SimCompilerOptimization "Off"
+	  AccelVerboseBuild	  off
+	  ParallelExecutionInRapidAccelerator on
+	}
+	Simulink.DebuggingCC {
+	  $ObjectID		  12
+	  Version		  "1.12.1"
+	  RTPrefix		  "error"
+	  ConsistencyChecking	  "none"
+	  ArrayBoundsChecking	  "none"
+	  SignalInfNanChecking	  "none"
+	  SignalRangeChecking	  "none"
+	  ReadBeforeWriteMsg	  "UseLocalSettings"
+	  WriteAfterWriteMsg	  "UseLocalSettings"
+	  WriteAfterReadMsg	  "UseLocalSettings"
+	  AlgebraicLoopMsg	  "warning"
+	  ArtificialAlgebraicLoopMsg "warning"
+	  SaveWithDisabledLinksMsg "warning"
+	  SaveWithParameterizedLinksMsg	"none"
+	  CheckSSInitialOutputMsg on
+	  UnderspecifiedInitializationDetection	"Classic"
+	  MergeDetectMultiDrivingBlocksExec "none"
+	  CheckExecutionContextPreStartOutputMsg off
+	  CheckExecutionContextRuntimeOutputMsg	off
+	  SignalResolutionControl "TryResolveAllWithWarning"
+	  BlockPriorityViolationMsg "warning"
+	  MinStepSizeMsg	  "warning"
+	  TimeAdjustmentMsg	  "none"
+	  MaxConsecutiveZCsMsg	  "error"
+	  MaskedZcDiagnostic	  "warning"
+	  IgnoredZcDiagnostic	  "warning"
+	  SolverPrmCheckMsg	  "none"
+	  InheritedTsInSrcMsg	  "warning"
+	  DiscreteInheritContinuousMsg "warning"
+	  MultiTaskDSMMsg	  "error"
+	  MultiTaskCondExecSysMsg "error"
+	  MultiTaskRateTransMsg	  "error"
+	  SingleTaskRateTransMsg  "none"
+	  TasksWithSamePriorityMsg "warning"
+	  SigSpecEnsureSampleTimeMsg "warning"
+	  CheckMatrixSingularityMsg "none"
+	  IntegerOverflowMsg	  "warning"
+	  Int32ToFloatConvMsg	  "warning"
+	  ParameterDowncastMsg	  "error"
+	  ParameterOverflowMsg	  "error"
+	  ParameterUnderflowMsg	  "none"
+	  ParameterPrecisionLossMsg "warning"
+	  ParameterTunabilityLossMsg "warning"
+	  FixptConstUnderflowMsg  "none"
+	  FixptConstOverflowMsg	  "none"
+	  FixptConstPrecisionLossMsg "none"
+	  UnderSpecifiedDataTypeMsg "none"
+	  UnnecessaryDatatypeConvMsg "none"
+	  VectorMatrixConversionMsg "none"
+	  InvalidFcnCallConnMsg	  "error"
+	  FcnCallInpInsideContextMsg "UseLocalSettings"
+	  SignalLabelMismatchMsg  "none"
+	  UnconnectedInputMsg	  "warning"
+	  UnconnectedOutputMsg	  "warning"
+	  UnconnectedLineMsg	  "warning"
+	  SFcnCompatibilityMsg	  "none"
+	  FrameProcessingCompatibilityMsg "warning"
+	  UniqueDataStoreMsg	  "none"
+	  BusObjectLabelMismatch  "warning"
+	  RootOutportRequireBusObject "warning"
+	  AssertControl		  "UseLocalSettings"
+	  EnableOverflowDetection off
+	  ModelReferenceIOMsg	  "none"
+	  ModelReferenceMultiInstanceNormalModeStructChecksumCheck "error"
+	  ModelReferenceVersionMismatchMessage "none"
+	  ModelReferenceIOMismatchMessage "none"
+	  ModelReferenceCSMismatchMessage "none"
+	  UnknownTsInhSupMsg	  "warning"
+	  ModelReferenceDataLoggingMessage "warning"
+	  ModelReferenceSymbolNameMessage "warning"
+	  ModelReferenceExtraNoncontSigs "error"
+	  StateNameClashWarn	  "warning"
+	  SimStateInterfaceChecksumMismatchMsg "warning"
+	  SimStateOlderReleaseMsg "error"
+	  InitInArrayFormatMsg	  "warning"
+	  StrictBusMsg		  "Warning"
+	  BusNameAdapt		  "WarnAndRepair"
+	  NonBusSignalsTreatedAsBus "none"
+	  LoggingUnavailableSignals "error"
+	  BlockIODiagnostic	  "none"
+	  SFUnusedDataAndEventsDiag "warning"
+	  SFUnexpectedBacktrackingDiag "warning"
+	  SFInvalidInputDataAccessInChartInitDiag "warning"
+	  SFNoUnconditionalDefaultTransitionDiag "warning"
+	  SFTransitionOutsideNaturalParentDiag "warning"
+	  SFUnconditionalTransitionShadowingDiag "warning"
+	  SFUndirectedBroadcastEventsDiag "warning"
+	  SFTransitionActionBeforeConditionDiag	"warning"
+	}
+	Simulink.HardwareCC {
+	  $ObjectID		  13
+	  Version		  "1.12.1"
+	  ProdBitPerChar	  8
+	  ProdBitPerShort	  16
+	  ProdBitPerInt		  32
+	  ProdBitPerLong	  32
+	  ProdBitPerFloat	  32
+	  ProdBitPerDouble	  64
+	  ProdBitPerPointer	  32
+	  ProdLargestAtomicInteger "Char"
+	  ProdLargestAtomicFloat  "None"
+	  ProdIntDivRoundTo	  "Undefined"
+	  ProdEndianess		  "Unspecified"
+	  ProdWordSize		  32
+	  ProdShiftRightIntArith  on
+	  ProdHWDeviceType	  "32-bit Generic"
+	  TargetBitPerChar	  8
+	  TargetBitPerShort	  16
+	  TargetBitPerInt	  32
+	  TargetBitPerLong	  32
+	  TargetBitPerFloat	  32
+	  TargetBitPerDouble	  64
+	  TargetBitPerPointer	  32
+	  TargetLargestAtomicInteger "Char"
+	  TargetLargestAtomicFloat "None"
+	  TargetShiftRightIntArith on
+	  TargetIntDivRoundTo	  "Undefined"
+	  TargetEndianess	  "Unspecified"
+	  TargetWordSize	  32
+	  TargetTypeEmulationWarnSuppressLevel 0
+	  TargetPreprocMaxBitsSint 32
+	  TargetPreprocMaxBitsUint 32
+	  TargetHWDeviceType	  "Specified"
+	  TargetUnknown		  on
+	  ProdEqTarget		  on
+	}
+	Simulink.ModelReferenceCC {
+	  $ObjectID		  14
+	  Version		  "1.12.1"
+	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
+	  CheckModelReferenceTargetMessage "error"
+	  EnableParallelModelReferenceBuilds off
+	  ParallelModelReferenceErrorOnInvalidPool on
+	  ParallelModelReferenceMATLABWorkerInit "None"
+	  ModelReferenceNumInstancesAllowed "Multi"
+	  PropagateVarSize	  "Infer from blocks in model"
+	  ModelReferencePassRootInputsByReference on
+	  ModelReferenceMinAlgLoopOccurrences off
+	  PropagateSignalLabelsOutOfModel off
+	  SupportModelReferenceSimTargetCustomCode off
+	}
+	Simulink.SFSimCC {
+	  $ObjectID		  15
+	  Version		  "1.12.1"
+	  SFSimEnableDebug	  on
+	  SFSimOverflowDetection  on
+	  SFSimEcho		  on
+	  SimBlas		  on
+	  SimCtrlC		  on
+	  SimExtrinsic		  on
+	  SimIntegrity		  on
+	  SimUseLocalCustomCode	  off
+	  SimParseCustomCode	  on
+	  SimBuildMode		  "sf_incremental_build"
+	}
+	Simulink.RTWCC {
+	  $BackupClass		  "Simulink.RTWCC"
+	  $ObjectID		  16
+	  Version		  "1.12.1"
+	  Array {
+	    Type		    "Cell"
+	    Dimension		    6
+	    Cell		    "IncludeHyperlinkInReport"
+	    Cell		    "GenerateTraceInfo"
+	    Cell		    "GenerateTraceReport"
+	    Cell		    "GenerateTraceReportSl"
+	    Cell		    "GenerateTraceReportSf"
+	    Cell		    "GenerateTraceReportEml"
+	    PropName		    "DisabledProps"
+	  }
+	  SystemTargetFile	  "grt.tlc"
+	  GenCodeOnly		  off
+	  MakeCommand		  "make_rtw"
+	  GenerateMakefile	  on
+	  PackageGeneratedCodeAndArtifacts off
+	  TemplateMakefile	  "grt_default_tmf"
+	  GenerateReport	  off
+	  SaveLog		  off
+	  RTWVerbose		  on
+	  RetainRTWFile		  off
+	  ProfileTLC		  off
+	  TLCDebug		  off
+	  TLCCoverage		  off
+	  TLCAssert		  off
+	  ProcessScriptMode	  "Default"
+	  ConfigurationMode	  "Optimized"
+	  ConfigAtBuild		  off
+	  RTWUseLocalCustomCode	  off
+	  RTWUseSimCustomCode	  off
+	  IncludeHyperlinkInReport off
+	  LaunchReport		  off
+	  PortableWordSizes	  off
+	  GenerateErtSFunction	  off
+	  CreateSILPILBlock	  "None"
+	  CodeExecutionProfiling  off
+	  CodeExecutionProfileVariable "executionProfile"
+	  CodeProfilingSaveOptions "SummaryOnly"
+	  CodeProfilingInstrumentation off
+	  TargetLang		  "C"
+	  IncludeBusHierarchyInRTWFileBlockHierarchyMap	off
+	  IncludeERTFirstTime	  off
+	  GenerateTraceInfo	  off
+	  GenerateTraceReport	  off
+	  GenerateTraceReportSl	  off
+	  GenerateTraceReportSf	  off
+	  GenerateTraceReportEml  off
+	  GenerateCodeInfo	  off
+	  GenerateWebview	  off
+	  GenerateCodeMetricsReport off
+	  GenerateCodeReplacementReport	off
+	  RTWCompilerOptimization "Off"
+	  CheckMdlBeforeBuild	  "Off"
+	  CustomRebuildMode	  "OnUpdate"
+	  Array {
+	    Type		    "Handle"
+	    Dimension		    2
+	    Simulink.CodeAppCC {
+	      $ObjectID		      17
+	      Version		      "1.12.1"
+	      Array {
+		Type			"Cell"
+		Dimension		17
+		Cell			"IgnoreCustomStorageClasses"
+		Cell			"IgnoreTestpoints"
+		Cell			"InsertBlockDesc"
+		Cell			"SFDataObjDesc"
+		Cell			"SimulinkDataObjDesc"
+		Cell			"DefineNamingRule"
+		Cell			"SignalNamingRule"
+		Cell			"ParamNamingRule"
+		Cell			"InlinedPrmAccess"
+		Cell			"CustomSymbolStr"
+		Cell			"CustomSymbolStrGlobalVar"
+		Cell			"CustomSymbolStrType"
+		Cell			"CustomSymbolStrField"
+		Cell			"CustomSymbolStrFcn"
+		Cell			"CustomSymbolStrBlkIO"
+		Cell			"CustomSymbolStrTmpVar"
+		Cell			"CustomSymbolStrMacro"
+		PropName		"DisabledProps"
+	      }
+	      ForceParamTrailComments off
+	      GenerateComments	      on
+	      IgnoreCustomStorageClasses on
+	      IgnoreTestpoints	      off
+	      IncHierarchyInIds	      off
+	      MaxIdLength	      31
+	      PreserveName	      off
+	      PreserveNameWithParent  off
+	      ShowEliminatedStatement off
+	      OperatorAnnotations     off
+	      IncAutoGenComments      off
+	      SimulinkDataObjDesc     off
+	      SFDataObjDesc	      off
+	      MATLABFcnDesc	      off
+	      IncDataTypeInIds	      off
+	      MangleLength	      1
+	      CustomSymbolStrGlobalVar "$R$N$M"
+	      CustomSymbolStrType     "$N$R$M"
+	      CustomSymbolStrField    "$N$M"
+	      CustomSymbolStrFcn      "$R$N$M$F"
+	      CustomSymbolStrFcnArg   "rt$I$N$M"
+	      CustomSymbolStrBlkIO    "rtb_$N$M"
+	      CustomSymbolStrTmpVar   "$N$M"
+	      CustomSymbolStrMacro    "$R$N$M"
+	      DefineNamingRule	      "None"
+	      ParamNamingRule	      "None"
+	      SignalNamingRule	      "None"
+	      InsertBlockDesc	      off
+	      InsertPolySpaceComments off
+	      SimulinkBlockComments   on
+	      MATLABSourceComments    off
+	      EnableCustomComments    off
+	      InternalIdentifier      "Classic"
+	      InlinedPrmAccess	      "Literals"
+	      ReqsInCode	      off
+	      UseSimReservedNames     off
+	    }
+	    Simulink.GRTTargetCC {
+	      $BackupClass	      "Simulink.TargetCC"
+	      $ObjectID		      18
+	      Version		      "1.12.1"
+	      Array {
+		Type			"Cell"
+		Dimension		15
+		Cell			"IncludeMdlTerminateFcn"
+		Cell			"CombineOutputUpdateFcns"
+		Cell			"SuppressErrorStatus"
+		Cell			"ERTCustomFileBanners"
+		Cell			"GenerateSampleERTMain"
+		Cell			"GenerateTestInterfaces"
+		Cell			"ModelStepFunctionPrototypeControlCompliant"
+		Cell			"CPPClassGenCompliant"
+		Cell			"MultiInstanceERTCode"
+		Cell			"PurelyIntegerCode"
+		Cell			"PortableWordSizes"
+		Cell			"SupportComplex"
+		Cell			"SupportAbsoluteTime"
+		Cell			"SupportContinuousTime"
+		Cell			"SupportNonInlinedSFcns"
+		PropName		"DisabledProps"
+	      }
+	      TargetFcnLib	      "ansi_tfl_table_tmw.mat"
+	      TargetLibSuffix	      ""
+	      TargetPreCompLibLocation ""
+	      CodeReplacementLibrary  "ANSI_C"
+	      UtilityFuncGeneration   "Auto"
+	      ERTMultiwordTypeDef     "System defined"
+	      ERTMultiwordLength      256
+	      MultiwordLength	      2048
+	      GenerateFullHeader      on
+	      GenerateSampleERTMain   off
+	      GenerateTestInterfaces  off
+	      IsPILTarget	      off
+	      ModelReferenceCompliant on
+	      ParMdlRefBuildCompliant on
+	      CompOptLevelCompliant   on
+	      ConcurrentExecutionCompliant on
+	      IncludeMdlTerminateFcn  on
+	      GeneratePreprocessorConditionals "Disable all"
+	      CombineOutputUpdateFcns off
+	      CombineSignalStateStructs	off
+	      SuppressErrorStatus     off
+	      ERTFirstTimeCompliant   off
+	      IncludeFileDelimiter    "Auto"
+	      ERTCustomFileBanners    off
+	      SupportAbsoluteTime     on
+	      LogVarNameModifier      "rt_"
+	      MatFileLogging	      on
+	      MultiInstanceERTCode    off
+	      SupportNonFinite	      on
+	      SupportComplex	      on
+	      PurelyIntegerCode	      off
+	      SupportContinuousTime   on
+	      SupportNonInlinedSFcns  on
+	      SupportVariableSizeSignals off
+	      EnableShiftOperators    on
+	      ParenthesesLevel	      "Nominal"
+	      ModelStepFunctionPrototypeControlCompliant off
+	      CPPClassGenCompliant    off
+	      AutosarCompliant	      off
+	      GRTInterface	      on
+	      UseMalloc		      off
+	      ExtMode		      off
+	      ExtModeStaticAlloc      off
+	      ExtModeTesting	      off
+	      ExtModeStaticAllocSize  1000000
+	      ExtModeTransport	      0
+	      ExtModeMexFile	      "ext_comm"
+	      ExtModeIntrfLevel	      "Level1"
+	      RTWCAPISignals	      off
+	      RTWCAPIParams	      off
+	      RTWCAPIStates	      off
+	      RTWCAPIRootIO	      off
+	      GenerateASAP2	      off
+	    }
+	    PropName		    "Components"
+	  }
+	}
+	PropName		"Components"
+      }
+      Name		      "Configuration"
+      CurrentDlgPage	      "Solver"
+      ConfigPrmDlgPosition     [ 400, 210, 1280, 840 ] 
+    }
+    PropName		    "ConfigurationSets"
+  }
+  ExplicitPartitioning	  off
+  BlockDefaults {
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    NamePlacement	    "normal"
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    ShowName		    on
+    BlockRotation	    0
+    BlockMirror		    off
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    "center"
+    VerticalAlignment	    "middle"
+    ForegroundColor	    "black"
+    BackgroundColor	    "white"
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+    UseDisplayTextAsClickCallback off
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    "normal"
+    FontAngle		    "normal"
+  }
+  MaskDefaults {
+    SelfModifiable	    "off"
+    IconFrame		    "on"
+    IconOpaque		    "on"
+    RunInitForIconRedraw    "off"
+    IconRotate		    "none"
+    PortRotate		    "default"
+    IconUnits		    "autoscale"
+  }
+  MaskParameterDefaults {
+    Evaluate		    "on"
+    Tunable		    "on"
+    NeverSave		    "off"
+    Internal		    "off"
+    ReadOnly		    "off"
+    Enabled		    "on"
+    Visible		    "on"
+    ToolTip		    "on"
+  }
+  BlockParameterDefaults {
+    Block {
+      BlockType		      Constant
+      Value		      "1"
+      VectorParams1D	      on
+      SamplingMode	      "Sample based"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Inherit from 'Constant value'"
+      LockScale		      off
+      SampleTime	      "inf"
+      FramePeriod	      "inf"
+      PreserveConstantTs      off
+    }
+    Block {
+      BlockType		      Derivative
+      CoefficientInTFapproximation "inf"
+    }
+    Block {
+      BlockType		      DiscreteZeroPole
+      Zeros		      "[1]"
+      Poles		      "[0 1]"
+      Gain		      "[1]"
+      SampleTime	      "1"
+      StateMustResolveToSignalObject off
+      RTWStateStorageClass    "Auto"
+    }
+    Block {
+      BlockType		      Gain
+      Gain		      "1"
+      Multiplication	      "Element-wise(K.*u)"
+      ParamMin		      "[]"
+      ParamMax		      "[]"
+      ParamDataTypeStr	      "Inherit: Same as input"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as input"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      Inport
+      Port		      "1"
+      OutputFunctionCall      off
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      VarSizeSig	      "Inherit"
+      SampleTime	      "-1"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      LatchByDelayingOutsideSignal off
+      LatchInputForFeedbackSignals off
+      Interpolate	      on
+    }
+    Block {
+      BlockType		      Integrator
+      ExternalReset	      "none"
+      InitialConditionSource  "internal"
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit    "inf"
+      LowerSaturationLimit    "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+      IgnoreLimit	      off
+      ZeroCross		      on
+      ContinuousStateAttributes	"''"
+    }
+    Block {
+      BlockType		      Outport
+      Port		      "1"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: auto"
+      LockScale		      off
+      BusOutputAsStruct	      off
+      PortDimensions	      "-1"
+      VarSizeSig	      "Inherit"
+      SampleTime	      "-1"
+      SignalType	      "auto"
+      SamplingMode	      "auto"
+      SourceOfInitialOutputValue "Dialog"
+      OutputWhenDisabled      "held"
+      InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      SubSystem
+      ShowPortLabels	      "FromPortIcon"
+      Permissions	      "ReadWrite"
+      PermitHierarchicalResolution "All"
+      TreatAsAtomicUnit	      off
+      CheckFcnCallInpInsideContextMsg off
+      SystemSampleTime	      "-1"
+      RTWFcnNameOpts	      "Auto"
+      RTWFileNameOpts	      "Auto"
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      SimViewingDevice	      off
+      DataTypeOverride	      "UseLocalSettings"
+      DataTypeOverrideAppliesTo	"AllNumericTypes"
+      MinMaxOverflowLogging   "UseLocalSettings"
+      SFBlockType	      "NONE"
+      Variant		      off
+      GeneratePreprocessorConditionals off
+    }
+    Block {
+      BlockType		      Sum
+      IconShape		      "rectangular"
+      Inputs		      "++"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      AccumDataTypeStr	      "Inherit: Inherit via internal rule"
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeStr	      "Inherit: Same as first input"
+      LockScale		      off
+      RndMeth		      "Floor"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
+      BlockType		      TransferFcn
+      Numerator		      "[1]"
+      Denominator	      "[1 2 1]"
+      AbsoluteTolerance	      "auto"
+      ContinuousStateAttributes	"''"
+      Realization	      "auto"
+    }
+  }
+  System {
+    Name		    "fod"
+    Location		    [951, 114, 1697, 1042]
+    Open		    on
+    ModelBrowserVisibility  off
+    ModelBrowserWidth	    200
+    ScreenColor		    "white"
+    PaperOrientation	    "landscape"
+    PaperPositionMode	    "auto"
+    PaperType		    "A4"
+    PaperUnits		    "centimeters"
+    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+    TiledPageScale	    1
+    ShowPageBoundaries	    off
+    ZoomFactor		    "100"
+    ReportName		    "simulink-default.rpt"
+    SIDHighWatermark	    "96"
+    Block {
+      BlockType		      SubSystem
+      Name		      "Discrete FPID\nOPTIM controller"
+      SID		      "75"
+      Ports		      [1, 1]
+      Position		      [185, 497, 230, 543]
+      ZOrder		      -1
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		19
+	$ClassName		"Simulink.Mask"
+	Initialization		"% Load the MAT file\nconf = load(fpid_optim_conf);\n\n% Extract required parameters\nApproxData = co"
+	"nf.FPID_Optimizer_GUI_config.PlantModel;\nFPIDParams = conf.FPID_Optimizer_GUI_config.FPIDParams;\n\n% FOPID paramete"
+	"rs\nKp  = str2num(FPIDParams.Kp);\nKi  = str2num(FPIDParams.Ki);\nlam = str2num(FPIDParams.Lam);\nKd  = str2num(FPIDP"
+	"arams.Kd);\nmu  = str2num(FPIDParams.Mu);\n\n% Approximation details\nfilterTypes   = {'oust', 'ref'};\nfilterToUse  "
+	" = filterTypes{ApproxData.ApproxType};\nfilterWrange  = str2num(ApproxData.ApproxFreqRange);\nfilterN       = str2num"
+	"(ApproxData.ApproxOrder);\nfilterZCancel = ApproxData.ZeroCancelation;\n\n% Do the approximation\nwb=filterWrange(1);"
+	"\nwh=filterWrange(2);\n\n% Get controller string\n[ig1, ig2, str] = fracpid(Kp,Ki,lam,Kd,mu);\n\n% Get the transfer f"
+	"unction via OUSTAPID\nfractf = oustapid(Kp,Ki,lam,Kd,mu,wb,wh,filterN,filterToUse);\n\nif (filterZCancel)\n    % Make"
+	" sure that number of poles\n    % is larger than number of zeros\n    fractf = toproper(fractf, wh);\nend\n\n% Discre"
+	"tization type\ndsctypes = {'zoh', 'foh', 'imp', 'tustin', 'prewarp', 'matched'};\ndsctype = dsctypes{dscrMethod};\nif"
+	" strcmp(dsctype, 'prewarp')\n    dfraczpk = c2d(fractf, ts, dsctype, wc);\nelse\n    dfraczpk = c2d(fractf, ts, dscty"
+	"pe);\nend\n"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(['Dsc OPT' char(10) str],'texmode','on');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  4
+	  Object {
+	    $ObjectID		    20
+	    Type		    "edit"
+	    Name		    "fpid_optim_conf"
+	    Prompt		    "FPID_OPTIM structure MAT file name"
+	    Value		    "fpid_optim_default_config"
+	    Evaluate		    "off"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    21
+	    Type		    "popup"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      6
+	      Cell		      "Zero-order hold"
+	      Cell		      "Linear interpolation"
+	      Cell		      "Impulse-invariant"
+	      Cell		      "Bilinear (Tustin)"
+	      Cell		      "Prewarp"
+	      Cell		      "Matched"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "dscrMethod"
+	    Prompt		    "Discretization method"
+	    Value		    "Matched"
+	  }
+	  Object {
+	    $ObjectID		    22
+	    Type		    "edit"
+	    Name		    "wc"
+	    Prompt		    "Critical frequency (for Prewarp method)"
+	    Value		    "0"
+	  }
+	  Object {
+	    $ObjectID		    23
+	    Type		    "edit"
+	    Name		    "ts"
+	    Prompt		    "Sample time"
+	    Value		    "0.001"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Discrete FPID\nOPTIM controller"
+	Location		[292, 52, 1003, 1272]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "78"
+	  Position		  [20, 33, 50, 47]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  DiscreteZeroPole
+	  Name			  "Discrete\nZero-Pole"
+	  SID			  "79"
+	  Position		  [85, 22, 145, 58]
+	  ZOrder		  -2
+	  Zeros			  "dfraczpk.z{1}"
+	  Poles			  "dfraczpk.p{1}"
+	  Gain			  "dfraczpk.k"
+	  SampleTime		  "ts"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "80"
+	  Position		  [190, 33, 220, 47]
+	  ZOrder		  -3
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "Discrete\nZero-Pole"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Discrete\nZero-Pole"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Discrete fractional\nPID controller"
+      SID		      "1"
+      Ports		      [1, 1]
+      Position		      [185, 390, 230, 440]
+      ZOrder		      -2
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		24
+	$ClassName		"Simulink.Mask"
+	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Filter type\nswitch useRef\n    case 0\n "
+	"       fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\n% Get controller string\n[ig1, ig2, str] = fra"
+	"cpid(Kp,Ki,lambda,Kd,mu);\n\n% Get the transfer function via OUSTAPID\nfractf = oustapid(Kp,Ki,lambda,Kd,mu,wb,wh,N,f"
+	"Method);\n\n% Make sure that number of poles\n% is larger than number of zeros\nfractf = toproper(fractf, wh);\n\n% D"
+	"iscretization type\ndsctypes = {'zoh', 'foh', 'imp', 'tustin', 'prewarp', 'matched'};\ndsctype = dsctypes{dscrMethod}"
+	";\nif strcmp(dsctype, 'prewarp')\n    dfraczpk = c2d(fractf, ts, dsctype, wc);\nelse\n    dfraczpk = c2d(fractf, ts, "
+	"dsctype);\nend"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(['Discrete' char(10) str],'texmode','on');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  11
+	  Object {
+	    $ObjectID		    25
+	    Type		    "edit"
+	    Name		    "Kp"
+	    Prompt		    "Kp"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    26
+	    Type		    "edit"
+	    Name		    "Ki"
+	    Prompt		    "Ki"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    27
+	    Type		    "edit"
+	    Name		    "lambda"
+	    Prompt		    "lambda"
+	    Value		    "0.5"
+	  }
+	  Object {
+	    $ObjectID		    28
+	    Type		    "edit"
+	    Name		    "Kd"
+	    Prompt		    "Kd"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    29
+	    Type		    "edit"
+	    Name		    "mu"
+	    Prompt		    "mu"
+	    Value		    "0.5"
+	  }
+	  Object {
+	    $ObjectID		    30
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Frequency range [wb; wh] [rad/s]"
+	    Value		    "[0.001; 1000]"
+	  }
+	  Object {
+	    $ObjectID		    31
+	    Type		    "edit"
+	    Name		    "N"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  Object {
+	    $ObjectID		    32
+	    Type		    "checkbox"
+	    Name		    "useRef"
+	    Prompt		    "Use refined Oustaloup filter"
+	    Value		    "on"
+	  }
+	  Object {
+	    $ObjectID		    33
+	    Type		    "popup"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      6
+	      Cell		      "Zero-order hold"
+	      Cell		      "Linear interpolation"
+	      Cell		      "Impulse-invariant"
+	      Cell		      "Bilinear (Tustin)"
+	      Cell		      "Prewarp"
+	      Cell		      "Matched"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "dscrMethod"
+	    Prompt		    "Discretization method"
+	    Value		    "Matched"
+	  }
+	  Object {
+	    $ObjectID		    34
+	    Type		    "edit"
+	    Name		    "wc"
+	    Prompt		    "Critical frequency (for Prewarp method)"
+	    Value		    "0"
+	  }
+	  Object {
+	    $ObjectID		    35
+	    Type		    "edit"
+	    Name		    "ts"
+	    Prompt		    "Sample time"
+	    Value		    "0.5"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Discrete fractional\nPID controller"
+	Location		[1174, 52, 1885, 1272]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "2"
+	  Position		  [45, 43, 75, 57]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  DiscreteZeroPole
+	  Name			  "Discrete\nZero-Pole"
+	  SID			  "3"
+	  Position		  [105, 32, 165, 68]
+	  ZOrder		  -2
+	  Zeros			  "dfraczpk.z{1}"
+	  Poles			  "dfraczpk.p{1}"
+	  Gain			  "dfraczpk.k"
+	  SampleTime		  "ts"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "4"
+	  Position		  [195, 43, 225, 57]
+	  ZOrder		  -3
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "Discrete\nZero-Pole"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Discrete\nZero-Pole"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Discrete fractional\nTransfer Fcn"
+      SID		      "5"
+      Ports		      [1, 1]
+      Position		      [185, 175, 230, 225]
+      ZOrder		      -3
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		36
+	$ClassName		"Simulink.Mask"
+	Type			"Discrete Fractional Transfer Function"
+	Description		"A discrete fractional transfer function system given in continuous form Tf(s)=b(s)/a(s)."
+	Help			"A discrete fractional transfer function system given in continuous form Tf(s)=b(s)/a(s)."
+	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Approximation order\nN = approxNum;\n\n% "
+	"Filter type\nswitch useRef\n    case 0\n        fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\n% Get"
+	" the transfer function\nfractf = oustapp(newfotf(zeroPoly, polePoly),wb,wh,N,fMethod);\n\n% Discretization type\ndsct"
+	"ypes = {'zoh', 'foh', 'imp', 'tustin', 'prewarp', 'matched'};\ndsctype = dsctypes{dscrMethod};\n\nif strcmp(dsctype, "
+	"'prewarp')\n    dfraczpk = c2d(fractf, ts, dsctype, wc);\nelse\n    dfraczpk = c2d(fractf, ts, dsctype);\nend"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(['Discrete' char(10) 'Frac Tf(z)']);"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  8
+	  Object {
+	    $ObjectID		    37
+	    Type		    "edit"
+	    Name		    "zeroPoly"
+	    Prompt		    "Zero polynomial b(s)"
+	    Value		    "1"
+	    Evaluate		    "off"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    38
+	    Type		    "edit"
+	    Name		    "polePoly"
+	    Prompt		    "Pole polynomial a(s)"
+	    Value		    "s^2.5+1"
+	    Evaluate		    "off"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    39
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Frequency range [wb, wh] [rad]"
+	    Value		    "[0.001, 1000]"
+	  }
+	  Object {
+	    $ObjectID		    40
+	    Type		    "edit"
+	    Name		    "approxNum"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  Object {
+	    $ObjectID		    41
+	    Type		    "checkbox"
+	    Name		    "useRef"
+	    Prompt		    "Use refined Oustaloup filter"
+	    Value		    "off"
+	  }
+	  Object {
+	    $ObjectID		    42
+	    Type		    "popup"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      6
+	      Cell		      "Zero-order hold"
+	      Cell		      "Linear interpolation"
+	      Cell		      "Impulse-invariant"
+	      Cell		      "Bilinear (Tustin)"
+	      Cell		      "Prewarp"
+	      Cell		      "Matched"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "dscrMethod"
+	    Prompt		    "Discretization method"
+	    Value		    "Matched"
+	  }
+	  Object {
+	    $ObjectID		    43
+	    Type		    "edit"
+	    Name		    "wc"
+	    Prompt		    "Critical frequency (for Prewarp method)"
+	    Value		    "0"
+	  }
+	  Object {
+	    $ObjectID		    44
+	    Type		    "edit"
+	    Name		    "ts"
+	    Prompt		    "Sample time"
+	    Value		    "0.5"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Discrete fractional\nTransfer Fcn"
+	Location		[693, 52, 1472, 1599]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "6"
+	  Position		  [25, 38, 55, 52]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  DiscreteZeroPole
+	  Name			  "Discrete\nZero-Pole"
+	  SID			  "7"
+	  Position		  [105, 27, 165, 63]
+	  ZOrder		  -2
+	  Zeros			  "dfraczpk.z{1}"
+	  Poles			  "dfraczpk.p{1}"
+	  Gain			  "dfraczpk.k"
+	  SampleTime		  "ts"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "8"
+	  Position		  [220, 38, 250, 52]
+	  ZOrder		  -3
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "Discrete\nZero-Pole"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Discrete\nZero-Pole"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Fractional\nState-Space"
+      SID		      "93"
+      Ports		      [1, 1]
+      Position		      [285, 290, 355, 330]
+      ZOrder		      10
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		45
+	$ClassName		"Simulink.Mask"
+	Type			"FOSS"
+	Description		"Fractional state-space system"
+	Help			"Fractional state-space system"
+	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Approximation order\nN = approxNum;\n\n% "
+	"Filter type\nswitch useRef\n    case 0\n        fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\nmySys"
+	" = foss(A,B,C,D,q);\nmyLtiApprox = zpk(oustapp(mySys,wb,wh,N,fMethod));\nmyLtiApprox = toproper(myLtiApprox, wh);"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(['D^\\alphax=Ax+Bu' char(10) 'y=Cx+Du'], 'Te"
+	"XMode', 'On');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  9
+	  Object {
+	    $ObjectID		    46
+	    Type		    "edit"
+	    Name		    "A"
+	    Prompt		    "A"
+	    Value		    "[-13.0980 -5.8441 5.7893; -5.8441 -16.2606 -5.3504; 5.7893 -5.3504 -7.6497]"
+	  }
+	  Object {
+	    $ObjectID		    47
+	    Type		    "edit"
+	    Name		    "B"
+	    Prompt		    "B"
+	    Value		    "[0 0.4889 -0.3034; 0 1.0347 0; 1.6302 0.7269 -0.7873]"
+	  }
+	  Object {
+	    $ObjectID		    48
+	    Type		    "edit"
+	    Name		    "C"
+	    Prompt		    "C"
+	    Value		    "[0.8884 -1.0689 -2.9443; -1.1471 -0.8095 0]"
+	  }
+	  Object {
+	    $ObjectID		    49
+	    Type		    "edit"
+	    Name		    "D"
+	    Prompt		    "D"
+	    Value		    "[0.3252 1.3703 -0.1022; 0 0 0]"
+	  }
+	  Object {
+	    $ObjectID		    50
+	    Type		    "edit"
+	    Name		    "q"
+	    Prompt		    "Commensurate order q"
+	    Value		    "0.75"
+	  }
+	  Object {
+	    $ObjectID		    51
+	    Type		    "edit"
+	    Name		    "iniOff"
+	    Prompt		    "Initial output offsets"
+	    Value		    "[0; 0]"
+	  }
+	  Object {
+	    $ObjectID		    52
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Approximation band"
+	    Value		    "[0.0001 10000]"
+	  }
+	  Object {
+	    $ObjectID		    53
+	    Type		    "edit"
+	    Name		    "approxNum"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  Object {
+	    $ObjectID		    54
+	    Type		    "checkbox"
+	    Name		    "useRef"
+	    Prompt		    "Use refined Oustaloup filter"
+	    Value		    "off"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Fractional\nState-Space"
+	Location		[776, 125, 1522, 1053]
+	Open			on
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "94"
+	  Position		  [20, 33, 50, 47]
+	  ZOrder		  10
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Constant"
+	  SID			  "92"
+	  Position		  [135, 100, 165, 130]
+	  ZOrder		  9
+	  Value			  "iniOff"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LTI System"
+	  SID			  "90"
+	  Ports			  [1, 1]
+	  Position		  [70, 22, 165, 58]
+	  ZOrder		  7
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "myLtiApprox"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  SID			  "91"
+	  Ports			  [2, 1]
+	  Position		  [235, 30, 255, 50]
+	  ZOrder		  8
+	  ShowName		  off
+	  IconShape		  "round"
+	  Inputs		  "|++"
+	  InputSameDT		  off
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "95"
+	  Position		  [275, 33, 305, 47]
+	  ZOrder		  11
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Constant"
+	  SrcPort		  1
+	  Points		  [75, 0]
+	  DstBlock		  "Sum"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "LTI System"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "LTI System"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Fractional\nTransfer Fcn"
+      SID		      "9"
+      Tag		      "Fractional Transfer Fcn"
+      Description	      "Fractional LTI system transfer function"
+      Ports		      [1, 1]
+      Position		      [70, 175, 115, 225]
+      ZOrder		      -4
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		55
+	$ClassName		"Simulink.Mask"
+	Type			"Fractional Transfer Function"
+	Description		"A fractional transfer function system in form Tf(s)=b(s)/a(s)."
+	Help			"A fractional transfer function system in form Tf(s)=b(s)/a(s)."
+	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Filter\nT = 1/wh;\n\n% Approximation orde"
+	"r\nN = approxNum;\n\n% Filter type\nswitch useRef\n    case 0\n        fMethod = 'oust';\n    case 1\n        fMethod"
+	" = 'ref';\nend\n\n% Get the transfer function\nfractf = oustapp(newfotf(zeroPoly, polePoly),wb,wh,N,fMethod);"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp('Frac Tf(s)', 'texmode' , 'on');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  5
+	  Object {
+	    $ObjectID		    56
+	    Type		    "edit"
+	    Name		    "zeroPoly"
+	    Prompt		    "Zero polynomial b(s)"
+	    Value		    "1"
+	    Evaluate		    "off"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    57
+	    Type		    "edit"
+	    Name		    "polePoly"
+	    Prompt		    "Pole polynomial a(s)"
+	    Value		    "s^2.5+1"
+	    Evaluate		    "off"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    58
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Frequency range [wb, wh]"
+	    Value		    "[0.001, 1000]"
+	  }
+	  Object {
+	    $ObjectID		    59
+	    Type		    "edit"
+	    Name		    "approxNum"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  Object {
+	    $ObjectID		    60
+	    Type		    "checkbox"
+	    Name		    "useRef"
+	    Prompt		    "Use refined Oustaloup filter"
+	    Value		    "off"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Fractional\nTransfer Fcn"
+	Location		[581, 52, 1322, 1403]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "10"
+	  Position		  [25, 38, 55, 52]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LTI System"
+	  SID			  "11"
+	  Ports			  [1, 1]
+	  Position		  [95, 27, 160, 63]
+	  ZOrder		  -2
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fractf"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  TransferFcn
+	  Name			  "Transfer Fcn1"
+	  SID			  "12"
+	  Position		  [185, 27, 245, 63]
+	  ZOrder		  -3
+	  Denominator		  "[T 1]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "13"
+	  Position		  [290, 38, 320, 52]
+	  ZOrder		  -4
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "LTI System"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "LTI System"
+	  SrcPort		  1
+	  DstBlock		  "Transfer Fcn1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Transfer Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Fractional\nderivative"
+      SID		      "14"
+      Ports		      [1, 1]
+      Position		      [185, 60, 230, 110]
+      ZOrder		      -5
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		61
+	$ClassName		"Simulink.Mask"
+	Type			"Fractional derivative"
+	Description		"Fractional derivative in form s^{gamma}, where gamma is the order of the s operator."
+	Help			"Fractional derivative in form s^{gamma}, where gamma is the order of the s operator. "
+	Initialization		"% Frequency\nwb=ww(1);\nwh=ww(2);\n\n% Filter\nT = 1/wh;\n\n% Filter type\nswitch nFod\n    case 0\n"
+	"        fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\n% Create FOTF object\nG = newfotf(['s^' num2s"
+	"tr(gam)],'1');\n\n% Get Oustaloupe filter\nG1 = oustapp(G,wb,wh,n,fMethod);\n\n% Make sure that number of poles\n% is"
+	" larger than number of zeros\ns = tf('s');\nlp_filter = 1/(1+s*(1/wh));\n\nwhile length(G1.z{1})>length(G1.p{1})\n   "
+	"G1 = G1 * lp_filter; \nend\n\n% Gamma\nif isnumeric(gam)\n    if (gam == 0)\n        str = '1';\n    elseif (gam == 1"
+	")\n        str = 'du/dt';\n    else\n        str = ['d^{' num2str(gam) '}u/dt^{' num2str(gam) '}'];\n    end\nelse\n "
+	"   str='d^{gam}u/dt';\nend"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(str, 'texmode' , 'on');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  4
+	  Object {
+	    $ObjectID		    62
+	    Type		    "edit"
+	    Name		    "gam"
+	    Prompt		    "Derivative order"
+	    Value		    "0.5"
+	    Callback		    "if str2num(get_param(gcb, 'gam')) <= 0\n    errordlg('Order should be a positive number!', 'Error "
+	    "in operator order');\n    set_param(gcb, 'gam', '0.5');\nend"
+	  }
+	  Object {
+	    $ObjectID		    63
+	    Type		    "edit"
+	    Name		    "ww"
+	    Prompt		    "Frequency range [wb, wh]"
+	    Value		    "[0.001; 1000]"
+	  }
+	  Object {
+	    $ObjectID		    64
+	    Type		    "edit"
+	    Name		    "n"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  Object {
+	    $ObjectID		    65
+	    Type		    "checkbox"
+	    Name		    "nFod"
+	    Prompt		    "Use Oustaloup refined filter"
+	    Value		    "off"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Fractional\nderivative"
+	Location		[149, 52, 871, 1380]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "15"
+	  Position		  [25, 38, 55, 52]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LTI System"
+	  SID			  "16"
+	  Ports			  [1, 1]
+	  Position		  [90, 25, 145, 65]
+	  ZOrder		  -2
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "G1"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  TransferFcn
+	  Name			  "Transfer Fcn1"
+	  SID			  "17"
+	  Position		  [165, 27, 225, 63]
+	  ZOrder		  -3
+	  Denominator		  "[T 1]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "18"
+	  Position		  [260, 38, 290, 52]
+	  ZOrder		  -4
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "LTI System"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "LTI System"
+	  SrcPort		  1
+	  DstBlock		  "Transfer Fcn1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Transfer Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Fractional\nintegrator"
+      SID		      "19"
+      Ports		      [1, 1]
+      Position		      [295, 60, 340, 110]
+      ZOrder		      -6
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		66
+	$ClassName		"Simulink.Mask"
+	Type			"Fractional integrator"
+	Description		"Fractional integrator in form 1/s^{gamma}, where gamma is the order of the s operator."
+	Help			"Fractional integrator in form 1/s^{gamma}, where gamma is the order of the s operator."
+	Initialization		"% Frequency\nwb=ww(1);\nwh=ww(2);\n\n% Filter\nT = 1/wh;\n\n% Filter type\nswitch nFod\n    case 0\n"
+	"        fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\n% Create FOTF object\nG = newfotf('1', ['s^' "
+	"num2str(gam)]);\n\n% Get Oustaloup filter\nG1 = oustapp(G,wb,wh,n, fMethod);\n\n% Gamma\nif isnumeric(gam)\n    if (g"
+	"am == 0)\n        str = '1';\n    elseif (gam == 1)\n        str = '1/s';\n    else\n        str = ['1/s^{' num2str(g"
+	"am) '}'];\n    end\nelse\n    str='1/s^{gam}';\nend"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(str, 'texmode' , 'on');\n"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  4
+	  Object {
+	    $ObjectID		    67
+	    Type		    "edit"
+	    Name		    "gam"
+	    Prompt		    "Integration order"
+	    Value		    "0.5"
+	    Callback		    "if str2num(get_param(gcb, 'gam')) <= 0\n    errordlg('Order should be a positive number!', 'Error "
+	    "in operator order');\n    set_param(gcb, 'gam', '0.5');\nend"
+	  }
+	  Object {
+	    $ObjectID		    68
+	    Type		    "edit"
+	    Name		    "ww"
+	    Prompt		    "Frequency range [wb, wh]"
+	    Value		    "[0.001; 1000]"
+	  }
+	  Object {
+	    $ObjectID		    69
+	    Type		    "edit"
+	    Name		    "n"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	    Callback		    "if str2num(get_param(gcb, 'gam')) < 0\n    errordlg('Order should be a positive number!', 'Error i"
+	    "n operator order');\n    set_param(gcb, 'gam', '0.5');\nend"
+	  }
+	  Object {
+	    $ObjectID		    70
+	    Type		    "checkbox"
+	    Name		    "nFod"
+	    Prompt		    "Used refined Oustaloup filter"
+	    Value		    "off"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Fractional\nintegrator"
+	Location		[16, 52, 852, 1501]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "20"
+	  Position		  [25, 38, 55, 52]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LTI System"
+	  SID			  "21"
+	  Ports			  [1, 1]
+	  Position		  [90, 25, 140, 65]
+	  ZOrder		  -2
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "G1"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  TransferFcn
+	  Name			  "Transfer Fcn1"
+	  SID			  "22"
+	  Position		  [170, 27, 230, 63]
+	  ZOrder		  -3
+	  Denominator		  "[T 1]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "23"
+	  Position		  [275, 38, 305, 52]
+	  ZOrder		  -4
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "LTI System"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "LTI System"
+	  SrcPort		  1
+	  DstBlock		  "Transfer Fcn1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Transfer Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Fractional\noperator"
+      SID		      "24"
+      Tag		      "Fractional operator"
+      Ports		      [1, 1]
+      Position		      [70, 60, 115, 110]
+      ZOrder		      -7
+      FontName		      "Arial"
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		71
+	$ClassName		"Simulink.Mask"
+	Type			"Fractional operator"
+	Description		"Fractional operator in form K*s^{gamma}, where K is the gain and gamma is the order of the s operator. "
+	Help			"Fractional operator in form K*s^{gamma}, where K is the gain and gamma is the order of the s operator. "
+	Initialization		"wb=ww(1);\nwh=ww(2);\nG1=new_fod(gam,n,wb,wh,10,9);\nG=tf(G1);\nnum=G.num{1};\nden=G.den{1};\nT=1/wh"
+	";\n\n% Gain dot\nif gam ~= 0\n    dotAdd = '\\cdot';\nelse\n    dotAdd = '';\nend\n\n% Gain\nif isnumeric(K)\n    if "
+	"(K == -1)\n        str = '-';\n    elseif (K == 1)\n        str = '';\n    else\n        str = [num2str(K) dotAdd];\n"
+	"    end\nelse\n    str = ['K' dotAdd];\nend\n\n% Gamma\nif isnumeric(gam)\n    if (gam < 0)\n        if (gam == -1)\n"
+	"            sstr = '1/s';\n        else\n            sstr = ['1/{s^{' num2str(abs(gam)) '}}'];\n        end\n    else"
+	"if (gam == 0)\n        if isnumeric(K)\n            if K == -1 || K == 1\n                sstr = '1';\n            el"
+	"se\n                sstr = '';\n            end\n        else\n            sstr = '';\n        end\n    elseif (gam ="
+	"= 1)\n        sstr = 's';\n    else\n        sstr = ['s^{' num2str(gam) '}'];\n    end\nelse\n    sstr=[str 's^{gam}'"
+	"];\nend\n\nstr = [str sstr];"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(str, 'texmode' , 'on');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  4
+	  Object {
+	    $ObjectID		    72
+	    Type		    "edit"
+	    Name		    "K"
+	    Prompt		    "Gain"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    73
+	    Type		    "edit"
+	    Name		    "gam"
+	    Prompt		    "Order in range (-1; 1)"
+	    Value		    "0.25"
+	    Callback		    "if abs(str2num(get_param(gcb, 'gam'))) >= 1\n    errordlg('Order should be in range (-1; 1)', 'Err"
+	    "or in operator order');\n    set_param(gcb, 'gam', '0.5');\nend"
+	  }
+	  Object {
+	    $ObjectID		    74
+	    Type		    "edit"
+	    Name		    "ww"
+	    Prompt		    "Frequency range [wb, wh]"
+	    Value		    "[0.001, 1000]"
+	  }
+	  Object {
+	    $ObjectID		    75
+	    Type		    "edit"
+	    Name		    "n"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Fractional\noperator"
+	Location		[77, 52, 827, 1290]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "25"
+	  Position		  [25, 38, 55, 52]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain"
+	  SID			  "26"
+	  Position		  [275, 30, 305, 60]
+	  ZOrder		  -2
+	  Gain			  "K"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  TransferFcn
+	  Name			  "Transfer Fcn"
+	  SID			  "27"
+	  Position		  [90, 27, 150, 63]
+	  ZOrder		  -3
+	  Numerator		  "num"
+	  Denominator		  "den"
+	}
+	Block {
+	  BlockType		  TransferFcn
+	  Name			  "Transfer Fcn1"
+	  SID			  "28"
+	  Position		  [180, 27, 240, 63]
+	  ZOrder		  -4
+	  Denominator		  "[T 1]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "29"
+	  Position		  [340, 38, 370, 52]
+	  ZOrder		  -5
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Transfer Fcn"
+	  SrcPort		  1
+	  DstBlock		  "Transfer Fcn1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "Transfer Fcn"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Transfer Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "Gain"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Gain"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Fractional LTI\n(Transfer Fcn)"
+      SID		      "87"
+      Ports		      [1, 1]
+      Position		      [295, 177, 340, 223]
+      ZOrder		      6
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		76
+	$ClassName		"Simulink.Mask"
+	Type			"Fractional LTI System"
+	Description		"A fractional LTI system."
+	Help			"A fractional LTI system."
+	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Approximation order\nN = approxNum;\n\n% "
+	"Filter type\nswitch useRef\n    case 0\n        fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\n% Get"
+	" the LTI system from base workspace (as transfer function)\nsys = evalin('base', G);\nfractf = zpk(oustapp(sys,wb,wh,"
+	"N,fMethod));\nfractf = toproper(fractf, wh);"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(G);"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  4
+	  Object {
+	    $ObjectID		    77
+	    Type		    "edit"
+	    Name		    "G"
+	    Prompt		    "LTI system variable"
+	    Value		    "fotf('s')"
+	    Evaluate		    "off"
+	    Tunable		    "off"
+	  }
+	  Object {
+	    $ObjectID		    78
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Approximation frequency range [wb, wh]"
+	    Value		    "[0.001 1000]"
+	  }
+	  Object {
+	    $ObjectID		    79
+	    Type		    "edit"
+	    Name		    "approxNum"
+	    Prompt		    "Approximation order N"
+	    Value		    "5"
+	  }
+	  Object {
+	    $ObjectID		    80
+	    Type		    "checkbox"
+	    Name		    "useRef"
+	    Prompt		    "Use refined Oustaloup filter"
+	    Value		    "off"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Fractional LTI\n(Transfer Fcn)"
+	Location		[-1072, 138, -361, 1358]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "88"
+	  Position		  [20, 33, 50, 47]
+	  ZOrder		  6
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LTI System"
+	  SID			  "84"
+	  Ports			  [1, 1]
+	  Position		  [95, 22, 160, 58]
+	  ZOrder		  4
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fractf"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  TransferFcn
+	  Name			  "Transfer Fcn1"
+	  SID			  "85"
+	  Position		  [185, 22, 245, 58]
+	  ZOrder		  3
+	  Denominator		  "[T 1]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "89"
+	  Position		  [305, 33, 335, 47]
+	  ZOrder		  7
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "LTI System"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "LTI System"
+	  SrcPort		  1
+	  DstBlock		  "Transfer Fcn1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Transfer Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Fractional PID\ncontroller"
+      SID		      "30"
+      Ports		      [1, 1]
+      Position		      [70, 390, 115, 440]
+      ZOrder		      -8
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		81
+	$ClassName		"Simulink.Mask"
+	Type			"Fractional PID"
+	Description		"Fractional PID with parameters Kp, Ki, Kd and extended parameters lambda and delta:\n\nPI^{lambda}D^{mu"
+	"} = Kp + Ki*s^-{lambda} + Kd*s^{mu}"
+	Help			"Fractional PID with parameters Kp, Ki, Kd and extended parameters lambda and delta:\n\nPI^{lambda}D^{mu} = Kp"
+	" + Ki*s^-{lambda} + Kd*s^{mu}"
+	Initialization		"wb = freqRange(1);\nwh = freqRange(2);\n\nT = 1/wh;\n\n[p_,c_,str]=fracpid(Kp,Ki,lambda,Kd,mic);"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(str, 'texmode' , 'on');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  7
+	  Object {
+	    $ObjectID		    82
+	    Type		    "edit"
+	    Name		    "Kp"
+	    Prompt		    "Kp"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    83
+	    Type		    "edit"
+	    Name		    "Ki"
+	    Prompt		    "Ki"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    84
+	    Type		    "edit"
+	    Name		    "lambda"
+	    Prompt		    "lambda"
+	    Value		    "0.5"
+	  }
+	  Object {
+	    $ObjectID		    85
+	    Type		    "edit"
+	    Name		    "Kd"
+	    Prompt		    "Kd"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    86
+	    Type		    "edit"
+	    Name		    "mic"
+	    Prompt		    "mu"
+	    Value		    "0.5"
+	  }
+	  Object {
+	    $ObjectID		    87
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Frequency range [wb, wh]"
+	    Value		    "[0.001, 1000]"
+	  }
+	  Object {
+	    $ObjectID		    88
+	    Type		    "edit"
+	    Name		    "N"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Fractional PID\ncontroller"
+	Location		[514, 117, 1225, 1337]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "31"
+	  Position		  [25, 103, 55, 117]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Derivative\nGain"
+	  SID			  "32"
+	  Position		  [140, 170, 170, 200]
+	  ZOrder		  -2
+	  Gain			  "Kd"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Fractional derivative1"
+	  SID			  "33"
+	  Ports			  [1, 1]
+	  Position		  [230, 161, 275, 209]
+	  ZOrder		  -3
+	  LibraryVersion	  "1.126"
+	  SourceBlock		  "fod/Fractional\nderivative"
+	  SourceType		  "Fractional derivative"
+	  gam			  "mic"
+	  ww			  "[wb; wh]"
+	  n			  "N"
+	  nFod			  off
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Fractional integrator1"
+	  SID			  "34"
+	  Ports			  [1, 1]
+	  Position		  [230, 86, 275, 134]
+	  ZOrder		  -4
+	  LibraryVersion	  "1.126"
+	  SourceBlock		  "fod/Fractional\nintegrator"
+	  SourceType		  "Fractional integrator"
+	  gam			  "lambda"
+	  ww			  "[wb; wh]"
+	  n			  "N"
+	  nFod			  off
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Integral\nGain"
+	  SID			  "35"
+	  Position		  [140, 95, 170, 125]
+	  ZOrder		  -5
+	  Gain			  "Ki"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Proportional\nGain"
+	  SID			  "36"
+	  Position		  [140, 25, 170, 55]
+	  ZOrder		  -6
+	  Gain			  "Kp"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  SID			  "37"
+	  Ports			  [3, 1]
+	  Position		  [320, 95, 350, 125]
+	  ZOrder		  -7
+	  ShowName		  off
+	  IconShape		  "round"
+	  Inputs		  "+++"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "38"
+	  Position		  [375, 103, 405, 117]
+	  ZOrder		  -8
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Integral\nGain"
+	  SrcPort		  1
+	  DstBlock		  "Fractional integrator1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Proportional\nGain"
+	  SrcPort		  1
+	  Points		  [160, 0]
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fractional integrator1"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Fractional derivative1"
+	  SrcPort		  1
+	  Points		  [55, 0]
+	  DstBlock		  "Sum"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Derivative\nGain"
+	  SrcPort		  1
+	  DstBlock		  "Fractional derivative1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  Points		  [30, 0]
+	  Branch {
+	    DstBlock		    "Integral\nGain"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, -70]
+	    DstBlock		    "Proportional\nGain"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 75]
+	    DstBlock		    "Derivative\nGain"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Num Discrete\nFractional Transfer Fcn"
+      SID		      "64"
+      Ports		      [1, 1]
+      Position		      [185, 287, 230, 333]
+      ZOrder		      -9
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		89
+	$ClassName		"Simulink.Mask"
+	Type			"Discrete Fractional Transfer Function (numerical polynomial coefficient/exponents)"
+	Description		"A discrete fractional transfer function system given in continuous form\nTf(s)=b(s)/a(s). This block al"
+	"lows to use numerical (vector) entry of\ncoefficients/exponents."
+	Help			"A discrete fractional transfer function system given in continuous form\nTf(s)=b(s)/a(s). This block allows t"
+	"o use numerical (vector) entry of\ncoefficients/exponents."
+	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Approximation order\nN = approxNum;\n\n% "
+	"Filter type\nswitch useRef\n    case 0\n        fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\n% Get"
+	" the transfer function\nfractf = oustapp(fotf(a,na,b,nb),wb,wh,N,fMethod);\n\n% Discretization type\ndsctypes = {'zoh"
+	"', 'foh', 'imp', 'tustin', 'prewarp', 'matched'};\ndsctype = dsctypes{dscrMethod};\n\nif strcmp(dsctype, 'prewarp')\n"
+	"    dfraczpk = c2d(fractf, ts, dsctype, wc);\nelse\n    dfraczpk = c2d(fractf, ts, dsctype);\nend"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(['Discrete' char(10) 'Num Fr Tf']);"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  10
+	  Object {
+	    $ObjectID		    90
+	    Type		    "edit"
+	    Name		    "b"
+	    Prompt		    "Zero polynomial coefficients:"
+	    Value		    "[1]"
+	  }
+	  Object {
+	    $ObjectID		    91
+	    Type		    "edit"
+	    Name		    "nb"
+	    Prompt		    "Zero polynomial exponents:"
+	    Value		    "[0]"
+	  }
+	  Object {
+	    $ObjectID		    92
+	    Type		    "edit"
+	    Name		    "a"
+	    Prompt		    "Pole polynomial coefficients:"
+	    Value		    "[1 1]"
+	  }
+	  Object {
+	    $ObjectID		    93
+	    Type		    "edit"
+	    Name		    "na"
+	    Prompt		    "Pole polynomial exponents:"
+	    Value		    "[0.5 0]"
+	  }
+	  Object {
+	    $ObjectID		    94
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Frequency range [wb, wh]"
+	    Value		    "[0.001, 1000]"
+	  }
+	  Object {
+	    $ObjectID		    95
+	    Type		    "edit"
+	    Name		    "approxNum"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  Object {
+	    $ObjectID		    96
+	    Type		    "checkbox"
+	    Name		    "useRef"
+	    Prompt		    "Use refined Oustaloup filter"
+	    Value		    "off"
+	  }
+	  Object {
+	    $ObjectID		    97
+	    Type		    "popup"
+	    Array {
+	      Type		      "Cell"
+	      Dimension		      6
+	      Cell		      "Zero-order hold"
+	      Cell		      "Linear interpolation"
+	      Cell		      "Impulse-invariant"
+	      Cell		      "Bilinear (Tustin)"
+	      Cell		      "Prewarp"
+	      Cell		      "Matched"
+	      PropName		      "TypeOptions"
+	    }
+	    Name		    "dscrMethod"
+	    Prompt		    "Discretization method"
+	    Value		    "Matched"
+	  }
+	  Object {
+	    $ObjectID		    98
+	    Type		    "edit"
+	    Name		    "wc"
+	    Prompt		    "Critical frequency (for Prewarp method)"
+	    Value		    "0"
+	  }
+	  Object {
+	    $ObjectID		    99
+	    Type		    "edit"
+	    Name		    "ts"
+	    Prompt		    "Sample time Ts:"
+	    Value		    "0.001"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Num Discrete\nFractional Transfer Fcn"
+	Location		[-647, 191, 64, 1111]
+	Open			on
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "65"
+	  Position		  [20, 33, 50, 47]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  DiscreteZeroPole
+	  Name			  "Discrete\nZero-Pole"
+	  SID			  "62"
+	  Position		  [70, 22, 130, 58]
+	  ZOrder		  -2
+	  Zeros			  "dfraczpk.z{1}"
+	  Poles			  "dfraczpk.p{1}"
+	  Gain			  "dfraczpk.k"
+	  SampleTime		  "ts"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "66"
+	  Position		  [150, 33, 180, 47]
+	  ZOrder		  -3
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "Discrete\nZero-Pole"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Discrete\nZero-Pole"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Num Fractional\nTransfer Fcn"
+      SID		      "57"
+      Ports		      [1, 1]
+      Position		      [70, 288, 115, 332]
+      ZOrder		      -10
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		100
+	$ClassName		"Simulink.Mask"
+	Type			"Fractional Transfer Function (numerical polynomial coefficient/exponents)       "
+	Description		"A fractional transfer function system in form Tf(s)=b(s)/a(s). This block\nallows to use numerical (vec"
+	"tor) entry of coefficients/exponents."
+	Help			"A fractional transfer function system in form Tf(s)=b(s)/a(s). This block\nallows to use numerical (vector) e"
+	"ntry of coefficients/exponents."
+	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Filter\nT = 1/wh;\n\n% Approximation orde"
+	"r\nN = approxNum;\n\n% Filter type\nswitch useRef\n    case 0\n        fMethod = 'oust';\n    case 1\n        fMethod"
+	" = 'ref';\nend\n\n% Get the transfer function\nfractf = oustapp(fotf(a,na,b,nb),wb,wh,N,fMethod);"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp('Num Fr Tf', 'texmode' , 'on');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  7
+	  Object {
+	    $ObjectID		    101
+	    Type		    "edit"
+	    Name		    "b"
+	    Prompt		    "Zero polynomial coefficients:"
+	    Value		    "[1]"
+	  }
+	  Object {
+	    $ObjectID		    102
+	    Type		    "edit"
+	    Name		    "nb"
+	    Prompt		    "Zero polynomial exponents:"
+	    Value		    "[0]"
+	  }
+	  Object {
+	    $ObjectID		    103
+	    Type		    "edit"
+	    Name		    "a"
+	    Prompt		    "Pole polynomial coefficients:"
+	    Value		    "[1 1]"
+	  }
+	  Object {
+	    $ObjectID		    104
+	    Type		    "edit"
+	    Name		    "na"
+	    Prompt		    "Pole polynomial exponents:"
+	    Value		    "[0.5 0]"
+	  }
+	  Object {
+	    $ObjectID		    105
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Frequency range [wb, wh]"
+	    Value		    "[0.001, 1000]"
+	  }
+	  Object {
+	    $ObjectID		    106
+	    Type		    "edit"
+	    Name		    "approxNum"
+	    Prompt		    "Approximation order N"
+	    Value		    "5"
+	  }
+	  Object {
+	    $ObjectID		    107
+	    Type		    "checkbox"
+	    Name		    "useRef"
+	    Prompt		    "Use refined Oustaloup filter"
+	    Value		    "off"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"Num Fractional\nTransfer Fcn"
+	Location		[693, 52, 1472, 1599]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "58"
+	  Position		  [20, 33, 50, 47]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "LTI System"
+	  SID			  "54"
+	  Ports			  [1, 1]
+	  Position		  [95, 22, 160, 58]
+	  ZOrder		  -2
+	  LibraryVersion	  "1.108"
+	  SourceBlock		  "cstblocks/LTI System"
+	  SourceType		  "LTI Block"
+	  sys			  "fractf"
+	  IC			  "[]"
+	}
+	Block {
+	  BlockType		  TransferFcn
+	  Name			  "Transfer Fcn1"
+	  SID			  "55"
+	  Position		  [185, 22, 245, 58]
+	  ZOrder		  -3
+	  Denominator		  "[T 1]"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "59"
+	  Position		  [305, 33, 335, 47]
+	  ZOrder		  -4
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Transfer Fcn1"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "LTI System"
+	  SrcPort		  1
+	  DstBlock		  "Transfer Fcn1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  DstBlock		  "LTI System"
+	  DstPort		  1
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "TID controller"
+      SID		      "39"
+      Ports		      [1, 1]
+      Position		      [295, 390, 340, 440]
+      ZOrder		      -11
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Object {
+	$PropName		"MaskObject"
+	$ObjectID		108
+	$ClassName		"Simulink.Mask"
+	Initialization		"wb = freqRange(1);\nwh = freqRange(2);"
+	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp('TID', 'texmode' , 'on');"
+	Array {
+	  Type			  "Simulink.MaskParameter"
+	  Dimension		  6
+	  Object {
+	    $ObjectID		    109
+	    Type		    "edit"
+	    Name		    "Kt"
+	    Prompt		    "Kt"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    110
+	    Type		    "edit"
+	    Name		    "K_n"
+	    Prompt		    "n (for s^-1/n)"
+	    Value		    "3"
+	  }
+	  Object {
+	    $ObjectID		    111
+	    Type		    "edit"
+	    Name		    "Ki"
+	    Prompt		    "Ki"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    112
+	    Type		    "edit"
+	    Name		    "Kd"
+	    Prompt		    "Kd"
+	    Value		    "1"
+	  }
+	  Object {
+	    $ObjectID		    113
+	    Type		    "edit"
+	    Name		    "freqRange"
+	    Prompt		    "Frequency range [wb, wh]"
+	    Value		    "[0.001, 1000]"
+	  }
+	  Object {
+	    $ObjectID		    114
+	    Type		    "edit"
+	    Name		    "N"
+	    Prompt		    "Approximation order"
+	    Value		    "5"
+	  }
+	  PropName		  "Parameters"
+	}
+      }
+      System {
+	Name			"TID controller"
+	Location		[263, 52, 1029, 1401]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "In1"
+	  SID			  "40"
+	  Position		  [25, 113, 55, 127]
+	  ZOrder		  -1
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Derivative
+	  Name			  "Derivative"
+	  SID			  "41"
+	  Position		  [235, 180, 265, 210]
+	  ZOrder		  -2
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Derivative\nGain"
+	  SID			  "42"
+	  Position		  [140, 180, 170, 210]
+	  ZOrder		  -3
+	  Gain			  "Kd"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Reference
+	  Name			  "Fractional integrator2"
+	  SID			  "43"
+	  Ports			  [1, 1]
+	  Position		  [230, 26, 275, 74]
+	  ZOrder		  -4
+	  LibraryVersion	  "1.126"
+	  SourceBlock		  "fod/Fractional\nintegrator"
+	  SourceType		  "Fractional integrator"
+	  gam			  "1/K_n"
+	  ww			  "[wb; wh]"
+	  n			  "N"
+	  nFod			  on
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Integral\nGain"
+	  SID			  "44"
+	  Position		  [140, 105, 170, 135]
+	  ZOrder		  -5
+	  Gain			  "Ki"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "Integrator"
+	  SID			  "45"
+	  Ports			  [1, 1]
+	  Position		  [235, 105, 265, 135]
+	  ZOrder		  -6
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Proportional\nGain"
+	  SID			  "46"
+	  Position		  [140, 35, 170, 65]
+	  ZOrder		  -7
+	  Gain			  "Kt"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Sum
+	  Name			  "Sum"
+	  SID			  "47"
+	  Ports			  [3, 1]
+	  Position		  [320, 105, 350, 135]
+	  ZOrder		  -8
+	  ShowName		  off
+	  IconShape		  "round"
+	  Inputs		  "+++"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Out1"
+	  SID			  "48"
+	  Position		  [375, 113, 405, 127]
+	  ZOrder		  -9
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Integral\nGain"
+	  SrcPort		  1
+	  DstBlock		  "Integrator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Proportional\nGain"
+	  SrcPort		  1
+	  DstBlock		  "Fractional integrator2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Integrator"
+	  SrcPort		  1
+	  DstBlock		  "Sum"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Derivative"
+	  SrcPort		  1
+	  Points		  [65, 0]
+	  DstBlock		  "Sum"
+	  DstPort		  3
+	}
+	Line {
+	  SrcBlock		  "Derivative\nGain"
+	  SrcPort		  1
+	  DstBlock		  "Derivative"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "In1"
+	  SrcPort		  1
+	  Points		  [30, 0]
+	  Branch {
+	    DstBlock		    "Integral\nGain"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, -70]
+	    DstBlock		    "Proportional\nGain"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 75]
+	    DstBlock		    "Derivative\nGain"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Sum"
+	  SrcPort		  1
+	  DstBlock		  "Out1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fractional integrator2"
+	  SrcPort		  1
+	  Points		  [55, 0]
+	  DstBlock		  "Sum"
+	  DstPort		  1
+	}
+      }
+    }
+    Annotation {
+      SID		      "81"
+      Position		      [90, 426]
+    }
+  }
+}

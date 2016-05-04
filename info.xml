@@ -1,0 +1,51 @@
+<productinfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="optional">
+    <?xml-stylesheet type="text/xsl"href="optional"?>
+    <!-- info.xml file for the FOMCON toolbox -->
+    <!-- Copyright 2012 Aleksei Tepljakov.-->
+	
+    <matlabrelease>2010a</matlabrelease>
+    <name>FOMCON</name>
+    <type>toolbox</type>
+    <icon>fomcon.png</icon>
+    
+    <!-- - - - - - - - - - - - -  Start menu - - - - - - - - - - - - - - - -->
+    <list>
+		<listitem>
+            <label>FOTF Analysis (fotf_gui)</label>
+            <callback>fotf_gui</callback>
+            <icon>$toolbox/matlab/icons/figureicon.gif</icon>
+        </listitem>
+		
+		<listitem>
+			<label>Time-domain Identification (fotfid)</label>
+			<callback>fotfid</callback>
+			<icon>$toolbox/matlab/icons/figureicon.gif</icon>
+		</listitem>
+				
+		<listitem>
+			<label>Frequency-domain Identification (fotfrid)</label>
+			<callback>fotfrid</callback>
+			<icon>$toolbox/matlab/icons/figureicon.gif</icon>
+		</listitem>
+        
+        <listitem>
+			<label>Fractional PID Design Tool (fpid)</label>
+			<callback>fpid</callback>
+			<icon>$toolbox/matlab/icons/figureicon.gif</icon>
+		</listitem>
+		
+         <listitem>
+            <label>Product Documentation (Web)</label>
+            <callback>web http://docs.fomcon.net/ -browser</callback>
+              <icon>$toolbox/matlab/icons/bookicon.gif</icon>
+        </listitem>
+
+        <listitem>
+             <!-- Website -->
+           <label>Product Page (Web)</label>
+            <callback>web http://www.fomcon.net/ -browser;</callback>
+            <icon>$docroot/techdoc/matlab_env/examples/webicon.gif</icon>
+        </listitem>
+    </list>
+</productinfo>
