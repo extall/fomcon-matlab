@@ -19,7 +19,7 @@ Library {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [951.0, 114.0, 746.0, 928.0]
+      Location		      [2731.0, 212.0, 746.0, 928.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -28,7 +28,7 @@ Library {
 	DockPosition		"Left"
 	Width			[50]
 	Height			[50]
-	Filter			[11]
+	Filter			[10]
       }
       Object {
 	$PropName		"ExplorerBarInfo"
@@ -36,37 +36,16 @@ Library {
 	$ClassName		"Simulink.ExplorerBarInfo"
 	Visible			[1]
       }
-      Array {
-	Type			"Simulink.EditorInfo"
-	Dimension		3
-	Object {
-	  $ObjectID		  5
-	  IsActive		  [1]
-	  ViewObjType		  "SimulinkTopLevel"
-	  LoadSaveID		  "0"
-	  Extents		  [694.0, 757.0]
-	  ZoomFactor		  [1.0]
-	  Offset		  [0.0, 0.0]
-	}
-	Object {
-	  $ObjectID		  6
-	  IsActive		  [0]
-	  ViewObjType		  "SimulinkSubsys"
-	  LoadSaveID		  "64"
-	  Extents		  [659.0, 749.0]
-	  ZoomFactor		  [1.0]
-	  Offset		  [0.0, 0.0]
-	}
-	Object {
-	  $ObjectID		  7
-	  IsActive		  [0]
-	  ViewObjType		  "SimulinkSubsys"
-	  LoadSaveID		  "93"
-	  Extents		  [694.0, 757.0]
-	  ZoomFactor		  [1.0]
-	  Offset		  [0.0, 0.0]
-	}
-	PropName		"EditorsInfo"
+      Object {
+	$PropName		"EditorsInfo"
+	$ObjectID		5
+	$ClassName		"Simulink.EditorInfo"
+	IsActive		[1]
+	ViewObjType		"SimulinkTopLevel"
+	LoadSaveID		"0"
+	Extents			[694.0, 760.0]
+	ZoomFactor		[1.0]
+	Offset			[0.0, 0.0]
       }
     }
   }
@@ -76,9 +55,9 @@ Library {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Alex"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Apr 05 19:50:17 2016"
-  RTWModifiedTimeStamp	  381785888
-  ModelVersionFormat	  "1.%<AutoIncrement:136>"
+  LastModifiedDate	  "Fri May 20 10:52:32 2016"
+  RTWModifiedTimeStamp	  385642350
+  ModelVersionFormat	  "1.%<AutoIncrement:137>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -146,13 +125,13 @@ Library {
     Type		    "Handle"
     Dimension		    1
     Simulink.ConfigSet {
-      $ObjectID		      8
+      $ObjectID		      6
       Version		      "1.12.1"
       Array {
 	Type			"Handle"
 	Dimension		8
 	Simulink.SolverCC {
-	  $ObjectID		  9
+	  $ObjectID		  7
 	  Version		  "1.12.1"
 	  StartTime		  "0.0"
 	  StopTime		  "10.0"
@@ -187,7 +166,7 @@ Library {
 	  InsertRTBMode		  "Whenever possible"
 	}
 	Simulink.DataIOCC {
-	  $ObjectID		  10
+	  $ObjectID		  8
 	  Version		  "1.12.1"
 	  Decimation		  "1"
 	  ExternalInput		  "[t, u]"
@@ -219,7 +198,7 @@ Library {
 	  Refine		  "1"
 	}
 	Simulink.OptimizationCC {
-	  $ObjectID		  11
+	  $ObjectID		  9
 	  Version		  "1.12.1"
 	  Array {
 	    Type		    "Cell"
@@ -271,7 +250,7 @@ Library {
 	  ParallelExecutionInRapidAccelerator on
 	}
 	Simulink.DebuggingCC {
-	  $ObjectID		  12
+	  $ObjectID		  10
 	  Version		  "1.12.1"
 	  RTPrefix		  "error"
 	  ConsistencyChecking	  "none"
@@ -361,7 +340,7 @@ Library {
 	  SFTransitionActionBeforeConditionDiag	"warning"
 	}
 	Simulink.HardwareCC {
-	  $ObjectID		  13
+	  $ObjectID		  11
 	  Version		  "1.12.1"
 	  ProdBitPerChar	  8
 	  ProdBitPerShort	  16
@@ -398,7 +377,7 @@ Library {
 	  ProdEqTarget		  on
 	}
 	Simulink.ModelReferenceCC {
-	  $ObjectID		  14
+	  $ObjectID		  12
 	  Version		  "1.12.1"
 	  UpdateModelReferenceTargets "IfOutOfDateOrStructuralChange"
 	  CheckModelReferenceTargetMessage "error"
@@ -413,7 +392,7 @@ Library {
 	  SupportModelReferenceSimTargetCustomCode off
 	}
 	Simulink.SFSimCC {
-	  $ObjectID		  15
+	  $ObjectID		  13
 	  Version		  "1.12.1"
 	  SFSimEnableDebug	  on
 	  SFSimOverflowDetection  on
@@ -428,7 +407,7 @@ Library {
 	}
 	Simulink.RTWCC {
 	  $BackupClass		  "Simulink.RTWCC"
-	  $ObjectID		  16
+	  $ObjectID		  14
 	  Version		  "1.12.1"
 	  Array {
 	    Type		    "Cell"
@@ -488,7 +467,7 @@ Library {
 	    Type		    "Handle"
 	    Dimension		    2
 	    Simulink.CodeAppCC {
-	      $ObjectID		      17
+	      $ObjectID		      15
 	      Version		      "1.12.1"
 	      Array {
 		Type			"Cell"
@@ -551,7 +530,7 @@ Library {
 	    }
 	    Simulink.GRTTargetCC {
 	      $BackupClass	      "Simulink.TargetCC"
-	      $ObjectID		      18
+	      $ObjectID		      16
 	      Version		      "1.12.1"
 	      Array {
 		Type			"Cell"
@@ -831,7 +810,7 @@ Library {
   }
   System {
     Name		    "fod"
-    Location		    [951, 114, 1697, 1042]
+    Location		    [2731, 212, 3477, 1140]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -862,7 +841,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		19
+	$ObjectID		17
 	$ClassName		"Simulink.Mask"
 	Initialization		"% Load the MAT file\nconf = load(fpid_optim_conf);\n\n% Extract required parameters\nApproxData = co"
 	"nf.FPID_Optimizer_GUI_config.PlantModel;\nFPIDParams = conf.FPID_Optimizer_GUI_config.FPIDParams;\n\n% FOPID paramete"
@@ -881,7 +860,7 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  4
 	  Object {
-	    $ObjectID		    20
+	    $ObjectID		    18
 	    Type		    "edit"
 	    Name		    "fpid_optim_conf"
 	    Prompt		    "FPID_OPTIM structure MAT file name"
@@ -890,7 +869,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    21
+	    $ObjectID		    19
 	    Type		    "popup"
 	    Array {
 	      Type		      "Cell"
@@ -908,14 +887,14 @@ Library {
 	    Value		    "Matched"
 	  }
 	  Object {
-	    $ObjectID		    22
+	    $ObjectID		    20
 	    Type		    "edit"
 	    Name		    "wc"
 	    Prompt		    "Critical frequency (for Prewarp method)"
 	    Value		    "0"
 	  }
 	  Object {
-	    $ObjectID		    23
+	    $ObjectID		    21
 	    Type		    "edit"
 	    Name		    "ts"
 	    Prompt		    "Sample time"
@@ -996,7 +975,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		24
+	$ObjectID		22
 	$ClassName		"Simulink.Mask"
 	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Filter type\nswitch useRef\n    case 0\n "
 	"       fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\n% Get controller string\n[ig1, ig2, str] = fra"
@@ -1010,63 +989,63 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  11
 	  Object {
-	    $ObjectID		    25
+	    $ObjectID		    23
 	    Type		    "edit"
 	    Name		    "Kp"
 	    Prompt		    "Kp"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    26
+	    $ObjectID		    24
 	    Type		    "edit"
 	    Name		    "Ki"
 	    Prompt		    "Ki"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    27
+	    $ObjectID		    25
 	    Type		    "edit"
 	    Name		    "lambda"
 	    Prompt		    "lambda"
 	    Value		    "0.5"
 	  }
 	  Object {
-	    $ObjectID		    28
+	    $ObjectID		    26
 	    Type		    "edit"
 	    Name		    "Kd"
 	    Prompt		    "Kd"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    29
+	    $ObjectID		    27
 	    Type		    "edit"
 	    Name		    "mu"
 	    Prompt		    "mu"
 	    Value		    "0.5"
 	  }
 	  Object {
-	    $ObjectID		    30
+	    $ObjectID		    28
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Frequency range [wb; wh] [rad/s]"
 	    Value		    "[0.001; 1000]"
 	  }
 	  Object {
-	    $ObjectID		    31
+	    $ObjectID		    29
 	    Type		    "edit"
 	    Name		    "N"
 	    Prompt		    "Approximation order"
 	    Value		    "5"
 	  }
 	  Object {
-	    $ObjectID		    32
+	    $ObjectID		    30
 	    Type		    "checkbox"
 	    Name		    "useRef"
 	    Prompt		    "Use refined Oustaloup filter"
 	    Value		    "on"
 	  }
 	  Object {
-	    $ObjectID		    33
+	    $ObjectID		    31
 	    Type		    "popup"
 	    Array {
 	      Type		      "Cell"
@@ -1084,14 +1063,14 @@ Library {
 	    Value		    "Matched"
 	  }
 	  Object {
-	    $ObjectID		    34
+	    $ObjectID		    32
 	    Type		    "edit"
 	    Name		    "wc"
 	    Prompt		    "Critical frequency (for Prewarp method)"
 	    Value		    "0"
 	  }
 	  Object {
-	    $ObjectID		    35
+	    $ObjectID		    33
 	    Type		    "edit"
 	    Name		    "ts"
 	    Prompt		    "Sample time"
@@ -1172,7 +1151,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		36
+	$ObjectID		34
 	$ClassName		"Simulink.Mask"
 	Type			"Discrete Fractional Transfer Function"
 	Description		"A discrete fractional transfer function system given in continuous form Tf(s)=b(s)/a(s)."
@@ -1187,7 +1166,7 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  8
 	  Object {
-	    $ObjectID		    37
+	    $ObjectID		    35
 	    Type		    "edit"
 	    Name		    "zeroPoly"
 	    Prompt		    "Zero polynomial b(s)"
@@ -1196,7 +1175,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    38
+	    $ObjectID		    36
 	    Type		    "edit"
 	    Name		    "polePoly"
 	    Prompt		    "Pole polynomial a(s)"
@@ -1205,28 +1184,28 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    39
+	    $ObjectID		    37
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Frequency range [wb, wh] [rad]"
 	    Value		    "[0.001, 1000]"
 	  }
 	  Object {
-	    $ObjectID		    40
+	    $ObjectID		    38
 	    Type		    "edit"
 	    Name		    "approxNum"
 	    Prompt		    "Approximation order"
 	    Value		    "5"
 	  }
 	  Object {
-	    $ObjectID		    41
+	    $ObjectID		    39
 	    Type		    "checkbox"
 	    Name		    "useRef"
 	    Prompt		    "Use refined Oustaloup filter"
 	    Value		    "off"
 	  }
 	  Object {
-	    $ObjectID		    42
+	    $ObjectID		    40
 	    Type		    "popup"
 	    Array {
 	      Type		      "Cell"
@@ -1244,14 +1223,14 @@ Library {
 	    Value		    "Matched"
 	  }
 	  Object {
-	    $ObjectID		    43
+	    $ObjectID		    41
 	    Type		    "edit"
 	    Name		    "wc"
 	    Prompt		    "Critical frequency (for Prewarp method)"
 	    Value		    "0"
 	  }
 	  Object {
-	    $ObjectID		    44
+	    $ObjectID		    42
 	    Type		    "edit"
 	    Name		    "ts"
 	    Prompt		    "Sample time"
@@ -1332,7 +1311,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		45
+	$ObjectID		43
 	$ClassName		"Simulink.Mask"
 	Type			"FOSS"
 	Description		"Fractional state-space system"
@@ -1346,63 +1325,63 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  9
 	  Object {
-	    $ObjectID		    46
+	    $ObjectID		    44
 	    Type		    "edit"
 	    Name		    "A"
 	    Prompt		    "A"
 	    Value		    "[-13.0980 -5.8441 5.7893; -5.8441 -16.2606 -5.3504; 5.7893 -5.3504 -7.6497]"
 	  }
 	  Object {
-	    $ObjectID		    47
+	    $ObjectID		    45
 	    Type		    "edit"
 	    Name		    "B"
 	    Prompt		    "B"
 	    Value		    "[0 0.4889 -0.3034; 0 1.0347 0; 1.6302 0.7269 -0.7873]"
 	  }
 	  Object {
-	    $ObjectID		    48
+	    $ObjectID		    46
 	    Type		    "edit"
 	    Name		    "C"
 	    Prompt		    "C"
 	    Value		    "[0.8884 -1.0689 -2.9443; -1.1471 -0.8095 0]"
 	  }
 	  Object {
-	    $ObjectID		    49
+	    $ObjectID		    47
 	    Type		    "edit"
 	    Name		    "D"
 	    Prompt		    "D"
 	    Value		    "[0.3252 1.3703 -0.1022; 0 0 0]"
 	  }
 	  Object {
-	    $ObjectID		    50
+	    $ObjectID		    48
 	    Type		    "edit"
 	    Name		    "q"
 	    Prompt		    "Commensurate order q"
 	    Value		    "0.75"
 	  }
 	  Object {
-	    $ObjectID		    51
+	    $ObjectID		    49
 	    Type		    "edit"
 	    Name		    "iniOff"
 	    Prompt		    "Initial output offsets"
 	    Value		    "[0; 0]"
 	  }
 	  Object {
-	    $ObjectID		    52
+	    $ObjectID		    50
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Approximation band"
 	    Value		    "[0.0001 10000]"
 	  }
 	  Object {
-	    $ObjectID		    53
+	    $ObjectID		    51
 	    Type		    "edit"
 	    Name		    "approxNum"
 	    Prompt		    "Approximation order"
 	    Value		    "5"
 	  }
 	  Object {
-	    $ObjectID		    54
+	    $ObjectID		    52
 	    Type		    "checkbox"
 	    Name		    "useRef"
 	    Prompt		    "Use refined Oustaloup filter"
@@ -1414,7 +1393,7 @@ Library {
       System {
 	Name			"Fractional\nState-Space"
 	Location		[776, 125, 1522, 1053]
-	Open			on
+	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
@@ -1522,7 +1501,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		55
+	$ObjectID		53
 	$ClassName		"Simulink.Mask"
 	Type			"Fractional Transfer Function"
 	Description		"A fractional transfer function system in form Tf(s)=b(s)/a(s)."
@@ -1535,7 +1514,7 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  5
 	  Object {
-	    $ObjectID		    56
+	    $ObjectID		    54
 	    Type		    "edit"
 	    Name		    "zeroPoly"
 	    Prompt		    "Zero polynomial b(s)"
@@ -1544,7 +1523,7 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    57
+	    $ObjectID		    55
 	    Type		    "edit"
 	    Name		    "polePoly"
 	    Prompt		    "Pole polynomial a(s)"
@@ -1553,21 +1532,21 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    58
+	    $ObjectID		    56
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Frequency range [wb, wh]"
 	    Value		    "[0.001, 1000]"
 	  }
 	  Object {
-	    $ObjectID		    59
+	    $ObjectID		    57
 	    Type		    "edit"
 	    Name		    "approxNum"
 	    Prompt		    "Approximation order"
 	    Value		    "5"
 	  }
 	  Object {
-	    $ObjectID		    60
+	    $ObjectID		    58
 	    Type		    "checkbox"
 	    Name		    "useRef"
 	    Prompt		    "Use refined Oustaloup filter"
@@ -1664,7 +1643,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		61
+	$ObjectID		59
 	$ClassName		"Simulink.Mask"
 	Type			"Fractional derivative"
 	Description		"Fractional derivative in form s^{gamma}, where gamma is the order of the s operator."
@@ -1681,7 +1660,7 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  4
 	  Object {
-	    $ObjectID		    62
+	    $ObjectID		    60
 	    Type		    "edit"
 	    Name		    "gam"
 	    Prompt		    "Derivative order"
@@ -1690,21 +1669,21 @@ Library {
 	    "in operator order');\n    set_param(gcb, 'gam', '0.5');\nend"
 	  }
 	  Object {
-	    $ObjectID		    63
+	    $ObjectID		    61
 	    Type		    "edit"
 	    Name		    "ww"
 	    Prompt		    "Frequency range [wb, wh]"
 	    Value		    "[0.001; 1000]"
 	  }
 	  Object {
-	    $ObjectID		    64
+	    $ObjectID		    62
 	    Type		    "edit"
 	    Name		    "n"
 	    Prompt		    "Approximation order"
 	    Value		    "5"
 	  }
 	  Object {
-	    $ObjectID		    65
+	    $ObjectID		    63
 	    Type		    "checkbox"
 	    Name		    "nFod"
 	    Prompt		    "Use Oustaloup refined filter"
@@ -1801,7 +1780,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		66
+	$ObjectID		64
 	$ClassName		"Simulink.Mask"
 	Type			"Fractional integrator"
 	Description		"Fractional integrator in form 1/s^{gamma}, where gamma is the order of the s operator."
@@ -1816,7 +1795,7 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  4
 	  Object {
-	    $ObjectID		    67
+	    $ObjectID		    65
 	    Type		    "edit"
 	    Name		    "gam"
 	    Prompt		    "Integration order"
@@ -1825,14 +1804,14 @@ Library {
 	    "in operator order');\n    set_param(gcb, 'gam', '0.5');\nend"
 	  }
 	  Object {
-	    $ObjectID		    68
+	    $ObjectID		    66
 	    Type		    "edit"
 	    Name		    "ww"
 	    Prompt		    "Frequency range [wb, wh]"
 	    Value		    "[0.001; 1000]"
 	  }
 	  Object {
-	    $ObjectID		    69
+	    $ObjectID		    67
 	    Type		    "edit"
 	    Name		    "n"
 	    Prompt		    "Approximation order"
@@ -1841,7 +1820,7 @@ Library {
 	    "n operator order');\n    set_param(gcb, 'gam', '0.5');\nend"
 	  }
 	  Object {
-	    $ObjectID		    70
+	    $ObjectID		    68
 	    Type		    "checkbox"
 	    Name		    "nFod"
 	    Prompt		    "Used refined Oustaloup filter"
@@ -1940,7 +1919,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		71
+	$ObjectID		69
 	$ClassName		"Simulink.Mask"
 	Type			"Fractional operator"
 	Description		"Fractional operator in form K*s^{gamma}, where K is the gain and gamma is the order of the s operator. "
@@ -1959,14 +1938,14 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  4
 	  Object {
-	    $ObjectID		    72
+	    $ObjectID		    70
 	    Type		    "edit"
 	    Name		    "K"
 	    Prompt		    "Gain"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    73
+	    $ObjectID		    71
 	    Type		    "edit"
 	    Name		    "gam"
 	    Prompt		    "Order in range (-1; 1)"
@@ -1975,14 +1954,14 @@ Library {
 	    "or in operator order');\n    set_param(gcb, 'gam', '0.5');\nend"
 	  }
 	  Object {
-	    $ObjectID		    74
+	    $ObjectID		    72
 	    Type		    "edit"
 	    Name		    "ww"
 	    Prompt		    "Frequency range [wb, wh]"
 	    Value		    "[0.001, 1000]"
 	  }
 	  Object {
-	    $ObjectID		    75
+	    $ObjectID		    73
 	    Type		    "edit"
 	    Name		    "n"
 	    Prompt		    "Approximation order"
@@ -2092,21 +2071,21 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		76
+	$ObjectID		74
 	$ClassName		"Simulink.Mask"
 	Type			"Fractional LTI System"
 	Description		"A fractional LTI system."
 	Help			"A fractional LTI system."
 	Initialization		"% Frequency range\nwb=freqRange(1);\nwh=freqRange(2);\n\n% Approximation order\nN = approxNum;\n\n% "
-	"Filter type\nswitch useRef\n    case 0\n        fMethod = 'oust';\n    case 1\n        fMethod = 'ref';\nend\n\n% Get"
-	" the LTI system from base workspace (as transfer function)\nsys = evalin('base', G);\nfractf = zpk(oustapp(sys,wb,wh,"
-	"N,fMethod));\nfractf = toproper(fractf, wh);"
+	"Filter\nT = 1/wh;\n\n% Filter type\nswitch useRef\n    case 0\n        fMethod = 'oust';\n    case 1\n        fMethod"
+	" = 'ref';\nend\n\n% Get the LTI system from base workspace (as transfer function)\nsys = evalin('base', G);\nfractf ="
+	" zpk(oustapp(sys,wb,wh,N,fMethod));\nfractf = toproper(fractf, wh);"
 	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp(G);"
 	Array {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  4
 	  Object {
-	    $ObjectID		    77
+	    $ObjectID		    75
 	    Type		    "edit"
 	    Name		    "G"
 	    Prompt		    "LTI system variable"
@@ -2115,21 +2094,21 @@ Library {
 	    Tunable		    "off"
 	  }
 	  Object {
-	    $ObjectID		    78
+	    $ObjectID		    76
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Approximation frequency range [wb, wh]"
 	    Value		    "[0.001 1000]"
 	  }
 	  Object {
-	    $ObjectID		    79
+	    $ObjectID		    77
 	    Type		    "edit"
 	    Name		    "approxNum"
 	    Prompt		    "Approximation order N"
 	    Value		    "5"
 	  }
 	  Object {
-	    $ObjectID		    80
+	    $ObjectID		    78
 	    Type		    "checkbox"
 	    Name		    "useRef"
 	    Prompt		    "Use refined Oustaloup filter"
@@ -2226,7 +2205,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		81
+	$ObjectID		79
 	$ClassName		"Simulink.Mask"
 	Type			"Fractional PID"
 	Description		"Fractional PID with parameters Kp, Ki, Kd and extended parameters lambda and delta:\n\nPI^{lambda}D^{mu"
@@ -2239,49 +2218,49 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  7
 	  Object {
-	    $ObjectID		    82
+	    $ObjectID		    80
 	    Type		    "edit"
 	    Name		    "Kp"
 	    Prompt		    "Kp"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    83
+	    $ObjectID		    81
 	    Type		    "edit"
 	    Name		    "Ki"
 	    Prompt		    "Ki"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    84
+	    $ObjectID		    82
 	    Type		    "edit"
 	    Name		    "lambda"
 	    Prompt		    "lambda"
 	    Value		    "0.5"
 	  }
 	  Object {
-	    $ObjectID		    85
+	    $ObjectID		    83
 	    Type		    "edit"
 	    Name		    "Kd"
 	    Prompt		    "Kd"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    86
+	    $ObjectID		    84
 	    Type		    "edit"
 	    Name		    "mic"
 	    Prompt		    "mu"
 	    Value		    "0.5"
 	  }
 	  Object {
-	    $ObjectID		    87
+	    $ObjectID		    85
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Frequency range [wb, wh]"
 	    Value		    "[0.001, 1000]"
 	  }
 	  Object {
-	    $ObjectID		    88
+	    $ObjectID		    86
 	    Type		    "edit"
 	    Name		    "N"
 	    Prompt		    "Approximation order"
@@ -2470,7 +2449,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		89
+	$ObjectID		87
 	$ClassName		"Simulink.Mask"
 	Type			"Discrete Fractional Transfer Function (numerical polynomial coefficient/exponents)"
 	Description		"A discrete fractional transfer function system given in continuous form\nTf(s)=b(s)/a(s). This block al"
@@ -2487,56 +2466,56 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  10
 	  Object {
-	    $ObjectID		    90
+	    $ObjectID		    88
 	    Type		    "edit"
 	    Name		    "b"
 	    Prompt		    "Zero polynomial coefficients:"
 	    Value		    "[1]"
 	  }
 	  Object {
-	    $ObjectID		    91
+	    $ObjectID		    89
 	    Type		    "edit"
 	    Name		    "nb"
 	    Prompt		    "Zero polynomial exponents:"
 	    Value		    "[0]"
 	  }
 	  Object {
-	    $ObjectID		    92
+	    $ObjectID		    90
 	    Type		    "edit"
 	    Name		    "a"
 	    Prompt		    "Pole polynomial coefficients:"
 	    Value		    "[1 1]"
 	  }
 	  Object {
-	    $ObjectID		    93
+	    $ObjectID		    91
 	    Type		    "edit"
 	    Name		    "na"
 	    Prompt		    "Pole polynomial exponents:"
 	    Value		    "[0.5 0]"
 	  }
 	  Object {
-	    $ObjectID		    94
+	    $ObjectID		    92
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Frequency range [wb, wh]"
 	    Value		    "[0.001, 1000]"
 	  }
 	  Object {
-	    $ObjectID		    95
+	    $ObjectID		    93
 	    Type		    "edit"
 	    Name		    "approxNum"
 	    Prompt		    "Approximation order"
 	    Value		    "5"
 	  }
 	  Object {
-	    $ObjectID		    96
+	    $ObjectID		    94
 	    Type		    "checkbox"
 	    Name		    "useRef"
 	    Prompt		    "Use refined Oustaloup filter"
 	    Value		    "off"
 	  }
 	  Object {
-	    $ObjectID		    97
+	    $ObjectID		    95
 	    Type		    "popup"
 	    Array {
 	      Type		      "Cell"
@@ -2554,14 +2533,14 @@ Library {
 	    Value		    "Matched"
 	  }
 	  Object {
-	    $ObjectID		    98
+	    $ObjectID		    96
 	    Type		    "edit"
 	    Name		    "wc"
 	    Prompt		    "Critical frequency (for Prewarp method)"
 	    Value		    "0"
 	  }
 	  Object {
-	    $ObjectID		    99
+	    $ObjectID		    97
 	    Type		    "edit"
 	    Name		    "ts"
 	    Prompt		    "Sample time Ts:"
@@ -2572,8 +2551,8 @@ Library {
       }
       System {
 	Name			"Num Discrete\nFractional Transfer Fcn"
-	Location		[-647, 191, 64, 1111]
-	Open			on
+	Location		[776, 125, 1522, 1053]
+	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
@@ -2642,7 +2621,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		100
+	$ObjectID		98
 	$ClassName		"Simulink.Mask"
 	Type			"Fractional Transfer Function (numerical polynomial coefficient/exponents)       "
 	Description		"A fractional transfer function system in form Tf(s)=b(s)/a(s). This block\nallows to use numerical (vec"
@@ -2657,49 +2636,49 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  7
 	  Object {
-	    $ObjectID		    101
+	    $ObjectID		    99
 	    Type		    "edit"
 	    Name		    "b"
 	    Prompt		    "Zero polynomial coefficients:"
 	    Value		    "[1]"
 	  }
 	  Object {
-	    $ObjectID		    102
+	    $ObjectID		    100
 	    Type		    "edit"
 	    Name		    "nb"
 	    Prompt		    "Zero polynomial exponents:"
 	    Value		    "[0]"
 	  }
 	  Object {
-	    $ObjectID		    103
+	    $ObjectID		    101
 	    Type		    "edit"
 	    Name		    "a"
 	    Prompt		    "Pole polynomial coefficients:"
 	    Value		    "[1 1]"
 	  }
 	  Object {
-	    $ObjectID		    104
+	    $ObjectID		    102
 	    Type		    "edit"
 	    Name		    "na"
 	    Prompt		    "Pole polynomial exponents:"
 	    Value		    "[0.5 0]"
 	  }
 	  Object {
-	    $ObjectID		    105
+	    $ObjectID		    103
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Frequency range [wb, wh]"
 	    Value		    "[0.001, 1000]"
 	  }
 	  Object {
-	    $ObjectID		    106
+	    $ObjectID		    104
 	    Type		    "edit"
 	    Name		    "approxNum"
 	    Prompt		    "Approximation order N"
 	    Value		    "5"
 	  }
 	  Object {
-	    $ObjectID		    107
+	    $ObjectID		    105
 	    Type		    "checkbox"
 	    Name		    "useRef"
 	    Prompt		    "Use refined Oustaloup filter"
@@ -2796,7 +2775,7 @@ Library {
       MaskHideContents	      off
       Object {
 	$PropName		"MaskObject"
-	$ObjectID		108
+	$ObjectID		106
 	$ClassName		"Simulink.Mask"
 	Initialization		"wb = freqRange(1);\nwh = freqRange(2);"
 	Display			"port_label('input',1,'');\nport_label('output', 1, '');\ndisp('TID', 'texmode' , 'on');"
@@ -2804,42 +2783,42 @@ Library {
 	  Type			  "Simulink.MaskParameter"
 	  Dimension		  6
 	  Object {
-	    $ObjectID		    109
+	    $ObjectID		    107
 	    Type		    "edit"
 	    Name		    "Kt"
 	    Prompt		    "Kt"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    110
+	    $ObjectID		    108
 	    Type		    "edit"
 	    Name		    "K_n"
 	    Prompt		    "n (for s^-1/n)"
 	    Value		    "3"
 	  }
 	  Object {
-	    $ObjectID		    111
+	    $ObjectID		    109
 	    Type		    "edit"
 	    Name		    "Ki"
 	    Prompt		    "Ki"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    112
+	    $ObjectID		    110
 	    Type		    "edit"
 	    Name		    "Kd"
 	    Prompt		    "Kd"
 	    Value		    "1"
 	  }
 	  Object {
-	    $ObjectID		    113
+	    $ObjectID		    111
 	    Type		    "edit"
 	    Name		    "freqRange"
 	    Prompt		    "Frequency range [wb, wh]"
 	    Value		    "[0.001, 1000]"
 	  }
 	  Object {
-	    $ObjectID		    114
+	    $ObjectID		    112
 	    Type		    "edit"
 	    Name		    "N"
 	    Prompt		    "Approximation order"
