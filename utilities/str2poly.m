@@ -1,9 +1,15 @@
-function [c, f] = str2poly(polystr)
+function [c, f] = str2poly(polystr, params)
 %STR2POLY Converts a string to a polynomial
 %
 %   [C, F] = STR2POLY(POLYSTR) Converts an input string POLYSTR with 
 %   terms of base variable 's' to a set of polynomial term coefficients C
 %   and respective exponents F. Fractional exponents are also accepted.
+%   
+%   [C, F] = STR2POLY(POLYSTR, PARAMS) The optional PARAMS argument makes
+%   it possible to use parameters which will simply be replaced to their
+%   numerical values. E.g.: params.K=1 will make the STR2POLY function look
+%   for the parameter named K in the POLYSTR and if it is found, it will be
+%   replaced with its value, i.e., 1.
 %
 %   Note: Coefficient and exponent arrays are sorted according to the
 %         values in the exponent array in descending order
@@ -20,6 +26,18 @@ function [c, f] = str2poly(polystr)
     polystr = strrep(polystr, '[', '(');
     polystr = strrep(polystr, ']', ')');
     polystr = strrep(polystr, ' ', '');
+	
+	% Search and replace parameters
+	if nargin >1 && ~isempty(params)
+    
+	% Get all parameters
+    allModelParams = fieldnames(params);
+    for k=1:length(allModelParams)
+       polystr = strrep(polystr, allModelParams{k}, ...
+             num2str(params.(allModelParams{k})));
+    end
+	
+	end
     
     % Locate missing '*' characters
     mulMissing = regexp(polystr,'(?m)(\-?\+?[\.0-9]+([eE]\-?[0-9]+)?)(s(\^\(?\-?\+?[\.\/0-9]+([eE]\-?[0-9]+)?)?)\)?(?=(\+|\-|$|\(|\)))', 'tokens');
@@ -38,7 +56,7 @@ function [c, f] = str2poly(polystr)
     
     % Base variable
     s=fotf('s');
-    
+	
     G_poly = fotf(eval(polystr));
     [c,f]=fotfparam(G_poly);
     
