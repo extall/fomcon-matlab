@@ -284,12 +284,13 @@ function btnIdentify_Callback(hObject, eventdata, handles)
        
        % Pause to let dialog GUI terminate normally
        pause(2);
+       drawnow;
                    
     end
     
     if ~isempty(pr)
-        [a, na, b, nb, L] = fid_(fs, {optK, optL}, idd, nPoints, ...
-                                identType, polyfix, {clim, elim}, op);
+        [a, na, b, nb, L, gid, state] = fid_(fs, {optK, optL}, idd, ...
+                        nPoints, identType, polyfix, {clim, elim}, op);
 
         % Normalize displayed model
         if ~isempty(optK)
@@ -319,6 +320,16 @@ function btnIdentify_Callback(hObject, eventdata, handles)
             G_L = num2str(L, numSigDig);
             G_id.ioDelay = L;
             set(handles.txtL, 'String', G_L);
+        end
+        
+        % For aborted state, reset the values of L and K
+        if strcmpi(state, 'aborted')
+           if ~isempty(optK)
+               set(handles.txtK, 'String', num2str(optK, numSigDig));
+           end
+           if ~isempty(optL)
+               set(handles.txtL, 'String', num2str(optL, numSigDig));
+           end
         end
 
 %
@@ -929,9 +940,16 @@ pr = inputdlg({'Model workspace name:'}, ...
 if ~isempty(pr)
    modelName = pr{1};
    myModel = evalin('base', modelName);
-   [a,na,b,nb] = fotfparam(myModel);
+   [a,na,b,nb,L] = fotfparam(myModel);
    set(handles.txtB, 'String', poly2str(b,nb));
    set(handles.txtA, 'String', poly2str(a,na));
+   
+   % Is there a delay?
+   if ~isempty(L) && L > 0
+       set(handles.txtL, 'String', num2str(L));
+       set(handles.txtL, 'Enable', 'on');
+       set(handles.chkL, 'Value', 1);
+   end
    
    % Disable DC gain setting : TODO: possibility to check model for DC gain
    set(handles.chkK, 'Value', 0);

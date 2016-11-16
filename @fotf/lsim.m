@@ -68,10 +68,15 @@ function varargout=lsim(G, u, t)
     end
 	
     % Account for I/O delay
-    if (~isempty(G.ioDelay) && G.ioDelay ~= 0)
+    if (~isempty(G.ioDelay) && G.ioDelay > 0)
         ii = find(t>G.ioDelay);
-        lz = zeros(ii(1)-1,1);
-        y  = [lz; y(1:end-length(lz))];
+        
+        % There is a possibility that the value of the sampling interval
+        % is greater or equal to the delay. In this case we disregard it.
+        if ~isempty(ii)
+            lz = zeros(ii(1)-1,1);
+            y  = [lz; y(1:end-length(lz))];
+        end
     end
     
 	if showPBar, delete(wBar); end

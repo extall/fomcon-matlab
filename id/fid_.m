@@ -1,4 +1,4 @@
-function [a,na,b,nb,L,Gid]  = fid_(varargin)
+function [a,na,b,nb,L,Gid,state]  = fid_(varargin)
 %FID_ Fractional-order Transfer Function SISO system identification w/ GUI
 %   This is a wrapper function for the fid() function. Instead of
 %   outputting the log of the underlying optimization algorithm to the
@@ -8,6 +8,8 @@ function [a,na,b,nb,L,Gid]  = fid_(varargin)
 %   documentation for that function to see the argument list.
 %
 % See also: fid, fidata, fotfid, optimset
+
+state='running';
 
 % Build argument list
 fidNumArgs = nargin('fid');
@@ -68,12 +70,14 @@ if stopSignal<1
     d = guidata(h);
     set(d.txtIdentStatus, 'String', 'Identification terminated.');
     fid_pui_deactivate_actions();
+    state = 'stopped';
 end
 
 % If the operation was aborted, assign previous parameter values
 if (stopSignal == 2)
     [a,na,b,nb,L] = fotfparam(G_ini);
     Gid = G_ini;
+    state='aborted';
 end
 
 it = getappdata(h, 'Iteration');
