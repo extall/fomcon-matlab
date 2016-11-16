@@ -181,6 +181,7 @@ end
 % fractional power zero-pole pair
 function G0 = get_init_gain(b, a, alpha)
 
+    
     wm = 1/sqrt(a*b);                          % Compute center frequency
     G0 = abs((b*wm*1i+1)/(a*wm*1i+1))^alpha;   % Compute magnitude at wm
     

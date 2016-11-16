@@ -5,9 +5,12 @@ function str = sos2iir(s1)
     str2 = '';
     
     for n=1:size(s1,1)
-        str1 = [str1 '{' sprintf('%+.10f', s1(n,1)) ', ' sprintf('%+.10f', s1(n,2)) ', ' sprintf('%+.10f', s1(n,3)) '}'];
+        str1 = [str1 '{' sprintf('%+.10f', s1(n,1)) ', ' ...
+            sprintf('%+.10f', s1(n,2)) ', ' sprintf('%+.10f', s1(n,3)) '}'];
         if (n ~= size(s1,1)) str1 = [str1 ',' char(13)]; end
-        str2 = [str2 '{' sprintf('%+.10f', s1(n,4)) ', ' sprintf('%+.10f', s1(n,5)) ', ' sprintf('%+.10f', s1(n,6)) '}'];
+        % We do NOT show the +1 coefficient for discrete poles here
+        str2 = [str2 '{' sprintf('%+.10f', s1(n,5)) ', ' ...
+            sprintf('%+.10f', s1(n,6)) '}'];
         if (n ~= size(s1,1)) str2 = [str2 ',' char(13)]; end
     end
     
