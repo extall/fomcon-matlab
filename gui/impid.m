@@ -148,8 +148,8 @@ function btnCMake_Callback(hObject, eventdata, handles)
     [ctrlC, realC] = implementC(handles);
     
     h1 = figure;
-    w = logspace(-5,5,1000);
-    bode(realC,w);
+    [ig1, ig2, w] = bode(ctrlC);     % Get proper frequency range
+    bode(realC, w);
     grid;
     hold on;
     bode(ctrlC,w);
