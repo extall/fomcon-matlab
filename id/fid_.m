@@ -148,7 +148,7 @@ if (iteration>0)
     % Output the necessary data
     d = guidata(h);
     set(d.txtIterationNum, 'String', num2str(iteration));
-    set(d.txtCost, 'String', num2str(cost));
+    set(d.txtCost, 'String', sprintf('%0.8e',cost));
     set(d.txtSimulationNum, 'String', num2str(sim_count));
     set(d.txtStepSize, 'String', num2str(step_norm));
     set(d.txtFoOptimality, 'String', num2str(fo_optim));

@@ -239,7 +239,7 @@ if (iteration>0)
     set(d.txtMu, 'String', num2str(x_mu));
     
     set(d.txtIterationNum, 'String', num2str(iteration));
-    set(d.txtPerformance, 'String', num2str(perfIndex));
+    set(d.txtPerformance, 'String', sprintf('%0.8e',perfIndex));
     set(d.txtSimulationNum, 'String', num2str(simCount)); 
     
     % Fetch optimization data based on the algorithm and update the fields
