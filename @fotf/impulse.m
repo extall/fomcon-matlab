@@ -17,6 +17,9 @@ end
 
 varargout = {};
 
+% Save time
+if nargout == 2, varargout{2} = t; end
+
 % Compute du/dt, replace first element, and pad to the right
 y = diff(step(G,t))/(t(2)-t(1)); y(1)=y(2); y(end+1)= y(end);
 
