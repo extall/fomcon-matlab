@@ -19,23 +19,35 @@ else
     op = varargin{fidNumArgs};
 end
 
-% Designate the output function
-op.OutputFcn = @pfid_OutputFcn;
-op.Display = '';
-
-% Close the window if already opened
-pfid_pui_close();
-
-% Specify the algorithm used and create the initial window
+% Additional variables passed to output function
+addVars = struct;
+alg = 1;
+% Specify the algorithm used
 algName = 'Trust-Region-Reflective';            % Default value
 if cfieldexists(op, 'IdentificationAlgorithm')
     switch lower(op.IdentificationAlgorithm)
         case 'trr'
             
         case 'lm'
+            alg = 2;
             algName = 'Levenberg-Marquardt';
+            
+        case 'nm'
+            alg = 3;
+            algName = 'Nelder-Mead Simplex';
     end
 end
+
+addVars.alg = alg;
+
+% Designate the output function
+op.OutputFcn = @(x, optimValues, state) ...
+    pfid_OutputFcn(x, optimValues, state, addVars);
+op.Display = '';
+
+% Close the window if already opened
+pfid_pui_close();
+
 d = guidata(pfid_pui_upd());
 set(d.txtAlgorithm, 'String', algName);
 set(d.txtIterationNum, 'String', '');
@@ -43,6 +55,14 @@ set(d.txtCost, 'String', '');
 set(d.txtSimulationNum, 'String', '');
 set(d.txtStepSize, 'String', '');
 set(d.txtFoOptimality, 'String', '');
+
+% If NM algorithm is used, we introduce some changes to the pUI
+if alg == 3
+   set(d.lblStepSize, 'String', 'Procedure');
+   set(d.txtFoOptimality, 'String', 'N/A');
+   set(d.txtFoOptimality, 'Enable', 'Off');
+end
+
 drawnow();
 
 % Run the algorithm
@@ -110,7 +130,10 @@ function pfid_pui_close()
 end
 
 % OutputFcn for the optimization algorithm
-function stop = pfid_OutputFcn(x, optimValues, state)
+function stop = pfid_OutputFcn(x, optimValues, state, addVars)
+
+% What algorithm is used?
+alg = addVars.alg;
 
 % Stop is FALSE by default
 stop = false;
@@ -122,18 +145,24 @@ iteration = optimValues.iteration;
 h = pfid_pui_upd();
 
 if (iteration>0)
-    cost      = optimValues.resnorm;
     sim_count = optimValues.funccount;
-    step_norm = optimValues.stepsize;
-    fo_optim  = optimValues.firstorderopt;
+    if alg == 3
+        cost      = optimValues.fval;
+        step_norm = optimValues.procedure;
+        fo_optim = 'N/A';
+    else    
+        cost      = optimValues.resnorm;
+        step_norm = num2str(optimValues.stepsize);
+        fo_optim  = num2str(optimValues.firstorderopt);
+    end
 
     % Output the necessary data
     d = guidata(h);
     set(d.txtIterationNum, 'String', num2str(iteration));
-    set(d.txtCost, 'String', num2str(cost));
+    set(d.txtCost, 'String', sprintf('%0.8e',cost));
     set(d.txtSimulationNum, 'String', num2str(sim_count));
-    set(d.txtStepSize, 'String', num2str(step_norm));
-    set(d.txtFoOptimality, 'String', num2str(fo_optim));
+    set(d.txtStepSize, 'String', step_norm);
+    set(d.txtFoOptimality, 'String', fo_optim);
     
     % Fetch the performance log
     perfLog = getappdata(h,'PerformanceLog');
