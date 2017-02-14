@@ -4,7 +4,7 @@ function varargout = validate(id, G)
 % Usage:  ERR = VALIDATE(ID, G|FSIM)
 %
 %         where ERR is the optional output argument which contains the
-%                   absolute error vector y(t) - y_id(t) at time points
+%                   error vector y(t) - y_id(t) at time points
 %                   specified in ID. If omitted, plots validation
 %                   results
 %
