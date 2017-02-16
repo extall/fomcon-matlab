@@ -59,11 +59,16 @@ function [K,q,err,apol]=isstable(G, doPlot)
         h=gcf();
         plot(real(p),imag(p),'x',0,0,'o')
         
-        % Get x axis limit
+        % Get and check x axis limit
         xm=xlim;
+        if (xm(2)<=0)
+            xm(2) = abs(xm(1));
+            xlim(xm);
+        end
+        
         xm(1)=0;
 
-        qpi = q*pi/2;
+        qpi = xm(2)*tan(q*pi/2);
 
         x_fill = [xm(1) xm(2) xm(2) xm(1)];
         y_fill = [0 qpi -qpi 0];
