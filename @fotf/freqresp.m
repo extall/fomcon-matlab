@@ -1,4 +1,4 @@
-function r = freqresp(G, w)
+function [r, w] = freqresp(G, w)
 %FREQRESP  Frequency response of fractional-order transfer functions.
 %
 %   Usage: R = freqresp(G, W)
