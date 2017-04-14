@@ -5,8 +5,8 @@ function t = step_auto_range(G)
 AUTORANGE_NUM_PTS_AUTO = 10;
 AUTORANGE_NUM_PTS_GEN  = 10000;
 
-% Detection coefficient "final value is at least 90% of dc gain"
-AUTORANGE_DET_COEF = 0.9;
+% Detection coefficient: error band
+AUTORANGE_DET_COEF = 0.2;
 
 % Add this value to the exponent in case of oscillating processes
 AUTORANGE_OSC_ADD  = 1;
@@ -26,7 +26,7 @@ else
         t = linspace(0, 10^t_exp, AUTORANGE_NUM_PTS_AUTO);
         u = ones(size(t));
         y = lsim(G,u,t);
-        if abs(y(end)/abs(myGain))>=AUTORANGE_DET_COEF
+        if abs(y(end)-abs(myGain))<=AUTORANGE_DET_COEF
             % Check if this is an oscillating process, and add a few
             % exponent values to ensure that it is covered in full
             if max(abs(y)) > abs(y(end))
