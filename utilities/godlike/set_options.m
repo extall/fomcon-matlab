@@ -35,11 +35,16 @@ function options = set_options(varargin)
 %      MinIters : positive scalar. This option defines the minimum amount
 %                 of iterations GODLIKE will perform. This is particularly
 %                 useful in multi-objective problems with small population
-%                 sizes, because this combination increases the probability 
-%                 that GODLIKE reports convergence (all fronts are Pareto 
-%                 fronts), while a Pareto front of much better quality is 
+%                 sizes, because this combination increases the probability
+%                 that GODLIKE reports convergence (all fronts are Pareto
+%                 fronts), while a Pareto front of much better quality is
 %                 obtained if some additional shuffles are performed. The
-%                 default value is 2. 
+%                 default value is 2.
+%   UseParallel : logical, either false (default), or true. If enabled, it
+%                 will use run function evaluations within each
+%                 generation in parallel. It uses MATLAB's native parfor
+%                 keyword for this, utilizing the current parallel
+%                 execution pool (see parfor for more info).
 %
 %   ======================================================================
 %   Options specific to the GODLIKE Algorithm:
@@ -51,46 +56,48 @@ function options = set_options(varargin)
 %       ItersUb : positive scalar. This sets the maximum TOTAL amount of
 %                 iterations that will be spent in all of the selected
 %                 heuristic optimizers combined. The default value is 100.
+%       popsize : Positive integer(s). Total population size for all global
+%                 optimization algorithms used, combined. If an array is
+%                 given, it indicates exactly the population size of each
+%                 algorithm specified below. When omitted, defaults to 25
+%                 times the number of decision variables.
+%    algorithms : The algorithms to be used in the optimizations. May
+%                 be a single string, e.g., 'DE', in which case the
+%                 optimization is equal to just running a single
+%                 Differential Evolution optimization. May also be a
+%                 cell array of strings, e.g., {'DE'; 'GA'; 'ASA'},
+%                 which uses all the indicated algorithms. When
+%                 omitted or left empty, defaults to {'DE';'GA';'PSO';
+%                 'ASA'} (all algorithms once).
 %
 %   ======================================================================
 %   General Settings for Single-Objective Optimization:
-%   ======================================================================  
-%        TolIters: positive scalar. This option defines how many consecutive 
-%                  iterations the convergence criteria must hold for each 
-%                  individual algorithm, before that algorithm is said to 
-%                  have converged. The default setting is 15 iterations. 
-%           TolX : positive scalar. Convergence is assumed to be attained, 
+%   ======================================================================
+%        TolIters: positive scalar. This option defines how many consecutive
+%                  iterations the convergence criteria must hold for each
+%                  individual algorithm, before that algorithm is said to
+%                  have converged. The default setting is 15 iterations.
+%           TolX : positive scalar. Convergence is assumed to be attained,
 %                  if the coordinate differences in all dimensions for a
-%                  given amount of consecutive iterations is less than 
-%                  [TolX]. This amount of iterations is [TolIters] for each 
-%                  individual algorithm, and simply 2 for GODLIKE-iterations. 
+%                  given amount of consecutive iterations is less than
+%                  [TolX]. This amount of iterations is [TolIters] for each
+%                  individual algorithm, and simply 2 for GODLIKE-iterations.
 %                  The default value is 1e-4.
-%         TolFun : positive scalar. Convergence is said to have been 
-%                  attained if the value of the objective function decreases 
+%         TolFun : positive scalar. Convergence is said to have been
+%                  attained if the value of the objective function decreases
 %                  less than [TolFun] for a given amount of consecutive
-%                  iterations. This amount of iterations is [TolIters] for 
-%                  each individual algorithm, and simply 2 for the 
+%                  iterations. This amount of iterations is [TolIters] for
+%                  each individual algorithm, and simply 2 for the
 %                  GODLIKE-iterations. The default value is 1e-4.
 %  AchieveFunVal : scalar. This value is used in conjunction with the
-%                  [TolX] and [TolFun] settings. If set, the algorithm will 
+%                  [TolX] and [TolFun] settings. If set, the algorithm will
 %                  FIRST try to achieve this function value, BEFORE enabling
-%                  the [TolX] and [TolFun] convergence criteria. By default, 
+%                  the [TolX] and [TolFun] convergence criteria. By default,
 %                  it is switched off (equal to AchieveFunVal = inf).
 %
 %   ======================================================================
 %   General Settings for Multi-Objective Optimization:
 %   ======================================================================
-%        SkipTest : If set to 'on', some initial tests that are performed on
-%                   the objective and constraint functions. These tests
-%                   automatically determine whether the function accepts
-%                   vectorized input or not, and how many objectives the
-%                   problem has. The default is 'on', but it may be switched
-%                   'off'. In case it's switched 'off', the algorithm assumes
-%                   all functions accept vectorized input, AND the number of
-%                   objectives (the next option) has been given, AND the
-%                   dimensionality of the problem is also given (two options
-%                   down). The 'off'-switch will be ignored if either of these
-%                   demands is not true.
 %   NumObjectives : Positive scalar. Sets the number of objectives manually.
 %                   When the objective function is a single function that
 %                   returns multiple objectives, the algorithm has to first
@@ -132,9 +139,9 @@ function options = set_options(varargin)
 %   ======================================================================
 %   Options specific to the Adaptive Simulated Annealing Algorithm:
 %   ======================================================================
-%               T0 : positive scalar. This is the initial temperature for 
+%               T0 : positive scalar. This is the initial temperature for
 %                    all particles. If left empty, an optimal one will be
-%                    estimated; this is the default. 
+%                    estimated; this is the default.
 %  CoolingSchedule : function handle, with [iteration], [T0], and[T] as
 %                    parameters. This function defines the cooling schedule
 %                    to be applied each iteration. The default is
@@ -144,11 +151,11 @@ function options = set_options(varargin)
 %                    It is only included for completeness, and testing
 %                    purposes. Only in rare cases is it beneficial to change
 %                    this setting.
-%        ReHeating : positive scalar. After an interchange operation in 
+%        ReHeating : positive scalar. After an interchange operation in
 %                    GODLIKE, the temperature of an ASA population should
 %                    be increased to allow the new individuals to move
 %                    over larger portions of the search space. The default
-%                    value is 
+%                    value is
 %
 %   ======================================================================
 %   Options specific to the Particle Swarm Algorithm:
@@ -172,56 +179,93 @@ function options = set_options(varargin)
 %   NumNeighbors : positive scalar. This defines the maximum number of
 %                  'neighbors' or 'friends' assigned to each particle. The
 %                  default value is 5.
-% NetworkTopology: string, equal to either 'fully_connected', 'star', or 
+% NetworkTopology: string, equal to either 'fully_connected', 'star', or
 %                  'ring'. This defines the topology of the social network
-%                  for each particle. In case 'star' is selected (the 
-%                  default), the setting for NumNeighbors will define the 
-%                  total number of partiles per star; the same holds in 
-%                  case 'ring' is selected. When 'fully_connected' is 
-%                  selected however, the value for NumNeighbors will be 
-%                  ignored (all particles are connected to all other 
-%                  particles). 
+%                  for each particle. In case 'star' is selected (the
+%                  default), the setting for NumNeighbors will define the
+%                  total number of partiles per star; the same holds in
+%                  case 'ring' is selected. When 'fully_connected' is
+%                  selected however, the value for NumNeighbors will be
+%                  ignored (all particles are connected to all other
+%                  particles).
 %
 % see also GODLIKE, pop_multi, pop_single.
-    
-    % Last edited 30/Jul/2009
-    
-    % create structure with default values if no input is given
+
+% Please report bugs and inquiries to:
+%
+% Name       : Rody P.S. Oldenhuis
+% E-mail     : oldenhuis@gmail.com    (personal)
+%              oldenhuis@luxspace.lu  (professional)
+% Affiliation: LuxSpace sarl
+% Licence    : BSD
+
+
+
+% TODO
+%{
+Document these options:
+   - QuitWhenAchieved
+   - NumStreams
+   - algorithms
+   - ConstraintsInObjectiveFunction
+   - ReinitRatio
+%}
+
+
+
+
+
+% If you find this work useful, please consider a donation:
+% https://www.paypal.me/RodyO/3.5
+
+    % Default values if no input is given
     if (nargin == 0)
-        
+
         % initialize
         options = struct;
-        
+
         % general options
         options.display       = 'off';
         options.MaxFunEvals   = 1e5;
         options.MaxIters      = 20;
-        options.MinIters      = 2;        
+        options.MinIters      = 2;
         options.TolIters      = 15;
         options.TolX          = 1e-4;
         options.TolFun        = 1e-4;
         options.AchieveFunVal = inf;
-        
+        options.UseParallel   = false;
+
+        % TODO: Not yet implemented
+        options.TolCon           = 1e-4;
+        options.OutputFcn        = [];
+        options.NumStreams       = 1;
+        options.algorithms       = {'PSO';'GA';'ASA';'DE'};
+        options.QuitWhenAchieved = false;
+        options.ReinitRatio      = 0.05;
+        options.ConstraintsInObjectiveFunction = false;
+
         % function evaluation
+        % CAN'T BE SET MANUALLY - INTERNAL USE ONLY
         options.num_objectives = 1;
         options.dimensions     = [];
-        
+        options.obj_columns    = false; % Function returns objectives as columns?
+
         % Differential Evolution
         options.DE.Flb        = -1.5;
         options.DE.Fub        = 1.5;
         options.DE.CrossConst = 0.95;
-        
+
         % genetic algorithm
         options.GA.CrossProb    = 0.5;
         options.GA.MutationProb = 0.1;
         options.GA.Coding       = 'Binary';
         options.GA.NumBits      = 52;
-        
+
         % simulated annealing
-        options.ASA.T0           = [];
+        options.ASA.T0              = [];
         options.ASA.CoolingSchedule = @(T, T0, iteration) T0*0.87^iteration;
-        options.ASA.ReHeating    = 5;
-        
+        options.ASA.ReHeating       = 5;
+
         % particle swarm
         options.PSO.eta1         = 2;
         options.PSO.eta2         = 2;
@@ -229,268 +273,421 @@ function options = set_options(varargin)
         options.PSO.omega        = 0.5;
         options.PSO.NumNeighbors = 5;
         options.PSO.NetworkTopology = 'star';
-        
+
         % GODLIKE
         options.GODLIKE.ItersLb = 10;
         options.GODLIKE.ItersUb = 100;
-        
+        options.GODLIKE.popsize = [];
+
         % finished
         return;
-        
-        % create structure with fields according to user input
+
+    % Create structure with fields according to user input
     elseif (nargin > 0)
-        
+
         % assign default values
-        options = set_options;
-        
+        options = set_options();
+
         % errortrap
         if (mod(nargin, 2) ~= 0)
-            error('Please provide values for all the options.')
+            error([mfilename ':invalid_argument_count'],...
+                  'Please provide values for all the options.')
         end
-        
+
         % loop through all the inputs, and use an "if-else cancer" to
         % create the problem structure
         for i = 1:2:nargin
             option = varargin{i};
             value  = varargin{i+1};
-            
+
             % if option is not recognized, continue to the next argument
             if ~isa(option, 'char')
                 throwwarning(option, [], [], []);
                 continue;
             end
-            
-            % General options
-            if     strcmpi(option, 'Display')
-                if ~ischar(value)
-                    throwwarning('Display', 'char', value);
-                    continue;
-                end
-                if     strcmpi(value, 'off')
-                    options.display = [];
-                elseif strcmpi(value, 'CommandWindow') || strcmpi(value, 'on')
-                    options.display = 'CommandWindow';
-                elseif strcmpi(value, 'Plot')
-                    options.display = 'Plot';
-                else
-                    error('population:set_options:unknown_display_option',...
-                        ['Unknown display type: ', '''', value, '''.'])
-                end
-            elseif strcmpi(option, 'MaxFunEvals')
-                if ~isnumeric(value)
-                    throwwarning('MaxFunEvals', 'double', value);
-                    continue;
-                end
-                options.MaxFunEvals = value;
-            elseif strcmpi(option, 'MaxIters')
-                if ~isnumeric(value)
-                    throwwarning('MaxIters', 'double', value);
-                    continue;
-                end
-                options.MaxIters = value;
-            elseif strcmpi(option, 'MinIters')
-                if ~isnumeric(value)
-                    throwwarning('MinIters', 'double', value);
-                    continue;
-                end
-                options.MinIters = value;
-            elseif strcmpi(option, 'TolIters')
-                if ~isnumeric(value)
-                    throwwarning('TolIters', 'double', value);
-                    continue;
-                end
-                options.TolIters = value;
-            elseif strcmpi(option, 'TolX')
-                if ~isnumeric(value)
-                    throwwarning('TolX', 'double', value);
-                    continue;
-                end
-                options.TolX = value;
-            elseif strcmpi(option, 'TolFun')
-                if ~isnumeric(value)
-                    throwwarning('TolFun', 'double', value);
-                    continue;
-                end
-                options.TolFun = value;           
-            elseif strcmpi(option, 'AchieveFunVal')
-                if ~isnumeric(value)
-                    throwwarning('AchieveFunVal', 'double', value);
-                    continue;
-                end
-                options.AchieveFunVal = value;            
-                
-            % options specific to Differential Evolution
-            elseif strcmpi(option, 'Flb')
-                if ~isnumeric(value)
-                    throwwarning('Flb', 'double', value);
-                    continue;
-                end
-                options.DE.Flb = value;
-            elseif strcmpi(option, 'Fub')
-                if ~isnumeric(value)
-                    throwwarning('Fub', 'double', value);
-                    continue;
-                end
-                options.DE.Fub = value;
-            elseif strcmpi(option, 'CrossConst')
-                if ~isnumeric(value)
-                    throwwarning('CrossConst', 'double', value);
-                    continue;
-                end
-                options.DE.CrossConst = value;
-                
-            % options specific to Genetic Algorithm
-            elseif strcmpi(option, 'MutationProb')
-                if ~isnumeric(value)
-                    throwwarning('MutationProb', 'double', value);
-                    continue;
-                end
-                options.GA.MutationProb = value;
-            elseif strcmpi(option, 'CrossProb')
-                if ~isnumeric(value)
-                    throwwarning('CrossProb', 'double', value);
-                    continue;
-                end
-                options.GA.CrossProb = value;
-            elseif strcmpi(option, 'Coding')
-                if ~ischar(value)
-                    throwwarning('Coding', 'char', value);
-                    continue;
-                end
-                if     strcmpi(value, 'Real')
-                    options.GA.Coding = 'Real';
-                elseif strcmpi(value, 'Binary')
-                    options.GA.Coding = 'Binary';
-                else
-                    error('population:set_options:unknown_coding',...
-                        ['Unknown coding type: ', '''', value, '''.'])
-                end
-            elseif strcmpi(option, 'NumBits')
-                if ~isnumeric(value)
-                    throwwarning('NumBits', 'double', value);
-                    continue;
-                end
-                options.GA.NumBits = value;
-                
-            % options specific to Adaptive Simulated Annealing
-            elseif strcmpi(option, 'T0')
-                if ~isnumeric(value)
-                    throwwarning('T0', 'double', value);
-                    continue;
-                end
-                options.ASA.T0 = abs(real(value));             
-            elseif strcmpi(option, 'CoolingSchedule')
-                if ~isa(value, 'function_handle')
-                    throwwarning('CoolingSchedule', 'function_handle', value);
-                    continue;
-                end
-                options.ASA.CoolingSchedule = value;
-            elseif strcmpi(option, 'ReHeating')
-                if ~isa(value, 'double')
-                    throwwarning('ReHeating', 'double', value);
-                    continue;
-                end
-                options.ASA.ReHeating = value;
-                
-            % options specific to Particle Swarm Optimization
-            elseif strcmpi(option, 'eta1')
-                if ~isnumeric(value)
-                    throwwarning('eta1', 'double', value);
-                    continue;
-                end
-                options.PSO.eta1 = value;
-            elseif strcmpi(option, 'eta2')
-                if ~isnumeric(value)
-                    throwwarning('eta2', 'double', value);
-                    continue;
-                end
-                options.PSO.eta2 = value;
-            elseif strcmpi(option, 'eta3')
-                if ~isnumeric(value)
-                    throwwarning('eta3', 'double', value);
-                    continue;
-                end
-                options.PSO.eta3 = value;
-            elseif strcmpi(option, 'omega')
-                if ~isnumeric(value)
-                    throwwarning('omega', 'double', value);
-                    continue;
-                end
-                options.PSO.omega = value;
-            elseif strcmpi(option, 'NumNeighbors')
-                if ~isnumeric(value)
-                    throwwarning('NumNeighbors', 'double', value);
-                    continue;
-                end
-                options.PSO.NumNeighbors = value;
-            elseif strcmpi(option, 'NetworkTopology')
-                if ~ischar(value)
-                    throwwarning('NetworkTopology', 'char', value);
-                    continue;
-                end
-                if strcmpi(value, 'fully_connected')
-                    options.PSO.NetworkTopology = 'fully_connected';
-                elseif strcmpi(value, 'star')                
-                    options.PSO.NetworkTopology = 'star';
-                elseif strcmpi(value, 'ring') 
-                    options.PSO.NetworkTopology = 'ring';
-                else
-                    error(['Unknown topology: ''', value, '''.'])
-                end
-                
-            % options specific to GODLIKE algorithm
-            elseif strcmpi(option, 'ItersLb')
-                if ~isnumeric(value)
-                    throwwarning('algiters', 'double', value);
-                    continue;
-                end
-                options.GODLIKE.ItersLb = value;
-            elseif strcmpi(option, 'ItersUb')
-                if ~isnumeric(value)
-                    throwwarning('ItersUb', 'double', value);
-                    continue;
-                end
-                options.GODLIKE.ItersUb = value;
-                
+
+            % parse all available options
+            switch lower(option)
+
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                % GENERAL OPTIONS
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                case 'display'
+                    if ~ischar(value)
+                        throwwarning('Display', 'char', value);
+                        continue;
+                    end
+
+                    switch lower(value)
+                        case 'off'
+                            options.display = [];
+                        case {'commandwindow' 'on'}
+                            options.display = 'CommandWindow';
+                        case 'plot'
+                            options.display = 'Plot';
+                        otherwise
+                            error([mfilename ':unknown_displaytype'], [...
+                                  'Unsupported display type: ', '''', value, '''.'])
+                    end
+
+
+                case 'maxfunevals'
+                    if ~isnumeric(value)
+                        throwwarning('MaxFunEvals', 'double', value);
+                        continue;
+                    end
+                    options.MaxFunEvals = value;
+
+                case 'maxiters'
+                    if ~isnumeric(value)
+                        throwwarning('MaxIters', 'double', value);
+                        continue;
+                    end
+                    options.MaxIters = value;
+
+                case 'miniters'
+                    if ~isnumeric(value)
+                        throwwarning('MinIters', 'double', value);
+                        continue;
+                    end
+                    options.MinIters = value;
+
+                case 'toliters'
+                    if ~isnumeric(value)
+                        throwwarning('TolIters', 'double', value);
+                        continue;
+                    end
+                    options.TolIters = value;
+
+                case 'tolx'
+                    if ~isnumeric(value)
+                        throwwarning('TolX', 'double', value);
+                        continue;
+                    end
+                    options.TolX = value;
+
+                case 'tolfun'
+                    if ~isnumeric(value)
+                        throwwarning('TolFun', 'double', value);
+                        continue;
+                    end
+                    options.TolFun = value;
+
+                case 'achievefunval'
+                    if ~isnumeric(value)
+                        throwwarning('AchieveFunVal', 'double', value);
+                        continue;
+                    end
+                    options.AchieveFunVal = value;
+
+                case 'useparallel'
+                    value = string2logical(value);
+                    if ~isscalar(value) || ~islogical(value)
+                        throwwarning('UseParallel', 'double', value);
+                        continue;
+                    end
+                    options.UseParallel = value;
+
+                    % Check for toolbox
+                    if value && isempty(ver('distcomp'))
+                        warning([mfilename ':pct_not_available'], [...
+                                'Option ''UseParallel'' is only useful when the ',...
+                                'parallel computing toolbox is available, which ',...
+                                'does not seem to be the case.']);
+                    end
+
+                case 'quitwhenachieved'
+                    value = string2logical(value);
+                    if ~isscalar(value) && ~islogical(value)
+                        throwwarning('AchieveFunVal', 'logical', value);
+                        continue;
+                    end
+                    options.QuitWhenAchieved = value;
+
+                case 'constraintsinobjectivefunction'
+                    if ~isnumeric(value)
+                        throwwarning('ConstraintsInObjectiveFunction', 'numeric', value);
+                        continue;
+                    end
+                    % of course, the FIRST argument MUST be the objective
+                    % function(s) values
+                    if (value == 1)
+                        warning([mfilename ':first_argument_mustbe_objective'], [...
+                                'The first argument of the objective function must return the values\n',...
+                                ' of the objective function(s); The requested setting of \n',...
+                                ' OPTIONS.ConstraintsInObjectiveFunction of %d is therefore invalid. \n',...
+                                ' Attempting to solve the problem with argument 2...'], ...
+                                value);
+                        value = 2;
+                    end
+                    options.ConstraintsInObjectiveFunction = value;
+
+                case 'outputfcn'
+                    if ~iscell(value) && ~isa(value, 'function_handle')
+                        throwwarning('OutputFcn', 'cell or function_handle', value);
+                        continue;
+                    end
+                    if ~iscell(options.OutputFcn)
+                        options.OutputFcn = {value};
+                    else
+                        options.OutputFcn = value;
+                    end
+
+                case 'numstreams'
+                    if ~isscalar(value) && ~isnumeric(value)
+                        throwwarning('NumStreams', 'double', value);
+                        continue;
+                    end
+                    options.NumStreams = value;
+
+                case 'algorithms'
+
+                    % check input
+                    if ischar(value)
+                        value = {value}; end
+                    if ~iscell(value)
+                        throwwarning('Algorithms', 'cell', value);
+                        continue;
+                    end
+
+                    % check if each one of them is a character array
+                    chars_ok = cellfun(@ischar, value);
+                    if ~all(chars_ok)
+                        warning([mfilename ':algorithms_mustbe_chars'], [...
+                                'Algorithms must be selected via a cell-array of character arrays.\n',...
+                                'Using default settings instead...']);
+                        continue;
+                    end
+                    % check if each one is equal to either 'MS', 'DE', 'GA', 'PSO', or 'ASA'
+                    algorithm_ok = cellfun(@(x) any(strcmpi(x, {'MS';'DE';'GA';'PSO';'ASA'})), value);
+                    if ~all(chars_ok)
+                        warning([mfilename ':unknown_algorithm'],...
+                                'Unknown algorithm: ''%s''. Using default settings...',...
+                                value{find(~algorithm_ok,1)});
+                        continue;
+                    end
+                    % all is ok; set the algorithms
+                    options.algorithms = upper(value);
+
+                case 'reinitratio'
+                    if ~isnumeric(value)
+                        throwwarning('ReinitRatio', 'double', value);
+                        continue;
+                    end
+                    options.ReinitRatio = value;
+
+
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                % OPTIONS SPECIFIC TO DIFFERENTIAL EVOLUTION
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                case 'flb'
+                    if ~isnumeric(value)
+                        throwwarning('Flb', 'double', value);
+                        continue;
+                    end
+                    options.DE.Flb = value;
+
+                case 'fub'
+                    if ~isnumeric(value)
+                        throwwarning('Fub', 'double', value);
+                        continue;
+                    end
+                    options.DE.Fub = value;
+
+                case 'crossconst'
+                    if ~isnumeric(value)
+                        throwwarning('CrossConst', 'double', value);
+                        continue;
+                    end
+                    options.DE.CrossConst = value;
+
+
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                % OPTIONS SPECIFIC TO GENETIC ALGORITHM
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                case 'mutationprob'
+                    if ~isnumeric(value)
+                        throwwarning('MutationProb', 'double', value);
+                        continue;
+                    end
+                    options.GA.MutationProb = value;
+
+                case 'crossprob'
+                    if ~isnumeric(value)
+                        throwwarning('CrossProb', 'double', value);
+                        continue;
+                    end
+                    options.GA.CrossProb = value;
+
+                case 'coding'
+                    if ~ischar(value)
+                        throwwarning('Coding', 'char', value);
+                        continue;
+                    end
+                    if     strcmpi(value, 'Real')
+                        options.GA.Coding = 'Real';
+                    elseif strcmpi(value, 'Binary')
+                        options.GA.Coding = 'Binary';
+                    else
+                        error([mfilename ':unknown_coding'], [...
+                              'Unknown coding type: ', '''', value, '''.'])
+                    end
+
+                case 'numbits'
+                    if ~isnumeric(value)
+                        throwwarning('NumBits', 'double', value);
+                        continue;
+                    end
+                    options.GA.NumBits = value;
+
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                % OPTIONS SPECIFIC TO ADAPTIVE SIMULATED ANNEALING
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                case 't0'
+                    if ~isnumeric(value)
+                        throwwarning('T0', 'double', value);
+                        continue;
+                    end
+                    options.ASA.T0 = abs(real(value));
+
+                case 'coolingschedule'
+                    if ~isa(value, 'function_handle')
+                        throwwarning('CoolingSchedule', 'function_handle', value);
+                        continue;
+                    end
+                    options.ASA.CoolingSchedule = value;
+
+                case 'reheating'
+                    if ~isa(value, 'double')
+                        throwwarning('ReHeating', 'double', value);
+                        continue;
+                    end
+                    options.ASA.ReHeating = value;
+
+
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                % OPTIONS SPECIFIC TO PARTICLE SWARM OPTIMIZATION
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                case 'eta1'
+                    if ~isnumeric(value)
+                        throwwarning('eta1', 'double', value);
+                        continue;
+                    end
+                    options.PSO.eta1 = value;
+
+                case 'eta2'
+                    if ~isnumeric(value)
+                        throwwarning('eta2', 'double', value);
+                        continue;
+                    end
+                    options.PSO.eta2 = value;
+
+                case 'eta3'
+                    if ~isnumeric(value)
+                        throwwarning('eta3', 'double', value);
+                        continue;
+                    end
+                    options.PSO.eta3 = value;
+
+                case 'omega'
+                    if ~isnumeric(value)
+                        throwwarning('omega', 'double', value);
+                        continue;
+                    end
+                    options.PSO.omega = value;
+
+                case 'numneighbors'
+                    if ~isnumeric(value)
+                        throwwarning('NumNeighbors', 'double', value);
+                        continue;
+                    end
+                    options.PSO.NumNeighbors = value;
+
+                case 'networktopology'
+                    if ~ischar(value)
+                        throwwarning('NetworkTopology', 'char', value);
+                        continue;
+                    end
+                    if strcmpi(value, 'fully_connected')
+                        options.PSO.NetworkTopology = 'fully_connected';
+                    elseif strcmpi(value, 'star')
+                        options.PSO.NetworkTopology = 'star';
+                    elseif strcmpi(value, 'ring')
+                        options.PSO.NetworkTopology = 'ring';
+                    else
+                        error([mfilename ':PSO_unknown_topology'], ...
+                              'Unknown topology: ''%s''.',...
+                              value);
+                    end
+
+                % options specific to GODLIKE algorithm
+                case 'iterslb'
+                    if ~isnumeric(value)
+                        throwwarning('algiters', 'double', value);
+                        continue;
+                    end
+                    options.GODLIKE.ItersLb = value;
+                case 'itersub'
+                    if ~isnumeric(value)
+                        throwwarning('ItersUb', 'double', value);
+                        continue;
+                    end
+                    options.GODLIKE.ItersUb = value;
+
+                case 'popsize'
+                    if any(~isreal(value)) || any(~isfinite(value)) || any(value < 0)
+                        throwwarning('popsize', 'double', value);
+                        continue;
+                    end
+                    options.GODLIKE.popsize = value;
+
                 % General Settings
-            elseif strcmpi(option, 'SkipTest')
-                if ~isnumeric(value)
-                    throwwarning('SkipTest', 'char', value);
-                    continue;
-                end
-                if     strcmpi(value, 'on')
-                    options.skip_function_test = true;
-                elseif strcmpi(value, 'off')
-                    options.skip_function_test = false;
-                end
-            elseif strcmpi(option, 'NumObjectives')
-                if ~isnumeric(value)
-                    throwwarning('NumObjectives', 'double', value);
-                    continue;
-                end
-                options.num_objectives = value;
-            else
-                throwwarning(option);
-            end % if
+                case 'numobjectives'
+                    if ~isnumeric(value)
+                        throwwarning('NumObjectives', 'double', value);
+                        continue;
+                    end
+                    options.num_objectives = value;
+
+
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                % ALL OTHER CASES
+                % =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+                otherwise
+                    throwwarning(option);
+
+            end % switch
         end % for
     end % if
-    
-    % throw appropriate warning upon abuse of the function
-    function throwwarning(option, required, given, varargin)%#ok
-        
-        % test type
-        if nargin == 3
-            provided = whos('given');
-            provided = provided.class;
-            warning('set_options:incorrectvalue', ...
-                ['Incorrect class type given for option ''%s'';\n',...
-                'required type is ''%s'', received ''%s''.\n',...
-                'Using default value...'], option, required, provided);
-            
-        % unrecognized options will be ignored
-        else
-            warning('set_options:incorrectoption', ...
-                'Unrecognized option, ''%s''. Ignoring it...', num2str(option))
-        end % if
-    end % nested function
+
 end % function (set options)
+
+% Throw appropriate warning upon abuse of the function
+function throwwarning(option, required, given, varargin)%#ok
+
+    % test type
+    if nargin == 3
+        provided = whos('given');
+        provided = provided.class;
+        warning([mfilename ':invalid_value'], [...
+                'Incorrect class type given for option ''%s'';\n',...
+                'required type is ''%s'', received ''%s''.\n',...
+                'Using default value.'], ...
+                option, required, provided);
+
+    % unrecognized options will be ignored
+    else
+        warning([mfilename ':invalid_option'], ...
+                'Unrecognized option, ''%s''; ignoring.', ...
+                num2str(option));
+    end % if
+end % nested function
+
+
+% Allow logicals to be given as string {'on' | 'off'}
+function value = string2logical(value)
+    if ischar(value)
+        if strcmpi(value, 'on'), value = true;  end
+        if strcmpi(value,'off'), value = false; end
+    end
+end

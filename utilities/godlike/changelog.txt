@@ -1,71 +1,83 @@
-Aug 6, 2009
-============================================================
-v1  - Objective functions are now allowed to have any 
-      2-dimensional input shape; all functions must be able 
+2016/October/24
+v2  MEW: support for output functions
+    
+    CHANGED: Refactored code to facilitate maintenance and expansion
+    CHANGED: Removed "popsize" and "which_ones" from the function 
+             signature, and placed them into a more intuitive place:
+             the options structure (see set_options)    
+
+    FIXED: (reported by Harry/John Cee) occasionally, the "best" 
+            population member would not get assigned during tournament 
+            selection in multi-objective problems (GA)
+
+
+2009/August/6
+v1  - Objective functions are now allowed to have any
+      2-dimensional input shape; all functions must be able
       to evaluate arrays of the same size and shape as [lb]
       or [ub].
-    - added exitflag (-3) in case no solution is found 
-      (all values INF/NaN). 
-    - Removed parameters [k] and [minT] from ASA algorithm. 
-      They are not mentioned in any papers, and testing 
+    - added exitflag (-3) in case no solution is found
+      (all values INF/NaN).
+    - Removed parameters [k] and [minT] from ASA algorithm.
+      They are not mentioned in any papers, and testing
       indicated they are indeed superfluous. Also, T0 can
       now be left empty, in which case an optimal initial
       temperature is estimated
     - Corrected small mistake in argument [which_ones] - it
       HAD to be a cell-array, which is confusing if only 1
-      algorithm is used ( {'GA'} in stead of simply 'GA'). 
-    - Improved randomization of number of iterations to 
-      make and population size to use (break_values 
+      algorithm is used ( {'GA'} in stead of simply 'GA').
+    - Improved randomization of number of iterations to
+      make and population size to use (break_values
       previously had a much larger probability to have its
       first value the largest).
-    - the [MinDescent] and [MinDescentMultiplier] have been 
-      replaced by the MATLAB-style [TolIters], [TolX], and 
-      [TolFun] options. 
-    - Error handling has improved.  
-    - Added option 'ReHeating'; this is the re-heating 
-      constant used after an interchange operation, in ASA 
+    - the [MinDescent] and [MinDescentMultiplier] have been
+      replaced by the MATLAB-style [TolIters], [TolX], and
+      [TolFun] options.
+    - Error handling has improved.
+    - Added option 'ReHeating'; this is the re-heating
+      constant used after an interchange operation, in ASA
       populations.
     - Added another algorithm: MultiStart (MS). This is the
       simplest of them all; it's just FMINSEARCH, started at
-      randomly generated starting values. for now, when 
-      using MS, no display options can be used; this is 
+      randomly generated starting values. for now, when
+      using MS, no display options can be used; this is
       something for a later release, as it is much more
-      complicated to display its progress in the current 
-      context. It is therefore NOT used by default. 
-    - I made some *severe* mistakes in the implementation of 
+      complicated to display its progress in the current
+      context. It is therefore NOT used by default.
+    - I made some *severe* mistakes in the implementation of
       the different algorithms:
-           * GA:  - Added tournament selection for GA in 
-                    single objective. previously, parents 
-                    were simply selected at random, which 
-                    meant that their fitness value would 
-                    not increase their chances of 
+           * GA:  - Added tournament selection for GA in
+                    single objective. previously, parents
+                    were simply selected at random, which
+                    meant that their fitness value would
+                    not increase their chances of
                     reproduction at all.
-                  - Real representation was 'unstringed'; 
+                  - Real representation was 'unstringed';
                     only the descision variables themselves
                     were crossed-over and mutated, NOT the
                     individual digits as is required. The
                     problem is corrected now, but at a cost:
                     INT2STR() is rather slow...
-           * PSO: - The social network topology was 
+           * PSO: - The social network topology was
                     essentially random. This already was a
                     TODO-item previously, but now it's done
-                    :) I added a new option for PSO: 
-                    OPTIONS.NetworkTopology. This options 
+                    :) I added a new option for PSO:
+                    OPTIONS.NetworkTopology. This options
                     can assume the values 'star', 'ring' or
                     'fully_connected'.
-                  - Updating the neighborhood bests was 
-                    horrendously slow (and buggy; only the              
-                    first few neighbors ever got selected).             
-                    I got rid of the loop and vectorized the 
-                    replacement, so its fast now (and 
-                    correct :). 
+                  - Updating the neighborhood bests was
+                    horrendously slow (and buggy; only the
+                    first few neighbors ever got selected).
+                    I got rid of the loop and vectorized the
+                    replacement, so its fast now (and
+                    correct :).
             * SA: - Creating new individuals was done with
                     only one dimension at a time, and with a
-                    simple RANDN(). Now, new individuals are 
-                    creating using a standard Bolzmann 
-                    generating scheme (sqrt(T)*randn()). 
+                    simple RANDN(). Now, new individuals are
+                    creating using a standard Bolzmann
+                    generating scheme (sqrt(T)*randn()).
 
 
 Jul 24, 2009
 ============================================================
-v0  - first release. 
+v0  - first release.

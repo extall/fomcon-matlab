@@ -21,40 +21,34 @@ Simple usage for single-objective problems is
 
 \begin{quote}
  \texttt{[solution, function\_value] = ...\\
-GODLIKE(obj\_function, popsize, lb, ub)}
+GODLIKE(obj\_function, lb, ub)}
 \end{quote}
 
 \noindent which returns the solution vector \texttt{solution} with
 associated [function\_value], which is the global minimum of the
-objective function \texttt{obj\_function}. The (total) population
-size to use is set by the positive integer \texttt{popsize}. The
-upper and lower bounds in each dimension is set by the arguments
+objective function \texttt{obj\_function}. The upper and lower bounds
+in each dimension is set by the arguments
 \texttt{lb} and \texttt{ub}.
 \\ \\
 \subsubsection*{Output Arguments}
 \begin{description}
-\item[solution] the solution vector returned. It is always a
+\item[\texttt{solution}] the solution vector returned. It is always a
 row-vector of size [1 $\times$ dimensions].
 
-\item[function\_value] the function value associated with the
+\item[\texttt{function\_value}] the function value associated with the
 solution vector; the globally minimum function value. It is always
 a scalar [1 $\times$ 1] value.
 \end{description}
 
-\subsubsection*{Input Arguments}:
+\subsubsection*{Input Arguments:}
 \begin{description}
-\item[obj\_function] The user-provided objective function
+\item[\texttt{obj\_function}] The user-provided objective function
 \texttt{obj\_function} must be a function handle to an anonymous
 (inline) function or a function in MATLAB's current path. This
 function must accept arguments in the same format as \texttt{lb}
 or \texttt{ub} are given in, and return a scalar value.
 
-\item[popsize] This is the \emph{total} population size GODLIKE
-will use, for \emph{all} the algorithms combined. So at any point
-there will be no more than this amount of individuals in any of
-the algorithms.
-
-\item[lb \& ub] In case all bounds are the same for every
+\item[\texttt{lb \& ub}] In case all bounds are the same for every
 dimension, either \texttt{lb} or \texttt{ub} can be a scalar, in
 which case it is simply resized to the problem's dimensions.
 However, it is important to note that the dimension of the problem
@@ -72,7 +66,7 @@ An example of the most extended usage is
 
 \begin{quote}
  \texttt{[solution, function\_value, exitflag, output] = ...\\
-GODLIKE(obj\_function, popsize, lb, ub, which\_ones, 'option',
+GODLIKE(obj\_function, lb, ub, confcn, 'option',
 'value', ...)}
 \end{quote}
 
@@ -81,7 +75,7 @@ or equivalently,
 \begin{quote}
 \texttt{options = set\_options('option', 'value', ...)}\\
  \texttt{[solution, function\_value, exitflag, output] = ...\\
-GODLIKE(obj\_function, popsize, lb, ub, which\_ones, options)}
+GODLIKE(obj\_function, lb, ub, confcn, options)}
 \end{quote}
 
 \noindent All of the arguments are the same as before. However,
@@ -89,29 +83,21 @@ the additional arguments (which may also be empty) are
 
 \subsubsection*{Additional Input Arguments:}
 \begin{description}
-\item[which\_ones] A single string, or cell-array of strings, that
-define which optimization algorithms will be used for the
-optimization. If omitted or empty, the default is
-\texttt{which\_ones = \{'DE'; 'ASA'; 'PSO'; 'GA'\}} (All
-algorithms). The strings must be either 'DE', 'ASA', 'PSO' or 'GA'
-(capitalization not important). Note that also multiple of the
-same algorithms can be used; for example \texttt{which\_ones =
-\{'DE'; 'DE'\}} will use two separate DE-optimizers.
-
-\item[options (or ('option', value) pairs)] These set the options
+\item[\texttt{confcn}] Constraint function(s); placeholder for future
+implementation of constraint functions. Currently unused.
+\item[\texttt{options} (or \texttt{('option', value)} pairs)] These set the options
 to be used by GODLIKE. The argument \texttt{options} may be
 provided as a structure created by the function
 \texttt{set\_options}, or more directly as ('option', value)
 pairs. As the possible options are quite numerous, these have been
 placed in their own section (see below).
-
 \end{description}
 
 
 \subsubsection*{Additional Output Arguments:}
 \begin{description}
 
-\item[exitflag] A simple value which informs the user of the
+\item[\texttt{exitflag}] A simple value which informs the user of the
 conditions under which GODLIKE exited. As usual, positive values
 are ``good'', negative values are ``bad''. A value of 1 indicates
 normal convergence: the global optimum found by GODLIKE decreased
@@ -124,25 +110,25 @@ function evaluations had been exceeded, set by
 terminated because the maximum amount of GODLIKE iterations has
 been exceeded, set by \texttt{options.MaxIters}.
 
-\item[output] A structure that contains the following fields:
+\item[\texttt{output}] A structure that contains the following fields:
          \begin{description}
 
-         \item[algorithms] lists the algorithms used in the
+         \item[\texttt{algorithms}] lists the algorithms used in the
          optimization.
 
-         \item[message] A message that contains a description of
+         \item[\texttt{message}] A message that contains a description of
          the reason GODLIKE terminated.
 
-         \item[algorithm\_info] A structure that contains more
+         \item[\texttt{algorithm\_info}] A structure that contains more
          information on each of the optimizers. It contains the
          total number of function evaluations made by that optimizer,
          the total number of iterations made, and the population and
          fitness values of the last population before termination.
 
-         \item [funcCount] total number of function evaluations
+         \item [\texttt{funcCount}] total number of function evaluations
          made.
 
-         \item [iterations] total number of GODLIKE iterations
+         \item [\texttt{iterations}] total number of GODLIKE iterations
          made.
 
          \end{description}
@@ -160,9 +146,8 @@ additional objective functions:
  \texttt{[solution, func\_value, ...\\
  Pareto\_individuals, Pareto\_fitnesses,...\\
  exitflag, output] = ...\\
-GODLIKE(\{obj\_function1, obj\_function2,\ldots\}, popsize, lb,
-ub,...\\
-which\_ones, options)}
+GODLIKE(\{obj\_function1, obj\_function2,\ldots\}, lb,
+ub, options)}
 \end{quote}
 
 \noindent where everything is the same as in single-objective
@@ -187,8 +172,7 @@ command
  \texttt{[solution, func\_value, ...\\
  Pareto\_individuals, Pareto\_fitnesses,...\\
  exitflag, output] = ...\\
-GODLIKE(obj\_function, popsize, lb, ub, ...\\
-which\_ones,options)}
+GODLIKE(obj\_function, lb, ub, options)}
 \end{quote}
 
 \noindent when \texttt{obj\_function} is a single function that
@@ -248,6 +232,11 @@ the available options:
 %                 fronts), while a Pareto front of much better quality is
 %                 obtained if some additional shuffles are performed. The
 %                 default value is 2.
+%   UseParallel : logical, either false (default), or true. If enabled, it
+%                 will use run function evaluations within each
+%                 generation in parallel. It uses MATLAB's native parfor
+%                 keyword for this, utilizing the current parallel
+%                 execution pool (see parfor for more info).
 %
 %   ======================================================================
 %   Options specific to the GODLIKE Algorithm:
@@ -259,6 +248,17 @@ the available options:
 %       ItersUb : positive scalar. This sets the maximum TOTAL amount of
 %                 iterations that will be spent in all of the selected
 %                 heuristic optimizers combined. The default value is 100.
+%       popsize : Total population size for all global optimization
+%                 algorithms used, combined. When omitted, defaults to
+%                 25 times the number of dimensions.
+%    algorithms : The algorithms to be used in the optimizations. May
+%                 be a single string, e.g., 'DE', in which case the
+%                 optimization is equal to just running a single
+%                 Differential Evolution optimization. May also be a
+%                 cell array of strings, e.g., {'DE'; 'GA'; 'ASA'},
+%                 which uses all the indicated algorithms. When
+%                 omitted or left empty, defaults to {'DE';'GA';'PSO';
+%                 'ASA'} (all algorithms once).
 %
 %   ======================================================================
 %   General Settings for Single-Objective Optimization:
@@ -288,17 +288,6 @@ the available options:
 %   ======================================================================
 %   General Settings for Multi-Objective Optimization:
 %   ======================================================================
-%        SkipTest : If set to 'on', some initial tests that are performed on
-%                   the objective and constraint functions. These tests
-%                   automatically determine whether the function accepts
-%                   vectorized input or not, and how many objectives the
-%                   problem has. The default is 'on', but it may be switched
-%                   'off'. In case it's switched 'off', the algorithm assumes
-%                   all functions accept vectorized input, AND the number of
-%                   objectives (the next option) has been given, AND the
-%                   dimensionality of the problem is also given (two options
-%                   down). The 'off'-switch will be ignored if either of these
-%                   demands is not true.
 %   NumObjectives : Positive scalar. Sets the number of objectives manually.
 %                   When the objective function is a single function that
 %                   returns multiple objectives, the algorithm has to first
@@ -389,8 +378,6 @@ the available options:
 %                  selected however, the value for NumNeighbors will be
 %                  ignored (all particles are connected to all other
 %                  particles).
-%
-% see also GODLIKE, pop_multi, pop_single.
 \end{verbatim}
 
 \end{document}

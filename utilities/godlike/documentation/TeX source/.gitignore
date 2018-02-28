@@ -1,0 +1,11 @@
+slprj/
+*.mexw32
+*.mexglx
+*.mexmaci
+*.mexw64
+*.mexmaci64
+*.mexa64
+*.zip
+*.m~
+*.asv
+
