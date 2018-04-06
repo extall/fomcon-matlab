@@ -1,12 +1,13 @@
 classdef fidata
     %FIDATA  Time-domain identification parameters for FOTF systems.
     %
-    % Usage:  P = FIDATA(Y, U, T)
+    % Usage:  P = FIDATA(Y, U, T, OPTIONS)
     %
     % where
     %         Y - observed system output
     %         U - observed system input
     %         T - observations time vector
+    %         OPTIONS - various options
     %
     % Note:   If parameters are not equally sized, then resizing or
     %         trimming will occur in the following order: Y, U, T.
@@ -33,10 +34,10 @@ classdef fidata
     methods
         
         % Initializer
-        function p = fidata(y, u, t)
+        function p = fidata(y, u, t, varargin)
            
             % Check number of input parameters
-            if nargin ~= 3
+            if nargin < 3
                 error('FIDATA:NotEnoughInputArguments', 'Not enough input arguments.');
             end
                 
@@ -106,6 +107,11 @@ classdef fidata
             if tLen == 1
                 dt = t;
             else
+                % Check whether t is regularly spaced
+                if ~fleq(min(diff(t)), max(diff(t)))
+                   warning('The time vector is not regularly spaced. Problems may occur during identification.'); 
+                end
+                
                 % Get time step
                 dt = t(2) - t(1);
             end

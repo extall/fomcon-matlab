@@ -355,8 +355,22 @@ else
     r1 = squeeze(freqresp(Z, w));
 end
 
-% Column vector difference operation
-z = cminus(r1, r);
+% [TODO] Experimental feature: focus on either
+% complex response or individual responses
+switch lower(id.focus)
+    case 'complex'
+        % Column vector difference operation
+        z = cminus(r1, r);
+    case {'magnitude', 'mag'}
+        % Magnitude difference
+        z = cminus(20*log(abs(r1)),20*log(abs(r)));
+    case {'phase', 'ph'}
+        % Phase angle difference
+        z = cminus(angle(r1),angle(r));
+    otherwise
+        % Default
+        z = cminus(r1, r);
+end
 
 % Distance between points in complex plane comprise the residual vector
 for n=1:numel(z)
