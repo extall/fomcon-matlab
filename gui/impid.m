@@ -104,6 +104,7 @@ function btnDMake_Callback(hObject, eventdata, handles)
     grid;
     hold on;
     bode(ctrlD,w);
+    legend('Continuous time approximation', 'Discrete time equivalent');
 
 % --- Executes on button press in btnDSave.
 function btnDSave_Callback(hObject, eventdata, handles)
