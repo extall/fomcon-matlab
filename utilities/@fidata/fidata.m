@@ -109,7 +109,9 @@ classdef fidata
             else
                 % Check whether t is regularly spaced
                 if ~fleq(min(diff(t)), max(diff(t)))
-                   warning('The time vector is not regularly spaced. Problems may occur during identification.'); 
+                   % TODO: NB! There is a problem with MATLAB R2018b
+                   % (a false warning is triggered for, e.g., t=0:0.1:100;)
+                   warning('The time vector is not regularly spaced in its entire range. Problems may occur during identification.'); 
                 end
                 
                 % Get time step
