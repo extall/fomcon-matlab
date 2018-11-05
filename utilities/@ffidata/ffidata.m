@@ -25,6 +25,7 @@ classdef ffidata
         phase     % Observed frequency response phase in deg at W
         w         % Frequency vector where the response is known [rad/s] 
 		tstmp     % Timestamp showing date/time of dataset creation
+        focus     % Focus on complex response, mag only, or phase only
     end
     
     methods
@@ -82,6 +83,9 @@ classdef ffidata
             
 			% Timestamp
             p.tstmp = datestr(now);
+            
+            % Focus
+            p.focus = 'complex';
         end
         
     end
