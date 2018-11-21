@@ -28,8 +28,8 @@ function plot(idd)
     
     % Add menu
     f = uimenu('Label', 'Data', 'Position', 2);
-        uimenu(f, 'Label', 'Trim', 'MenuSelectedFcn', 'fidata_plot_trim');
-        uimenu(f, 'Label', 'Remove static offset', 'MenuSelectedFcn', ...
+        uimenu(f, 'Label', 'Trim', 'Callback', 'fidata_plot_trim');
+        uimenu(f, 'Label', 'Remove static offset', 'Callback', ...
                'fidata_plot_remsoff');
 
 end
