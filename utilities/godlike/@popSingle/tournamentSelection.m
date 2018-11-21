@@ -1,4 +1,4 @@
-function pool = tournament_selection(pop, pool_size, tournament_size)
+function pool = tournamentSelection(pop, pool_size, tournament_size)
 
     % initialize mating pool
     pool = zeros(pool_size, 1);
@@ -27,6 +27,6 @@ function pool = tournament_selection(pop, pool_size, tournament_size)
         % insert the index of the best one in the pool
         pool(ii) = inds(ind);
 
-    end % for
+    end
 
-end % function (tournament selection)
+end

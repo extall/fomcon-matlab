@@ -1,4 +1,4 @@
-% wrapper function which includes the equal-valued, and 
+    % wrapper function which includes the equal-valued, and 
 % applies the sine-transformation
 function transformed_individuals = wrapperFcn(pop,...
                                               input_population,...
@@ -16,4 +16,5 @@ function transformed_individuals = wrapperFcn(pop,...
     
     % then include the fixed values   
     transformed_individuals(eqind) = pop.eq_values(1:num_sites, :);
+    
 end

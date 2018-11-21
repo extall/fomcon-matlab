@@ -1,4 +1,4 @@
-Copyright (c) 2009, Rody Oldenhuis
+Copyright (c) 2018, Rody Oldenhuis
 Copyright (c) 2006, Joachim Vandekerckhove
 All rights reserved.
 

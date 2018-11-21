@@ -4,7 +4,7 @@ function iterate(pop, times, FE)
     % Select proper candiadates
     if strcmpi(pop.algorithm, 'GA')
         % binary tournament selection for GA
-        pool = pop.tournament_selection(pop.size, 2);
+        pool = pop.tournamentSelection(pop.size, 2);
     else
         % whole population otherwise
         pool = 1:pop.size;
@@ -12,9 +12,9 @@ function iterate(pop, times, FE)
 
     % create offspring
     if nargin == 1
-        pop.create_offspring(pool);
+        pop.createOffspring(pool);
     else
-        pop.create_offspring(pool, times, FE);
+        pop.createOffspring(pool, times, FE);
     end
 
     % if the algorithm is MS, this is the only step
@@ -26,7 +26,7 @@ function iterate(pop, times, FE)
 
     % carefully evaluate objective function(s)
     try
-        pop.evaluate_function;
+        pop.evaluateFunction();
     catch userFcn_ME
         pop_ME = MException('pop_single:function_doesnt_evaluate',...
                             'GODLIKE cannot continue: failure during function evaluation.');
@@ -35,7 +35,7 @@ function iterate(pop, times, FE)
     end
 
     % Continue as usual
-    pop.replace_parents();
+    pop.replaceParents();
     pop.iterations = pop.iterations + 1;
 
-end % function (single iteration)
+end

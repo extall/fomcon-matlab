@@ -1,4 +1,4 @@
-function update_algorithms(pop)
+function updateAlgorithms(pop)
 
     % select which algorithm we have
     switch upper(pop.algorithm)
@@ -66,5 +66,20 @@ function update_algorithms(pop)
             % essentially, only the temperature is lowered
             pop.pop_data.temperature = max(eps, cool(T, T0, iters));
 
-    end % switch
-end % method (update_algorithms)
+    end
+    
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

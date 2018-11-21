@@ -1,5 +1,5 @@
 % non-dominated sort, and crowding distance assignment
-function non_dominated_sort(pop)
+function nonDominatedSort(pop)
 
     % this function sorts the population according to non-domination.
     % At the same time, it will compute the crowding distance for every
@@ -112,9 +112,11 @@ function non_dominated_sort(pop)
             not_filled = not_filled - entries;
         % if it does not fit, insert the remaining individuals based on
         % their crowding distance
-        else break
-        end % if
-    end % for
+        else
+            break;
+        end 
+        
+    end 
 
     % (for the first iteration, the WHOLE current population will fit
     % in the new population. Skip that case)
@@ -141,6 +143,14 @@ function non_dominated_sort(pop)
     pop.individuals = pop.pop_data.parent_population;
 
     %  some algorithms need additional operations
-    pop.update_algorithms;
+    pop.updateAlgorithms();
 
-end % function (non-dominated sort)
+end 
+
+
+
+
+
+
+
+

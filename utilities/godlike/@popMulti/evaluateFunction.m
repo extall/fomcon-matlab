@@ -1,5 +1,5 @@
 % overload from pop_single
-function evaluate_function(pop)
+function evaluateFunction(pop)
 
     % CG: ugly hack because of pop_single constructor running
     % evaluations before pop_multi construction is complete
@@ -15,5 +15,6 @@ function evaluate_function(pop)
     end
 
     % call super
-    evaluate_function@pop_single(pop);
+    evaluateFunction@popSingle(pop);
+    
 end

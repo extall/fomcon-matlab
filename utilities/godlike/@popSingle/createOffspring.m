@@ -1,4 +1,4 @@
-function create_offspring(pop, pool, times, FE)
+function createOffspring(pop, pool, times, FE)
 
     % get the size of the pool
     pool_size = length(pool);
@@ -40,9 +40,13 @@ function create_offspring(pop, pool, times, FE)
                                    'MaxFunEvals', allowed_FE);
 
                 % optimize this individual
-                [newpop(i, :), newfit(i, :), ef, output] = fminsearch(pop.funfcn{1}, ...
-                                                                      parent_pop(i, :),...
-                                                                      options); %#ok<ASGLU>
+                [newpop(i,:),...
+                 newfit(i,:),...
+                 ef, ...
+                 output] = fminsearch(pop.funfcn{1}, ...
+                                      parent_pop(i, :),...
+                                      options); %#ok<ASGLU>
+                                  
                 % update function evaluations
                 pop.funevals = pop.funevals + output.funcCount;
 
@@ -84,7 +88,7 @@ function create_offspring(pop, pool, times, FE)
                 % d2 may not be equal to d1
                 while (d1 == d2), d2 = round(rand*(pool_size-1))+1; end
                 % DE operator
-                if rand < crossconst || round(rand*(pool_size-1))+1 == i;
+                if rand < crossconst || round(rand*(pool_size-1))+1 == i
                     % DE operator when rnd < Cr
                     F = rand*(Fub-Flb) + Flb;
                     newpop(i, :) = parent_pop(base,:) +  ...
@@ -139,7 +143,7 @@ function create_offspring(pop, pool, times, FE)
 
             if strcmpi(Coding, 'Binary')
                 Binary = true;
-                Real = false;
+                Real   = false;
             end
 
             % save signs
@@ -165,11 +169,11 @@ function create_offspring(pop, pool, times, FE)
                 temp_pop   = round(parent_pop*multiplier);% convert to integers
 
                 % see if selected number of bits cannot represent population
-                if (multiplier == 0.1) && ~all(temp_pop(:) == 0)
-                    error('pop_single:numbits_insufficient', ...
-                          ['Maximum value in population can not be represented by the\n',...
-                          'selected number of bits. Increase ''NumBits'' option, or\n',...
-                          'rescale your problem.']);
+                if (multiplier==0.1) && ~all(temp_pop(:)==0)
+                    error([mfilename('class') ':numbits_insufficient'], ...
+                          ['Maximum value in population can not be represented '
+                          'by the selected number of bits. Increase ''NumBits'' ',...
+                          'option, or rescale your problem.']);
                 end
 
                 % convert each column separately
@@ -378,10 +382,11 @@ function create_offspring(pop, pool, times, FE)
 
     % check constraints and boundaries after
     % offspring generation
-    [newpop, newfit] = pop.honor_bounds(newpop, newfit);
+    [newpop, newfit] = pop.honorBounds(newpop, newfit);
 
     % insert result into pop
     pop.pop_data.offspring_population      = newpop;
     pop.pop_data.function_values_offspring = newfit;
 
-end % function (create offspring)
+end 
+

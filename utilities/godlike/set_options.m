@@ -193,26 +193,20 @@ function options = set_options(varargin)
 
 % Please report bugs and inquiries to:
 %
-% Name       : Rody P.S. Oldenhuis
-% E-mail     : oldenhuis@gmail.com    (personal)
-%              oldenhuis@luxspace.lu  (professional)
-% Affiliation: LuxSpace sarl
-% Licence    : BSD
+% Name    : Rody P.S. Oldenhuis
+% E-mail  : oldenhuis@gmail.com
+% Licence : 2-clause BSD (See License.txt)
 
 
 
 % TODO
 %{
 Document these options:
-   - QuitWhenAchieved
-   - NumStreams
+   - QuitWhenAchieved   
    - algorithms
    - ConstraintsInObjectiveFunction
    - ReinitRatio
 %}
-
-
-
 
 
 % If you find this work useful, please consider a donation:
@@ -222,65 +216,71 @@ Document these options:
     if (nargin == 0)
 
         % initialize
-        options = struct;
-
-        % general options
-        options.display       = 'off';
-        options.MaxFunEvals   = 1e5;
-        options.MaxIters      = 20;
-        options.MinIters      = 2;
-        options.TolIters      = 15;
-        options.TolX          = 1e-4;
-        options.TolFun        = 1e-4;
-        options.AchieveFunVal = inf;
-        options.UseParallel   = false;
-
-        % TODO: Not yet implemented
-        options.TolCon           = 1e-4;
-        options.OutputFcn        = [];
-        options.NumStreams       = 1;
-        options.algorithms       = {'PSO';'GA';'ASA';'DE'};
-        options.QuitWhenAchieved = false;
-        options.ReinitRatio      = 0.05;
-        options.ConstraintsInObjectiveFunction = false;
-
-        % function evaluation
-        % CAN'T BE SET MANUALLY - INTERNAL USE ONLY
-        options.num_objectives = 1;
-        options.dimensions     = [];
-        options.obj_columns    = false; % Function returns objectives as columns?
-
-        % Differential Evolution
-        options.DE.Flb        = -1.5;
-        options.DE.Fub        = 1.5;
-        options.DE.CrossConst = 0.95;
-
-        % genetic algorithm
-        options.GA.CrossProb    = 0.5;
-        options.GA.MutationProb = 0.1;
-        options.GA.Coding       = 'Binary';
-        options.GA.NumBits      = 52;
-
-        % simulated annealing
-        options.ASA.T0              = [];
-        options.ASA.CoolingSchedule = @(T, T0, iteration) T0*0.87^iteration;
-        options.ASA.ReHeating       = 5;
-
-        % particle swarm
-        options.PSO.eta1         = 2;
-        options.PSO.eta2         = 2;
-        options.PSO.eta3         = 0.5;
-        options.PSO.omega        = 0.5;
-        options.PSO.NumNeighbors = 5;
-        options.PSO.NetworkTopology = 'star';
-
-        % GODLIKE
-        options.GODLIKE.ItersLb = 10;
-        options.GODLIKE.ItersUb = 100;
-        options.GODLIKE.popsize = [];
-
-        % finished
-        return;
+        options = struct(...
+                         %{
+                         General options
+                         %}
+                         'display'      , 'off',...
+                         'MaxFunEvals'  , 1e5,...
+                         'MaxIters'     , 20,...
+                         'MinIters'     , 2,...
+                         'TolIters'     , 15,...
+                         'TolX'         , 1e-4,...
+                         'TolFun'       , 1e-4,...
+                         'AchieveFunVal', inf,...
+                         'UseParallel'  , false,...
+                         %{
+                         TODO: Not yet implemented
+                         %}
+                         'TolCon'          , 1e-4,...
+                         'OutputFcn'       , [],...                         
+                         'algorithms'      , {{'PSO';'GA';'ASA';'DE'}},...                         
+                         'ReinitRatio'     , 0.05,...
+                         'QuitWhenAchieved', false,...
+                         'ConstraintsInObjectiveFunction' , false,...
+                         %{
+                         function evaluation
+                         CAN'T BE SET MANUALLY - INTERNAL USE ONLY
+                         %}
+                         'num_objectives', 1,...
+                         'dimensions'    , [],...
+                         'obj_columns'   , false,... % Function returns objectives as columns?
+                         %{
+                         Differential Evolution
+                         %}
+                         'DE', struct('Flb'       , -1.5,...
+                                      'Fub'        , 1.5,...
+                                      'CrossConst' , 0.95),...
+                         %{
+                         Genetic algorithm
+                         %}
+                         'GA', struct('CrossProb'    , 0.5,...
+                                      'MutationProb' , 0.1,...
+                                      'Coding'       , 'Binary',...
+                                      'NumBits'      , 52),...
+                         %{
+                         Simulated Annealing
+                         %}
+                         'ASA', struct('T0'              , [],...
+                                       'CoolingSchedule' , @(T, T0, iteration) T0*0.87^iteration,...
+                                       'ReHeating'       , 5),...
+                         %{
+                         particle swarm
+                         %}
+                         'PSO', struct('eta1'         , 2,...
+                                       'eta2'         , 2,...
+                                       'eta3'         , 0.5,...
+                                       'omega'        , 0.5,...
+                                       'NumNeighbors' , 5,...
+                                       'NetworkTopology' , 'star'),...
+                         %{
+                         GODLIKE
+                         %}
+                         'GODLIKE', struct('ItersLb' , 10,...
+                                           'ItersUb' , 100,...
+                                           'popsize' , []) ...
+                         );
+        
 
     % Create structure with fields according to user input
     elseif (nargin > 0)
@@ -432,13 +432,6 @@ Document these options:
                     else
                         options.OutputFcn = value;
                     end
-
-                case 'numstreams'
-                    if ~isscalar(value) && ~isnumeric(value)
-                        throwwarning('NumStreams', 'double', value);
-                        continue;
-                    end
-                    options.NumStreams = value;
 
                 case 'algorithms'
 
@@ -686,8 +679,5 @@ end % nested function
 
 % Allow logicals to be given as string {'on' | 'off'}
 function value = string2logical(value)
-    if ischar(value)
-        if strcmpi(value, 'on'), value = true;  end
-        if strcmpi(value,'off'), value = false; end
-    end
+    value = strcmpi(value, 'on');    
 end

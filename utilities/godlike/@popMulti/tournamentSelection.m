@@ -1,4 +1,4 @@
-function pool = tournament_selection(pop, pool_size, tournament_size)
+function pool = tournamentSelection(pop, pool_size, tournament_size)
 
     % initialize mating pool
     pool = zeros(pool_size, 1);
@@ -12,8 +12,8 @@ function pool = tournament_selection(pop, pool_size, tournament_size)
             % select [tournament_size] individuals at random
             equal = true;
             while equal % make sure they're not equal
-                inds  = round( rand(tournament_size, 1)*(pop.size-1) + 1); % random indices
-                equal = numel(unique(inds)) ~= numel(inds);        % check if any are equal
+                inds  = round( rand(tournament_size, 1)*(pop.size-1) + 1); 
+                equal = numel(unique(inds)) ~= numel(inds);       
             end
 
             % let them compete according to
@@ -42,12 +42,12 @@ function pool = tournament_selection(pop, pool_size, tournament_size)
                     break;
                 end
 
-            end % for
-        end % while
+            end 
+        end 
 
         % insert the index of the best one in the pool
         pool(ii) = best;
 
-    end % for
+    end 
 
-end % function (tournament selection)
+end

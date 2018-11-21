@@ -1,4 +1,4 @@
-classdef pop_multi < pop_single
+classdef popMulti < popSingle
 % POP_MULTI         Class definition for a population to be
 %                   used for multi-objective optimization
 %
@@ -43,23 +43,21 @@ classdef pop_multi < pop_single
 %       ASA.
 %
 %
-% See also pop_single, GODLIKE.
+% See also popSingle, GODLIKE.
 
 
 % Please report bugs and inquiries to:
 %
-% Name       : Rody P.S. Oldenhuis
-% E-mail     : oldenhuis@gmail.com    (personal)
-%              oldenhuis@luxspace.lu  (professional)
-% Affiliation: LuxSpace s�rl
-% Licence    : BSD
-
+% Name    : Rody P.S. Oldenhuis
+% E-mail  : oldenhuis@gmail.com
+% Licence : 2-clause BSD (see License.txt)
 
 % If you find this work useful, please consider a donation:
 % https://www.paypal.me/RodyO/3.5
 
+    %% Properties
 
-    % additional properties are also public
+    % properties additional to those of popSingle
     properties
         num_objectives     % number of objectives
         % contents of pop_data for multi-objective
@@ -72,43 +70,47 @@ classdef pop_multi < pop_single
         %      pop_data.crowding_distance
     end
 
-    % public methods
+    
+    %% Methods
+    
+    % class basics
     methods (Access = public)
 
         % simple constructor: create pop_single object, and
         % just add the number of objectives
-        function pop = pop_multi(varargin)
-            % construct pop_single object
-            pop = pop@pop_single(varargin{:});
-            % just set the amount of objectives
+        function pop = popMulti(varargin)            
+            pop = pop@popSingle(varargin{:});            
             pop.num_objectives = pop.options.num_objectives;
-        end % function (constructor)
+        end 
 
-        % perform one multi-objective iteration
-        iterate(pop);
 
-    end % public methods
+    end
 
-    % protected/hidden methods
+    % Public functionality
+    methods
+            % perform one multi-objective iteration
+            iterate(pop);
+    end
+
+    % Methods for internal use
     methods (Access = protected, Hidden)
 
         % non-dominated sort, and crowding distance assignment
-        non_dominated_sort(pop);
+        nonDominatedSort(pop);
 
         % tournament selection with crowding distances and rankings
         % as competitive factors
-        pool = tournament_selection(pop, pool_size, tournament_size);
+        pool = tournamentSelection(pop, pool_size, tournament_size);
 
         % initialize algorithms
-        initialize_algorithms(pop);
-
+        initializeAlgorithms(pop);
 
         % Update globally changing variables associated with each algorithm
-        update_algorithms(pop);
+        updateAlgorithms(pop);
 
         % overload from pop_single
-        evaluate_function(pop);
+        evaluateFunction(pop);
 
-    end % protected/hidden methods
+    end 
 
-end % classdef
+end 

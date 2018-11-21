@@ -14,7 +14,8 @@ function funvals = penalize(pop, funvals, convals, sites)
         % scaling parameter
         scale = min(1e16, 1/pop.options.TolCon);
         % replicate convals
-        if (size(funvals,2) > 1), convals = convals(:, ones(size(funvals,2),1)); end%#ok
+        if (size(funvals,2) > 1)
+            convals = convals(:, ones(size(funvals,2),1)); end
 
 % TODO: (Rody Oldenhuis)
 funvals = funvals + scale*convals;
@@ -28,4 +29,4 @@ funvals = funvals + scale*convals;
 %             exp(50) - 1 + scale*convals(overflows);
     end
 
-end % penalize
+end

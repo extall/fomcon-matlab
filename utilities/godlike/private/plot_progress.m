@@ -119,15 +119,17 @@ function plot_progress(loop_index,...
         legend_update_needed = true;  end
 
     if legend_update_needed
-        legend([ghandles.function_outline
-                ghandles.chopped_function_outline
-                ghandles.plothandles(:)],...
-               legend_entries{:},...
-               'Location', 'NorthEast');
+        L = legend([ghandles.function_outline
+                    ghandles.chopped_function_outline
+                    ghandles.plothandles(:)],...
+                   legend_entries{:},...
+                   'Location', 'NorthEast');
+        if ~verLessThan('MATLAB', '9.2')
+            L.AutoUpdate = 'off'; end
     end
 
     % Do not delay plotting
-    drawnow
+    drawnow('limitrate', 'nocallbacks')
 
     % Prepare for next optimization
     previous_legend_entries = legend_entries;
@@ -284,8 +286,8 @@ function [ghandles,...
             elseif two_dimensional
 
                 if initial_draw
-                    xlabel('x_1')
-                    ylabel('x_2')
+                    xlabel('$x_1$', 'Interpreter', 'LaTeX');
+                    ylabel('$x_2$', 'Interpreter', 'LaTeX');
                     zlabel('F(x)')
 
                     view(-45,+10)
@@ -410,8 +412,8 @@ function [ghandles,...
             if two_objectives
 
                 if initial_draw
-                    xlabel('F_1(x)')
-                    ylabel('F_2(x)')
+                    xlabel('$F_1(x)$', 'Interpreter', 'LaTeX');
+                    ylabel('$F_2(x)$', 'Interpreter', 'LaTeX');
                 end
 
                 if update_axes
@@ -430,9 +432,9 @@ function [ghandles,...
             elseif three_objectives
 
                 if initial_draw
-                    xlabel('F_1(x)')
-                    ylabel('F_2(x)')
-                    zlabel('F_3(x)')
+                    xlabel('$F_1(x)$', 'Interpreter', 'LaTeX');
+                    ylabel('$F_2(x)$', 'Interpreter', 'LaTeX');
+                    zlabel('$F_3(x)$', 'Interpreter', 'LaTeX');
 
                     view(-45,+10)
                     axis tight
@@ -473,3 +475,16 @@ function [ghandles,...
     end
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+

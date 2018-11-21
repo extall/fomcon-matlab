@@ -58,7 +58,7 @@ function print_progress(loop_index,...
                 fprintf(1, ...
                         'Performing multi-objective optimization, with %d objectives.\n',...
                         options.num_objectives);
-            end % if
+            end
 
             fprintf(1, [...
                     'Total population size is %d individuals. Lower bounds on\n',...
@@ -69,7 +69,7 @@ function print_progress(loop_index,...
                     options.GODLIKE.ItersLb, options.GODLIKE.ItersUb,...
                     options.MinIters       , options.MaxIters);
 
-        end % if
+        end 
 
         % subsequent iterations
         if (algorithm_index == 1) % display new header
@@ -98,9 +98,9 @@ function print_progress(loop_index,...
                     '  #  f.count      Pareto fronts       non-Pareto fronts\n');
             elseif single
                 fprintf(1, '  #  f.count       min(F)        std(F)         descent\n');
-            end % if
+            end 
             fprintf(1, '· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·\n');
-        end % if
+        end 
 
         if multi
             fprintf(1, '%3d   %6d    %10d             %10d\n', ...
@@ -113,13 +113,29 @@ function print_progress(loop_index,...
                 min(pop{loop_index}.fitnesses),std(pop{loop_index}.fitnesses),...
                 output.previous_best_funcvalues(loop_index) -...
                 output.best_funcvalues(loop_index));
-        end % if
+        end
 
     % if we do have convergence, just display the output message
     else
         fprintf(1, '\n');
         fprintf(1, output.message);
         fprintf(1, '\n\n');
-    end % if
+    end 
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
