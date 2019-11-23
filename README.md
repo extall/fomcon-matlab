@@ -1,3 +1,4 @@
+[![View FOMCON Toolbox for MATLAB on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://se.mathworks.com/matlabcentral/fileexchange/66323-fomcon-toolbox-for-matlab)
 # fomcon-matlab
 FOMCON toolbox for MATLAB R2010a+
 
