@@ -1,10 +1,11 @@
 function varargout=step(G,t)
 % STEP  Step response of fractional-order dynamic systems.
 %
-% Usage: [Y, T] = step(G)
+% Usage: [Y, T1] = step(G, T)
 %
-% where Y is the system response, T is the time vector, and G is the
-% fractional-order SISO system.
+% where Y is the system response, T1 the generated time vector,
+% T is the input time vector, and G is the fractional-order SISO system.
+% If T is not provided, autoranging occurs.
 
 varargout = {};
 
