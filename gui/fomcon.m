@@ -21,13 +21,19 @@ function varargout = fomcon(sw, config_structure)
             % Configuration structure provided, save it
             if nargin == 2 && isstruct(config_structure)
                 config = config_structure;
+                config = check_compat(config);
                 assignin('base', config_name, config_structure);
             else
                 % Get the configuration parameters structure
                 if varexists(config_name)
                     config = evalin('base', config_name);
+                    
+                    % Compatibility: check the structure, if some new
+                    % fields are missing, add them
+                    config = check_compat(config);
                 else
                     config = default_config();
+                    config = orderfields(config);
                     assignin('base', config_name, config);
                 end
                 
@@ -60,6 +66,25 @@ function new_config = edit_config(config)
 
 end
 
+% For compatibility reasons, check the options structure
+function config = check_compat(config)
+
+    % Traverse every field and check if it also exists in the
+    % default config. If not, add the default value
+    default_config_vals = default_config();
+    fields = getfields(default_config_vals);
+
+    for k=1:length(fields)
+        if ~cfieldexists(config, fields{k})
+            warning(['Found a configuration option that does not exist in present config, setting to default: ', implode(fields{k}, '.')]);
+            config = setfield(config, fields{k}{:}, getfield(default_config_vals, fields{k}{:}));
+        end
+    end
+    
+    % Order the fields
+    config = orderfields(config);
+
+end
 
 % This function returns default toolbox
 % configuration parameters for every module

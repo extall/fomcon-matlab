@@ -1,10 +1,16 @@
 function [fexist, f] = cfieldexists(structure, structure_fields)
 %CFIELDEXISTS Check if a field (given by a string) in a structure exists
+% ver 2.0: possible to use cell array as second argument. Should look like
+%          {'My', 'Deep', 'Structure'}
 
     fexist = 1;  % Unless proven otherwise
-    fields_to_check = explode(structure_fields, '.');
+    if ~iscell(structure_fields)
+        fields_to_check = explode(structure_fields, '.');
+    else
+        fields_to_check = structure_fields;
+    end
+  
     k=1;
-    
     substructure = structure;
     while (fexist && k<=length(fields_to_check))
         % Not a structure or Field not found
