@@ -75,6 +75,9 @@ function config = default_config()
     
     core.Commensurate_order.Min_comm_order       = 0.01;
     
+    % If high-precision simulation is needed, then change this to 2 or 3
+    core.Simulations.GL_Order                    = 1;
+    
     core.Frequency_domain.Default_min_freq_exp   = -5;    % Freq. domain
     core.Frequency_domain.Default_max_freq_exp   = +5;
     core.Frequency_domain.Default_num_points     = 1000;
