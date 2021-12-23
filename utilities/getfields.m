@@ -1,4 +1,11 @@
 % Helper function for recursively returning all fields in a structure
+% USAGE: PATHS = GETFIELDS(STRCT)
+% where STRCT is the structure you want to parse.
+% NB! Returns a cell array of cell arrays, each containing a unique
+% struct path. DOES NOT return the actual values at each endpoint.
+%
+% Added for FOMCON 1.5 update.
+% A.T. 2021-12-23
 function fpaths1 = getfields(strct, field_path, fpaths)
     
     % The actual path
