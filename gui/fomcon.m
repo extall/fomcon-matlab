@@ -6,8 +6,9 @@ function varargout = fomcon(sw, config_structure)
 %        config = fomcon('config') returns current configuration structure
 
     % Define symbolic name for the configuration
-    % parameters structure which is kept in the workspace
-    config_name = 'fomcon_config';
+    % parameters structure which is kept in the user config directory
+    % under the corresponding filename (filename.mat).
+    CONFIG_NAME = 'fomcon_config.mat';    
 
     % Check input arguments
     if nargin < 1
@@ -16,17 +17,18 @@ function varargout = fomcon(sw, config_structure)
     else
 
         % Only one possible switch now: get/set configuration
-        if strcmpi(sw,'config')
+        if strcmpi(sw, 'config')
             
             % Configuration structure provided, save it
             if nargin == 2 && isstruct(config_structure)
                 config = config_structure;
                 config = check_compat(config);
-                assignin('base', config_name, config_structure);
+                userdirman('save', CONFIG_NAME, config_structure);
             else
                 % Get the configuration parameters structure
-                if varexists(config_name)
-                    config = evalin('base', config_name);
+                config_load = userdirman('load', CONFIG_NAME);
+                if ~isempty(config_load)
+                    config = config_load;
                     
                     % Compatibility: check the structure, if some new
                     % fields are missing, add them
@@ -34,7 +36,7 @@ function varargout = fomcon(sw, config_structure)
                 else
                     config = default_config();
                     config = orderfields(config);
-                    assignin('base', config_name, config);
+                    userdirman('save', CONFIG_NAME, config);
                 end
                 
             end
@@ -43,7 +45,7 @@ function varargout = fomcon(sw, config_structure)
             if nargout < 1 && ~(nargin == 2)
                 new_config = edit_config(config);
                 if ~isempty(new_config)
-                    assignin('base', config_name, new_config);
+                    userdirman('save', CONFIG_NAME, new_config);
                 end
             else
                 % Otherwise just return the configuration structure
