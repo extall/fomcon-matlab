@@ -37,14 +37,14 @@
 		
          <listitem>
             <label>Product Documentation (Web)</label>
-            <callback>web http://docs.fomcon.net/ -browser</callback>
+            <callback>web https://docs.fomcon.net/ -browser</callback>
               <icon>$toolbox/matlab/icons/bookicon.gif</icon>
         </listitem>
 
         <listitem>
              <!-- Website -->
            <label>Product Page (Web)</label>
-            <callback>web http://www.fomcon.net/ -browser;</callback>
+            <callback>web https://www.fomcon.net/ -browser;</callback>
             <icon>$docroot/techdoc/matlab_env/examples/webicon.gif</icon>
         </listitem>
     </list>
