@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.50.1
+
+Streamlined releases through the Mathworks File Exchange/GitHub pipeline. There were no changes to the toolbox code.
+
 ## v1.50.0
 
 Major changes:
