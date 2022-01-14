@@ -1,0 +1,460 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Tests for the GL solver vs. Oustaloup approximations and regular TFs</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-01-14"><meta name="DC.source" content="test_gl_sim.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Tests for the GL solver vs. Oustaloup approximations and regular TFs</h1><!--introduction--><pre>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</pre><pre>    Run this script cell-by-cell for a better informational flow</pre><pre>%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</pre><pre>     NB! Running this script will CLEAR your MATLAB workspace!
+                                  -----      ----------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Complex system approximation with Oustaloup's recursive filter</a></li><li><a href="#2">Tests for marginally stable integer-order systems</a></li><li><a href="#3">Complex system approximation with Oustaloup's recursive filter</a></li><li><a href="#4">Decreasing the step size</a></li></ul></div><h2>Complex system approximation with Oustaloup's recursive filter<a name="1"></a></h2><pre class="codeinput">acl;
+disp(<span class="string">'Loading the provided testsets...'</span>);
+loadsets;
+
+disp(<span class="string">'Complex system approximation with Oustaloup''s recursive filter'</span>);
+disp(<span class="string">' '</span>);
+disp(<span class="string">'The system is'</span>);
+disp(<span class="string">' '</span>);
+G3
+disp(<span class="string">' '</span>);
+disp(<span class="string">'We are going to simulate it using GL1, GL3, and OUSTAPP/LSIM methods'</span>);
+disp(<span class="string">'Please be aware that the precision of the Oustaloup filter approximations'</span>);
+disp(<span class="string">'will be affected by the settings in the configuration file. To see or'</span>);
+disp(<span class="string">'change these settings, please run fomcon(''config'')'</span>);
+disp(<span class="string">' '</span>);
+opts = struct;
+opts.GL_Order = 1;
+
+<span class="comment">% Here you can also see an example of using the</span>
+<span class="comment">% REFGEN function for creating excitation signals</span>
+uref = refgen(<span class="string">'prbs'</span>, [], 100, <span class="string">'Ts'</span>, 0.05);
+u = uref.u;
+t = uref.t;
+
+<span class="comment">% GL1</span>
+y_gl1 = lsim(G3, u, t, opts);
+
+<span class="comment">% GL3</span>
+opts.GL_Order = 3;
+y_gl3 = lsim(G3, u, t, opts);
+
+<span class="comment">% Oustaloup</span>
+H3 = oustapp(G3);
+y_oust3 = lsim(H3, u, t);
+
+<span class="comment">% Show the results</span>
+figure;
+plot(t, y_gl1);
+hold <span class="string">on</span>;
+plot(t, y_gl3);
+plot(t, y_oust3);
+
+grid;
+xlabel(<span class="string">'Time [s]'</span>);
+ylabel(<span class="string">'Response to PRBS sequence'</span>);
+title(<span class="string">'Time domain simulation of G3 using various approximation algorithms'</span>);
+legend({<span class="string">'GL 1st order'</span>, <span class="string">'GL 3rd order'</span>, <span class="string">'Oustaloup filter'</span>});
+</pre><pre class="codeoutput">Loading the provided testsets...
+All test sets loaded successfully.
+Complex system approximation with Oustaloup's recursive filter
+ 
+The system is
+ 
+Fractional-order transfer function:
+                   -2s^{0.63}+4
+---------------------------------------------------
+2s^{3.501}+3.8s^{2.42}+2.6s^{1.798}+2.5s^{1.31}+1.5
+ 
+We are going to simulate it using GL1, GL3, and OUSTAPP/LSIM methods
+Please be aware that the precision of the Oustaloup filter approximations
+will be affected by the settings in the configuration file. To see or
+change these settings, please run fomcon('config')
+ 
+</pre><img vspace="5" hspace="5" src="test_gl_sim_01.png" alt=""> <h2>Tests for marginally stable integer-order systems<a name="2"></a></h2><h2>Complex system approximation with Oustaloup's recursive filter<a name="3"></a></h2><pre class="codeinput">acl;
+disp(<span class="string">'Simulating a marginally stable system 1/(s^2+1)'</span>);
+loadsets;
+
+s = tf(<span class="string">'s'</span>);
+G = 1/(s^2+1);
+
+<span class="comment">% Convert to FOTF</span>
+G = fotf(G);
+
+disp(<span class="string">' '</span>);
+disp(<span class="string">'We are going to simulate it using GL1, GL3, and OUSTAPP/LSIM methods.'</span>);
+disp(<span class="string">'The key point is that the system is a FOTF so it will be simulated with'</span>);
+disp(<span class="string">'the provided GL solver.'</span>);
+disp(<span class="string">' '</span>);
+disp(<span class="string">'In this case, the settings in FOMCON config will not affect the'</span>);
+disp(<span class="string">'approximation, because the function returned will be the original one.'</span>);
+disp(<span class="string">'However, the simulation time step size does matter most profoundly.'</span>);
+disp(<span class="string">' '</span>);
+
+disp(<span class="string">'First, let''s try a step size dt=0.1'</span>);
+
+opts = struct;
+opts.GL_Order = 1;
+
+t = 0:0.1:300; <span class="comment">% Step size matters!</span>
+u = ones(size(t));
+
+<span class="comment">% GL1</span>
+y_gl1 = lsim(G, u, t, opts);
+
+<span class="comment">% GL3</span>
+opts.GL_Order = 3;
+y_gl3 = lsim(G, u, t, opts);
+
+<span class="comment">% Oustaloup</span>
+H3 = oustapp(G);
+y_oust3 = lsim(H3, u, t);
+
+<span class="comment">% Show the results: step size is 0.1</span>
+figure;
+plot(t, y_gl1);
+hold <span class="string">on</span>;
+plot(t, y_gl3);
+plot(t, y_oust3);
+
+grid;
+xlabel(<span class="string">'Time [s]'</span>);
+ylabel(<span class="string">'Step response'</span>);
+title(<span class="string">'Time domain simulation of 1/(s^2+1) with dt=0.1'</span>);
+legend({<span class="string">'GL 1st order'</span>, <span class="string">'GL 3rd order'</span>, <span class="string">'Oustaloup filter'</span>});
+
+disp(<span class="string">' '</span>);
+disp(<span class="string">'As you can see, GL1 yields an incorrect response with damped oscillations'</span>);
+disp(<span class="string">'whereas the studied system is marginally stable which means that oscillations'</span>);
+disp(<span class="string">'must be sustained. On the other hand, GL3 yields oscillations that grow in amplitude'</span>);
+disp(<span class="string">'which may also yield incorrect results. However, the Oustaloup filter based'</span>);
+disp(<span class="string">'approach yields the exact response.'</span>);
+disp(<span class="string">' '</span>);
+disp(<span class="string">'How to interpret these results? Well, it just means you have to be careful'</span>);
+disp(<span class="string">'with FOTF simulations in the time domain. The step size should be chosen small'</span>);
+disp(<span class="string">'enough to ensure coherent simulation results as we will see next.'</span>);
+disp(<span class="string">' '</span>);
+disp(<span class="string">'For some additional discussion about this issue, please see the following book:'</span>);
+disp(<span class="string">'    D. Xue, Fractional-Order Control Systems:'</span>);
+disp(<span class="string">'        Fundamentals and Numerical Implementations. De Gruyter, 2017.'</span>);
+</pre><pre class="codeoutput">Simulating a marginally stable system 1/(s^2+1)
+All test sets loaded successfully.
+ 
+We are going to simulate it using GL1, GL3, and OUSTAPP/LSIM methods.
+The key point is that the system is a FOTF so it will be simulated with
+the provided GL solver.
+ 
+In this case, the settings in FOMCON config will not affect the
+approximation, because the function returned will be the original one.
+However, the simulation time step size does matter most profoundly.
+ 
+First, let's try a step size dt=0.1
+ 
+As you can see, GL1 yields an incorrect response with damped oscillations
+whereas the studied system is marginally stable which means that oscillations
+must be sustained. On the other hand, GL3 yields oscillations that grow in amplitude
+which may also yield incorrect results. However, the Oustaloup filter based
+approach yields the exact response.
+ 
+How to interpret these results? Well, it just means you have to be careful
+with FOTF simulations in the time domain. The step size should be chosen small
+enough to ensure coherent simulation results as we will see next.
+ 
+For some additional discussion about this issue, please see the following book:
+    D. Xue, Fractional-Order Control Systems:
+        Fundamentals and Numerical Implementations. De Gruyter, 2017.
+</pre><img vspace="5" hspace="5" src="test_gl_sim_02.png" alt=""> <h2>Decreasing the step size<a name="4"></a></h2><pre class="codeinput">disp(<span class="string">'Now, let''s try a step size dt=0.01'</span>);
+
+opts.GL_Order = 1;
+
+t = 0:0.01:300; <span class="comment">% Step size matters!</span>
+u = ones(size(t));
+
+<span class="comment">% GL1</span>
+y_gl1 = lsim(G, u, t, opts);
+
+<span class="comment">% GL3</span>
+opts.GL_Order = 3;
+y_gl3 = lsim(G, u, t, opts);
+
+<span class="comment">% Oustaloup</span>
+H3 = oustapp(G);
+y_oust3 = lsim(H3, u, t);
+
+<span class="comment">% Show the results: step size is 0.1</span>
+figure;
+plot(t, y_gl1);
+hold <span class="string">on</span>;
+plot(t, y_gl3);
+plot(t, y_oust3);
+
+grid;
+xlabel(<span class="string">'Time [s]'</span>);
+ylabel(<span class="string">'Step response'</span>);
+title(<span class="string">'Time domain simulation of 1/(s^2+1) with dt=0.01'</span>);
+legend({<span class="string">'GL 1st order'</span>, <span class="string">'GL 3rd order'</span>, <span class="string">'Oustaloup filter'</span>});
+
+disp(<span class="string">' '</span>);
+disp(<span class="string">'With a smaller step size, all GL simulations come closer to the'</span>);
+disp(<span class="string">'benchmark result that is obtained by simulating 1/(s^2+1) with'</span>);
+disp(<span class="string">'MATLAB Control System toolbox. While GL1 still yields a poor result,'</span>);
+disp(<span class="string">'GL3 now shows stable oscillations which is the expected result.'</span>);
+</pre><pre class="codeoutput">Now, let's try a step size dt=0.01
+ 
+With a smaller step size, all GL simulations come closer to the
+benchmark result that is obtained by simulating 1/(s^2+1) with
+MATLAB Control System toolbox. While GL1 still yields a poor result,
+GL3 now shows stable oscillations which is the expected result.
+</pre><img vspace="5" hspace="5" src="test_gl_sim_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Tests for the GL solver vs. Oustaloup approximations and regular TFs
+%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%      Run this script cell-by-cell for a better informational flow
+%
+%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%       NB! Running this script will CLEAR your MATLAB workspace!
+%                                    REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Complex system approximation with Oustaloup's recursive filter
+acl;
+disp('Loading the provided testsets...');
+loadsets;
+
+disp('Complex system approximation with Oustaloup''s recursive filter');
+disp(' ');
+disp('The system is');
+disp(' ');
+G3
+disp(' ');
+disp('We are going to simulate it using GL1, GL3, and OUSTAPP/LSIM methods');
+disp('Please be aware that the precision of the Oustaloup filter approximations');
+disp('will be affected by the settings in the configuration file. To see or');
+disp('change these settings, please run fomcon(''config'')');
+disp(' ');
+opts = struct;
+opts.GL_Order = 1;
+
+% Here you can also see an example of using the 
+% REFGEN function for creating excitation signals
+uref = refgen('prbs', [], 100, 'Ts', 0.05);
+u = uref.u;
+t = uref.t;
+
+% GL1
+y_gl1 = lsim(G3, u, t, opts);
+
+% GL3
+opts.GL_Order = 3;
+y_gl3 = lsim(G3, u, t, opts);
+
+% Oustaloup
+H3 = oustapp(G3);
+y_oust3 = lsim(H3, u, t);
+
+% Show the results
+figure;
+plot(t, y_gl1);
+hold on;
+plot(t, y_gl3);
+plot(t, y_oust3);
+
+grid;
+xlabel('Time [s]');
+ylabel('Response to PRBS sequence');
+title('Time domain simulation of G3 using various approximation algorithms');
+legend({'GL 1st order', 'GL 3rd order', 'Oustaloup filter'});
+
+%% Tests for marginally stable integer-order systems
+
+%% Complex system approximation with Oustaloup's recursive filter
+acl;
+disp('Simulating a marginally stable system 1/(s^2+1)');
+loadsets;
+
+s = tf('s');
+G = 1/(s^2+1);
+
+% Convert to FOTF
+G = fotf(G);
+
+disp(' ');
+disp('We are going to simulate it using GL1, GL3, and OUSTAPP/LSIM methods.');
+disp('The key point is that the system is a FOTF so it will be simulated with');
+disp('the provided GL solver.');
+disp(' ');
+disp('In this case, the settings in FOMCON config will not affect the');
+disp('approximation, because the function returned will be the original one.');
+disp('However, the simulation time step size does matter most profoundly.');
+disp(' ');
+
+disp('First, let''s try a step size dt=0.1');
+
+opts = struct;
+opts.GL_Order = 1;
+
+t = 0:0.1:300; % Step size matters!
+u = ones(size(t));
+
+% GL1
+y_gl1 = lsim(G, u, t, opts);
+
+% GL3
+opts.GL_Order = 3;
+y_gl3 = lsim(G, u, t, opts);
+
+% Oustaloup
+H3 = oustapp(G);
+y_oust3 = lsim(H3, u, t);
+
+% Show the results: step size is 0.1
+figure;
+plot(t, y_gl1);
+hold on;
+plot(t, y_gl3);
+plot(t, y_oust3);
+
+grid;
+xlabel('Time [s]');
+ylabel('Step response');
+title('Time domain simulation of 1/(s^2+1) with dt=0.1');
+legend({'GL 1st order', 'GL 3rd order', 'Oustaloup filter'});
+
+disp(' ');
+disp('As you can see, GL1 yields an incorrect response with damped oscillations');
+disp('whereas the studied system is marginally stable which means that oscillations');
+disp('must be sustained. On the other hand, GL3 yields oscillations that grow in amplitude');
+disp('which may also yield incorrect results. However, the Oustaloup filter based');
+disp('approach yields the exact response.');
+disp(' ');
+disp('How to interpret these results? Well, it just means you have to be careful');
+disp('with FOTF simulations in the time domain. The step size should be chosen small');
+disp('enough to ensure coherent simulation results as we will see next.');
+disp(' ');
+disp('For some additional discussion about this issue, please see the following book:');
+disp('    D. Xue, Fractional-Order Control Systems:');
+disp('        Fundamentals and Numerical Implementations. De Gruyter, 2017.');
+
+%% Decreasing the step size
+disp('Now, let''s try a step size dt=0.01');
+
+opts.GL_Order = 1;
+
+t = 0:0.01:300; % Step size matters!
+u = ones(size(t));
+
+% GL1
+y_gl1 = lsim(G, u, t, opts);
+
+% GL3
+opts.GL_Order = 3;
+y_gl3 = lsim(G, u, t, opts);
+
+% Oustaloup
+H3 = oustapp(G);
+y_oust3 = lsim(H3, u, t);
+
+% Show the results: step size is 0.1
+figure;
+plot(t, y_gl1);
+hold on;
+plot(t, y_gl3);
+plot(t, y_oust3);
+
+grid;
+xlabel('Time [s]');
+ylabel('Step response');
+title('Time domain simulation of 1/(s^2+1) with dt=0.01');
+legend({'GL 1st order', 'GL 3rd order', 'Oustaloup filter'});
+
+disp(' ');
+disp('With a smaller step size, all GL simulations come closer to the');
+disp('benchmark result that is obtained by simulating 1/(s^2+1) with');
+disp('MATLAB Control System toolbox. While GL1 still yields a poor result,');
+disp('GL3 now shows stable oscillations which is the expected result.');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

@@ -13,4 +13,13 @@
          <file>utilities/optimize/html/testoptimize.html</file>
       </demoitem>
    </demosection>
+   <demosection>
+      <label>tests</label>
+      <demoitem>
+         <label>test_gl_sim</label>
+         <type>other</type>
+         <source>test_gl_sim</source>
+         <file>tests/html/test_gl_sim.html</file>
+      </demoitem>
+   </demosection>
 </demos>
