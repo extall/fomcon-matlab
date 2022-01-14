@@ -1,4 +1,4 @@
-d function G = fotf(S)
+function G = fotf(S)
 %FOTF Convert to FOTF
 
 G = getfotf(S);
