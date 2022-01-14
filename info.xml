@@ -2,7 +2,7 @@
     xsi:noNamespaceSchemaLocation="optional">
     <?xml-stylesheet type="text/xsl"href="optional"?>
     <!-- info.xml file for the FOMCON toolbox -->
-    <!-- Copyright 2012 Aleksei Tepljakov.-->
+    <!-- Copyright 2011-2022 Aleksei Tepljakov.-->
 	
     <matlabrelease>2010a</matlabrelease>
     <name>FOMCON</name>
