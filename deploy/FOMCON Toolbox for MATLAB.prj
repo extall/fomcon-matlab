@@ -1,0 +1,221 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration build-checksum="999167415" file="C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\deploy\FOMCON Toolbox for MATLAB.prj" location="C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\deploy" name="FOMCON Toolbox for MATLAB" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>FOMCON Toolbox for MATLAB</param.appname>
+    <param.authnamewatermark>Aleksei Tepljakov</param.authnamewatermark>
+    <param.email>aleksei.tepljakov@taltech.ee</param.email>
+    <param.company>Tallinn University of Technology</param.company>
+    <param.summary>FOMCON toolbox for MATLAB is dedicated to fractional-order modeling and control of dynamic systems.</param.summary>
+    <param.description />
+    <param.screenshot />
+    <param.version>1.50.2</param.version>
+    <param.output>${PROJECT_ROOT}\FOMCON Toolbox for MATLAB.mltbx</param.output>
+    <param.products.name>
+      <item>MATLAB</item>
+      <item>Control System Toolbox</item>
+      <item>Signal Processing Toolbox</item>
+      <item>Simulink</item>
+      <item>Optimization Toolbox</item>
+    </param.products.name>
+    <param.products.id>
+      <item>1</item>
+      <item>3</item>
+      <item>8</item>
+      <item>2</item>
+      <item>6</item>
+    </param.products.id>
+    <param.products.version>
+      <item>9.11</item>
+      <item>10.11</item>
+      <item>8.7</item>
+      <item>10.4</item>
+      <item>9.2</item>
+    </param.products.version>
+    <param.platforms />
+    <param.guid>470bae5f-3101-40aa-84f4-183efe5d7545</param.guid>
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+% .svn
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%
+.git/*</param.exclude.filters>
+    <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
+    <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;examples&gt;
+   &lt;exampleCategory name="tests"&gt;
+      &lt;example name="test_gl_sim" type="html"&gt;
+         &lt;file type="source"&gt;/tests/html/test_gl_sim.html&lt;/file&gt;
+         &lt;file type="main"&gt;/tests/test_gl_sim.m&lt;/file&gt;
+         &lt;file type="thumbnail"&gt;/tests/html/test_gl_sim.png&lt;/file&gt;
+         &lt;file type="image"&gt;/tests/html/test_gl_sim_01.png&lt;/file&gt;
+         &lt;file type="image"&gt;/tests/html/test_gl_sim_02.png&lt;/file&gt;
+         &lt;file type="image"&gt;/tests/html/test_gl_sim_03.png&lt;/file&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+   &lt;exampleCategory name="optimize"&gt;
+      &lt;example name="testoptimize" type="html"&gt;
+         &lt;file type="source"&gt;/utilities/optimize/html/testoptimize.html&lt;/file&gt;
+         &lt;file type="main"&gt;/utilities/optimize/testoptimize.m&lt;/file&gt;
+         &lt;file type="thumbnail"&gt;/utilities/optimize/html/testoptimize.png&lt;/file&gt;
+         &lt;file type="image"&gt;/utilities/optimize/html/testoptimize_01.png&lt;/file&gt;
+         &lt;file type="image"&gt;/utilities/optimize/html/testoptimize_02.png&lt;/file&gt;
+         &lt;file type="image"&gt;/utilities/optimize/html/testoptimize_03.png&lt;/file&gt;
+         &lt;file type="image"&gt;/utilities/optimize/html/testoptimize_04.png&lt;/file&gt;
+      &lt;/example&gt;
+   &lt;/exampleCategory&gt;
+&lt;/examples&gt;</param.examples>
+    <param.demosxml />
+    <param.apps />
+    <param.registered.apps />
+    <param.docs />
+    <param.getting.started.guide />
+    <param.matlabpath.excludes />
+    <param.javaclasspath.excludes />
+    <param.exported.on.package>false</param.exported.on.package>
+    <param.required.addons />
+    <param.matlab.project.id />
+    <param.matlab.project.name />
+    <param.release.start>R2014b</param.release.start>
+    <param.release.end>latest</param.release.end>
+    <param.release.current.only>false</param.release.current.only>
+    <param.compatiblity.windows>true</param.compatiblity.windows>
+    <param.compatiblity.macos>true</param.compatiblity.macos>
+    <param.compatiblity.linux>true</param.compatiblity.linux>
+    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
+    <param.installation.map />
+    <param.additional.sw.names />
+    <param.additional.sw.licenses />
+    <param.additional.sw.win.url />
+    <param.additional.sw.mac.url />
+    <param.additional.sw.linux.url />
+    <unset>
+      <param.description />
+      <param.screenshot />
+      <param.output />
+      <param.platforms />
+      <param.exclude.pcodedmfiles />
+      <param.demosxml />
+      <param.apps />
+      <param.registered.apps />
+      <param.docs />
+      <param.getting.started.guide />
+      <param.matlabpath.excludes />
+      <param.javaclasspath.excludes />
+      <param.exported.on.package />
+      <param.required.addons />
+      <param.matlab.project.id />
+      <param.matlab.project.name />
+      <param.release.current.only />
+      <param.compatiblity.windows />
+      <param.compatiblity.macos />
+      <param.compatiblity.linux />
+      <param.compatiblity.matlabonline />
+      <param.installation.map />
+      <param.additional.sw.names />
+      <param.additional.sw.licenses />
+      <param.additional.sw.win.url />
+      <param.additional.sw.mac.url />
+      <param.additional.sw.linux.url />
+    </unset>
+    <fileset.rootdir>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\.git</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\@foss</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\@fotf</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\@lti</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\CHANGELOG.md</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\controllers</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\demos.xml</file>
+      <file>${PROJECT_ROOT}</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\fomcon.png</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\gui</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\id</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\LICENSE</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\models</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\README.md</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\tests</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\testsets</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\utilities</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included />
+    <fileset.depfun.excluded>
+      <file>${MATLAB_ROOT}\toolbox\shared\controllib\engine\@lti\lti.m</file>
+    </fileset.depfun.excluded>
+    <fileset.package />
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}" name="FOMCON Toolbox for MATLAB.mltbx" optional="false">C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\deploy\FOMCON Toolbox for MATLAB.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>E:\apps\Mathworks\MATLAB\R2021b</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="neuralnetwork" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
+      </toolbox>
+      <toolbox>
+        <matlabhdlcoder>
+          <enabled>true</enabled>
+        </matlabhdlcoder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

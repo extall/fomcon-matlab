@@ -3,16 +3,8 @@
    <name>FOMCON Toolbox for MATLAB</name>
    <type>toolbox</type>
    <icon>HelpIcon.DEMOS</icon>
+   <website/>
    <description/>
-   <demosection>
-      <label>optimize</label>
-      <demoitem>
-         <label>testoptimize</label>
-         <type>other</type>
-         <source>testoptimize</source>
-         <file>utilities/optimize/html/testoptimize.html</file>
-      </demoitem>
-   </demosection>
    <demosection>
       <label>tests</label>
       <demoitem>
@@ -20,6 +12,15 @@
          <type>other</type>
          <source>test_gl_sim</source>
          <file>tests/html/test_gl_sim.html</file>
+      </demoitem>
+   </demosection>
+   <demosection>
+      <label>optimize</label>
+      <demoitem>
+         <label>testoptimize</label>
+         <type>other</type>
+         <source>testoptimize</source>
+         <file>utilities/optimize/html/testoptimize.html</file>
       </demoitem>
    </demosection>
 </demos>
