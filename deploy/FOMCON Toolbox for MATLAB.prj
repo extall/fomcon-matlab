@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="999167415" file="C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\deploy\FOMCON Toolbox for MATLAB.prj" location="C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\deploy" name="FOMCON Toolbox for MATLAB" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="4234648153" file="C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\deploy\FOMCON Toolbox for MATLAB.prj" location="C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\deploy" name="FOMCON Toolbox for MATLAB" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>FOMCON Toolbox for MATLAB</param.appname>
     <param.authnamewatermark>Aleksei Tepljakov</param.authnamewatermark>
     <param.email>aleksei.tepljakov@taltech.ee</param.email>
@@ -7,7 +7,7 @@
     <param.summary>FOMCON toolbox for MATLAB is dedicated to fractional-order modeling and control of dynamic systems.</param.summary>
     <param.description />
     <param.screenshot />
-    <param.version>1.50.2</param.version>
+    <param.version>1.50.3</param.version>
     <param.output>${PROJECT_ROOT}\FOMCON Toolbox for MATLAB.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -51,7 +51,9 @@
 % All files matching a pattern in all subfolders of the toolbox folder:
 % **/*.bak
 %
-.git/*</param.exclude.filters>
+.git
+.gitignore
+deploy</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;examples&gt;
@@ -134,14 +136,13 @@
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\.git</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\@foss</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\@fotf</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\@lti</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\CHANGELOG.md</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\controllers</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\demos.xml</file>
-      <file>${PROJECT_ROOT}</file>
+      <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\docs</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\fomcon.png</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\gui</file>
       <file>C:\Users\Aleksei\Documents\MatlabTools\fomcon-matlab\id</file>

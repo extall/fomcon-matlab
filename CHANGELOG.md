@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.50.3
+
+* Resolved regression bug with the release whereby all the necessary files and folders were not added to MATLAB path upon installing the toolbox.
+
+* Slightly updated the documentation in the README file concerning the new installation method.
+
+* Added the project file for packaging the toolbox.
+
 ## v1.50.2
 
 Hotfix for MATLAB R2022a wherein an error is produced when MATLAB is started due to a missing line in the bundled `info.xml` file. The file has been removed for now, but may return in the future, when the documentation is updated.
