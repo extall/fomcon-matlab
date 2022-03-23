@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.50.2
+
+Hotfix for MATLAB R2022a wherein an error is produced when MATLAB is started due to a missing line in the bundled `info.xml` file. The file has been removed for now, but may return in the future, when the documentation is updated.
+
 ## v1.50.1
 
 Streamlined releases through the Mathworks File Exchange/GitHub pipeline. There were no changes to the toolbox code.
