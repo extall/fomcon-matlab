@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.50.4
+
+* Added a way to convert a `fotf` object to a symbolic expression. The new function is `fotf2expr`. Note that this feature requires the **Symbolic Math Toolbox**. There are some updates to existing functions as well. For example, the `poly2str` function now supports a 4th argument which is the kind of multiplication symbol to be inserted according to need -- by default, it is empty, i.e. no multiplication symbol is inserted, and this is used in FOMCON GUIs when you see the string expressions for FOTF numerator and denominator.
+
 ## v1.50.3
 
 * Resolved regression bug with the release whereby all the necessary files and folders were not added to MATLAB path upon installing the toolbox.
