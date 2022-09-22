@@ -61,7 +61,9 @@ function [polystr] = poly2str(a, na, baseVar, mulSymbol)
        elseif fleq(polyArray(n,1),-1)
            polystr=strcat(polystr,'-');
        elseif fleq(polyArray(n,1),1) && n ~= 1
-           wasCoeff = 1;
+           if ~fleq(polyArray(n,1), 1) && ~fleq(polyArray(n,1), -1)
+               wasCoeff = 1;
+           end
            polystr=strcat(polystr,'+');
        end
   
