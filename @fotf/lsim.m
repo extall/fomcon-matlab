@@ -149,6 +149,9 @@ function varargout=lsim(G, u, t, opts)
         end
         
     end
+
+    % Make sure y is a column vector
+    y = y(:);
 	
     % Account for I/O delay
     if (~isempty(G.ioDelay) && G.ioDelay > 0)
@@ -163,9 +166,6 @@ function varargout=lsim(G, u, t, opts)
     end
     
 	if showPBar, delete(wBar); end
-    
-    % Make sure y is a column vector
-    y = colv(y);
     
     switch (nargout)
     case 0
