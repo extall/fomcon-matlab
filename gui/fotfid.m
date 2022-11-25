@@ -299,8 +299,8 @@ function btnIdentify_Callback(hObject, eventdata, handles)
         end
 
         % Update model
-        G_zer = poly2str(b,nb);
-        G_pol = poly2str(a,na);
+        G_zer = fpoly2str(b,nb);
+        G_pol = fpoly2str(a,na);
 
         set(handles.txtB, 'String', G_zer);
         set(handles.txtA, 'String', G_pol);
@@ -518,7 +518,7 @@ function btnGenerate_Callback(hObject, eventdata, handles)
     a = ones(1,length(na));
     
     % Get fractional polynomial
-    poly = poly2str(a,na);
+    poly = fpoly2str(a,na);
     
     % Set polynomial based on selection
     switch (get(handles.menuPolySelect, 'Value'))
@@ -941,8 +941,8 @@ if ~isempty(pr)
    modelName = pr{1};
    myModel = evalin('base', modelName);
    [a,na,b,nb,L] = fotfparam(myModel);
-   set(handles.txtB, 'String', poly2str(b,nb));
-   set(handles.txtA, 'String', poly2str(a,na));
+   set(handles.txtB, 'String', fpoly2str(b,nb));
+   set(handles.txtA, 'String', fpoly2str(a,na));
    
    % Is there a delay?
    if ~isempty(L) && L > 0
@@ -1174,8 +1174,8 @@ if get(handles.chkK, 'Value')
    end
 end
 
-set(handles.txtB,'String',poly2str(b,nb));
-set(handles.txtA,'String',poly2str(a,na));
+set(handles.txtB,'String',fpoly2str(b,nb));
+set(handles.txtA,'String',fpoly2str(a,na));
 
 
 % --------------------------------------------------------------------
@@ -1191,8 +1191,8 @@ pr = inputdlg({'Coefficient accuracy:', 'Exponent accuracy:'}, ...
 if ~isempty(pr)
     G=newfotf(get(handles.txtB,'String'),get(handles.txtA,'String'));
     [a,na,b,nb]=fotfparam(round(G,str2num(pr{2}),str2num(pr{1})));
-    set(handles.txtB,'String',poly2str(b,nb));
-    set(handles.txtA,'String',poly2str(a,na));
+    set(handles.txtB,'String',fpoly2str(b,nb));
+    set(handles.txtA,'String',fpoly2str(a,na));
 end
 
 
@@ -1209,8 +1209,8 @@ pr = inputdlg({'Coefficient accuracy:', 'Exponent accuracy:'}, ...
 if ~isempty(pr)
     G=newfotf(get(handles.txtB,'String'),get(handles.txtA,'String'));
     [a,na,b,nb]=fotfparam(trunc(G,str2num(pr{2}),str2num(pr{1})));
-    set(handles.txtB,'String',poly2str(b,nb));
-    set(handles.txtA,'String',poly2str(a,na));
+    set(handles.txtB,'String',fpoly2str(b,nb));
+    set(handles.txtA,'String',fpoly2str(a,na));
 end
 
 

@@ -4,7 +4,7 @@ function G = exp(H)
     % Use MATLAB built-in function to evaluate the delay
     s=tf('s');
     [a,na,b,nb]=fotfparam(H);
-    to_eval = poly2str(b,nb,'s');
+    to_eval = fpoly2str(b,nb,'s');
     
     % Check for +/-"1"s, i.e. for +s and -s cases
     if ~strcmpi(to_eval, '-s') && ~strcmpi(to_eval, '+s')

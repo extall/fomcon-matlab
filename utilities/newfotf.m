@@ -18,14 +18,14 @@ function  G = newfotf(zeroPoly, polePoly, T)
         b = zeroPoly(1:end/2);
         nb = zeroPoly(end/2+1:end);
     else
-        [b nb] = str2poly(zeroPoly);
+        [b nb] = str2fpoly(zeroPoly);
     end
     
     if isnumeric(polePoly)
         a = polePoly(1:end/2);
         na = polePoly(end/2+1:end);
     else
-        [a na] = str2poly(polePoly);
+        [a na] = str2fpoly(polePoly);
     end
     
     if nargin < 3

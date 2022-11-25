@@ -11,8 +11,8 @@ b = G.b; nb = G.nb;
 ioDelay = G.ioDelay;
 
 % Create the expressions in string form first
-sa  = poly2str(a, na, 's', '*');
-sb  = poly2str(b, nb, 's', '*');
+sa  = fpoly2str(a, na, 's', '*');
+sb  = fpoly2str(b, nb, 's', '*');
 sio = iod2str(ioDelay, 's', '*');
 
 % Replace empty delay with a mul by 1

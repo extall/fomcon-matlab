@@ -197,7 +197,7 @@ function btnEdit_Callback(hObject, eventdata, handles)
 		config = fomcon('config');
         numSigDig = config.Core.General.Model_significant_digits;
 		
-        defaultanswer={thisEntry, poly2str(b,nb), poly2str(a,na), num2str(ioDel, numSigDig)};
+        defaultanswer={thisEntry, fpoly2str(b,nb), fpoly2str(a,na), num2str(ioDel, numSigDig)};
         name='Edit FO transfer function';
 
         options.Resize      = 'on';

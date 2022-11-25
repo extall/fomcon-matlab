@@ -381,8 +381,8 @@ function freqIdentify(handles)
     [a, na, b, nb, gg, J] = ffid(idd, q, [n, m], idmethod);
     
     % Update model
-    G_zer = poly2str(b,nb);
-    G_pol = poly2str(a,na);
+    G_zer = fpoly2str(b,nb);
+    G_pol = fpoly2str(a,na);
     
     set(handles.txtB, 'String', G_zer);
     set(handles.txtA, 'String', G_pol);
