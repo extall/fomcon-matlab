@@ -7,7 +7,7 @@
     <param.summary>FOMCON toolbox for MATLAB is dedicated to fractional-order modeling and control of dynamic systems.</param.summary>
     <param.description />
     <param.screenshot />
-    <param.version>1.50.3</param.version>
+    <param.version>1.50.4</param.version>
     <param.output>${PROJECT_ROOT}\FOMCON Toolbox for MATLAB.mltbx</param.output>
     <param.products.name>
       <item>MATLAB</item>
@@ -96,7 +96,7 @@ deploy</param.exclude.filters>
     <param.compatiblity.windows>true</param.compatiblity.windows>
     <param.compatiblity.macos>true</param.compatiblity.macos>
     <param.compatiblity.linux>true</param.compatiblity.linux>
-    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
+    <param.compatiblity.matlabonline>false</param.compatiblity.matlabonline>
     <param.installation.map />
     <param.additional.sw.names />
     <param.additional.sw.licenses />
@@ -124,7 +124,6 @@ deploy</param.exclude.filters>
       <param.compatiblity.windows />
       <param.compatiblity.macos />
       <param.compatiblity.linux />
-      <param.compatiblity.matlabonline />
       <param.installation.map />
       <param.additional.sw.names />
       <param.additional.sw.licenses />
