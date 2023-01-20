@@ -82,7 +82,7 @@ classdef ufpoly
 
             % Sort both matrices according to values in na
             [na, ind] = sort(na, 'descend');
-            a = a(ind);
+            a = a(ind(:,1),:);
 
             % Just set the object properties
             obj.a = a;
