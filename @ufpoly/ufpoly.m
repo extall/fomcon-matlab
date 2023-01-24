@@ -32,20 +32,9 @@ classdef ufpoly
             %   - str which holds the string for the ufpoly.
             %   - symb (optional). The variable symbol. Default is 's'.
 
-%             p = inputParser;
-% 
-%             % The input arguments with default values
-%             addOptional(p, 'a', [], @(x) isnumeric(x));
-%             addOptional(p, 'na', [], @(x) isnumeric(x));
-%             addOptional(p, 'str', '', @ischar);
-%             addParameter(p, 'symb', 's', @ischar);
-% 
-%             parse(p, varargin{:});
-% 
-%             a = p.Results.a;
-%             na = p.Results.na;
-%             str = p.Results.str;
-%             symb = p.Results.symb;
+            if nargin < 1
+                error('Cannot create an empty UFPOLY');
+            end
 
             symb = 's';
             if isnumeric(varargin{1}) && nargin > 1 && isnumeric(varargin{2})
@@ -72,17 +61,25 @@ classdef ufpoly
                     error('a and na must have exactly the same dimensions.');
                 end
                 if size(a, 2) ~= 2 || size(na, 2) ~= 2
-                    error('a and na must have exactly two columns.');
+                    error('a and na must have exactly two columns (specifying lower and upper bounds, respectively).');
                 end
 
             elseif ~isempty(str)
                 % Simply call str2ufpoly
                 [a, na] = str2ufpoly(str);
             end
+            
+            % Remove zero entries, if any
+            zero_rows = all(a == 0, 2);
+            a(zero_rows) = [];
+            na(zero_rows) = [];
 
             % Sort both matrices according to values in na
-            [na, ind] = sort(na, 'descend');
-            a = a(ind(:,1),:);
+            
+            % Sort by lower interval value in exponent
+            [nal, ind] = sort(na(:,1), 'descend');
+            nau = na(ind, 2); na = [nal nau];
+            a = a(ind,:);
 
             % Just set the object properties
             obj.a = a;
