@@ -101,3 +101,81 @@ assert(all(na == [0 0; 1 1], 'all'), ...
 
 assert(symb == 's', ...
     'Incorrect extracted symbol');
+
+%% Testcase
+mystr = '-1+s';
+[a, na, symb] = str2ufpoly(mystr);
+
+assert(all(a == [-1 -1; 1 1], 'all'), ...
+    'Incorrect values of extracted coefficients');
+
+assert(all(na == [0 0; 1 1], 'all'), ...
+    'Incorrect values of extracted exponents');
+
+assert(symb == 's', ...
+    'Incorrect extracted symbol');
+
+%% Testcase
+mystr = '-1+s';
+[a, na, symb] = str2ufpoly(mystr);
+
+assert(all(a == [-1 -1; 1 1], 'all'), ...
+    'Incorrect values of extracted coefficients');
+
+assert(all(na == [0 0; 1 1], 'all'), ...
+    'Incorrect values of extracted exponents');
+
+assert(symb == 's', ...
+    'Incorrect extracted symbol');
+
+%% Testcase
+mystr = 's-1';
+[a, na, symb] = str2ufpoly(mystr);
+
+assert(all(a == [1 1; -1 -1], 'all'), ...
+    'Incorrect values of extracted coefficients');
+
+assert(all(na == [1 1; 0 0], 'all'), ...
+    'Incorrect values of extracted exponents');
+
+assert(symb == 's', ...
+    'Incorrect extracted symbol');
+
+%% Testcase
+mystr = '-s-1';
+[a, na, symb] = str2ufpoly(mystr);
+
+assert(all(a == [-1 -1; -1 -1], 'all'), ...
+    'Incorrect values of extracted coefficients');
+
+assert(all(na == [1 1; 0 0], 'all'), ...
+    'Incorrect values of extracted exponents');
+
+assert(symb == 's', ...
+    'Incorrect extracted symbol');
+
+%% Testcase
+mystr = '-1-s';
+[a, na, symb] = str2ufpoly(mystr);
+
+assert(all(a == [-1 -1; -1 -1], 'all'), ...
+    'Incorrect values of extracted coefficients');
+
+assert(all(na == [0 0; 1 1], 'all'), ...
+    'Incorrect values of extracted exponents');
+
+assert(symb == 's', ...
+    'Incorrect extracted symbol');
+
+%% Testcase
+mystr = '-3s^[2,3]-s';
+[a, na, symb] = str2ufpoly(mystr);
+
+assert(all(a == [-3 -3; -1 -1], 'all'), ...
+    'Incorrect values of extracted coefficients');
+
+assert(all(na == [2 3; 1 1], 'all'), ...
+    'Incorrect values of extracted exponents');
+
+assert(symb == 's', ...
+    'Incorrect extracted symbol');

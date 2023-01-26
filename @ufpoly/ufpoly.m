@@ -74,6 +74,11 @@ classdef ufpoly
             a(zero_rows) = [];
             na(zero_rows) = [];
 
+            % Make sure all rows in na are unique
+            if any(size(na) > size(unique(na, 'rows')))
+                error('The scalar or interval exponents of all terms must be unique.');
+            end
+
             % Sort both matrices according to values in na
             
             % Sort by lower interval value in exponent

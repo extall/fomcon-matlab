@@ -43,7 +43,8 @@ function [polystr, uintvl] = ufpoly2str(a, na, baseVar, mulSymbol)
        % Term coefficient
        wasCoeff = 0;  % Determine if there was a coefficient to append the multiplication symbol
        coeffNominalVal = fleq(a(n,1), a(n,2));
-       expNominalVal = fleq(na(n,1), na(n,2)); 
+       expNominalVal = fleq(na(n,1), na(n,2));
+       expUnity = fleq(na(n,1), 1);
        expZero = fleq(na(n,1),0) && fleq(na(n,2),0);
        
        % Coefficient
@@ -62,14 +63,19 @@ function [polystr, uintvl] = ufpoly2str(a, na, baseVar, mulSymbol)
           if fleq(abs(coeff), 1) && expZero
              add_coeff = '1';
           end
+
+          % Account for a negative free term
+          if fleq(abs(coeff), 1) && expZero && coeff < 0
+             add_sign = '-';
+          end
           
           if n == 1 && fleq(abs(coeff), 1) && coeff < 0
               add_sign = '-';
               wasCoeff = 1;
           end
           
-          if n ~= 1 && coeff > 0
-              add_sign= '+';
+          if n ~= 1
+              add_sign = signstr(coeff);
           end
           
           polystr = [polystr add_sign add_coeff];
@@ -93,8 +99,14 @@ function [polystr, uintvl] = ufpoly2str(a, na, baseVar, mulSymbol)
                addmul = muls;
            end
            if expNominalVal
-               polystr = [polystr addmul varn '^{' ...
+               
+               if expUnity
+                   polystr = [polystr addmul varn];
+               else
+                   polystr = [polystr addmul varn '^{' ...
                    num2str(na(n,1), numSigDig) '}'];
+               end
+               
            else
                polystr = [polystr addmul varn '^{' ...
                    typeset_interval(na(n,:), numSigDig) '}'];   
@@ -109,4 +121,9 @@ end
 function str = typeset_interval(a, numSigDig)
     str = ['[' num2str(a(1), numSigDig) ...
         ', ' num2str(a(2), numSigDig) ']'];
+end
+
+function str = signstr(a)
+    str = '+';
+    if a < 0, str = '-'; end
 end

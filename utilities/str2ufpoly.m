@@ -106,6 +106,11 @@ for k=1:numTerms
 
 end
 
+% Check that all coeffs and exponents contain numeric values
+if any(isnan(a), 'all') || any(isnan(na), 'all')
+    error('Failed parsing the expression, have non-numeric values');
+end
+
 
 end
 
@@ -125,6 +130,11 @@ function [a, na] = parseTerm(term, symb)
         
         if isempty(term_parts)
             a = [1 1];
+
+            % Consider the sign
+            if term(1) == '-'
+                a = -1 * a;
+            end
             na_part = term;
         else
             a = parseInterval(term_parts{1});
@@ -283,7 +293,6 @@ function newstr = placemuls(oldstr, symb)
 
     newstr = oldstr;
 
-
     % Find locations of symbols. If any is not preceded by *, insert
     locs = find(newstr == symb);
 
@@ -296,9 +305,9 @@ function newstr = placemuls(oldstr, symb)
     
         added = 0;
         for k=1:length(locs)
-            if ~strcmp(newstr(locs(k)-1), '*') && ...
-                    ~ (strcmp(newstr(locs(k)-1), '+') || ...
-                       strcmp(newstr(locs(k)-1), '-'))
+            if ~strcmp(newstr(locs(k)-1+added), '*') && ...
+                    ~(strcmp(newstr(locs(k)-1+added), '+') || ...
+                       strcmp(newstr(locs(k)-1+added), '-'))
                 % Need to insert *
                 newstr = [newstr(1:locs(k)-1+added) '*' newstr(locs(k)+added:end)];
                 added = added + 1;
