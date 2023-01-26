@@ -296,7 +296,9 @@ function newstr = placemuls(oldstr, symb)
     
         added = 0;
         for k=1:length(locs)
-            if ~strcmp(newstr(locs(k)-1), '*')
+            if ~strcmp(newstr(locs(k)-1), '*') && ...
+                    ~ (strcmp(newstr(locs(k)-1), '+') || ...
+                       strcmp(newstr(locs(k)-1), '-'))
                 % Need to insert *
                 newstr = [newstr(1:locs(k)-1+added) '*' newstr(locs(k)+added:end)];
                 added = added + 1;

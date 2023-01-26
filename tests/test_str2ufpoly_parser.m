@@ -75,3 +75,29 @@ assert(all(na == [5.5, 5.6; -1, 0; 1, 1; 0 0], 'all'), ...
 
 assert(symb == 'y', ...
     'Incorrect extracted symbol');
+
+%% Testcase
+mystr = '1+s';
+[a, na, symb] = str2ufpoly(mystr);
+
+assert(all(a == [1 1; 1 1], 'all'), ...
+    'Incorrect values of extracted coefficients');
+
+assert(all(na == [0 0; 1 1], 'all'), ...
+    'Incorrect values of extracted exponents');
+
+assert(symb == 's', ...
+    'Incorrect extracted symbol');
+
+%% Testcase
+mystr = '-1+s';
+[a, na, symb] = str2ufpoly(mystr);
+
+assert(all(a == [-1 -1; 1 1], 'all'), ...
+    'Incorrect values of extracted coefficients');
+
+assert(all(na == [0 0; 1 1], 'all'), ...
+    'Incorrect values of extracted exponents');
+
+assert(symb == 's', ...
+    'Incorrect extracted symbol');
