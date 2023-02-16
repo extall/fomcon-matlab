@@ -23,7 +23,7 @@ switch lower(method)
         iodel = pdel(1,1) + rand(1,1) * (pdel(1,2) - pdel(1,1));
 
         % Create the FOTF object
-        G = fotf(a, na, b, nb, iodel);
+        G = fotf(a.', na.', b.', nb.', iodel);
         
     otherwise
         error('Unknown sampling method provided.');
