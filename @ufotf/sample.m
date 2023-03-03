@@ -20,7 +20,10 @@ switch lower(method)
         na = pa.na(:,1) + (pa.na(:,2)-pa.na(:,1)).*rand(size(pa.na,1),1);
 
         % Delay
-        iodel = pdel(1,1) + rand(1,1) * (pdel(1,2) - pdel(1,1));
+        iodel = [];
+        if ~isempty(pdel)
+            iodel = pdel(1,1) + rand(1,1) * (pdel(1,2) - pdel(1,1));
+        end
 
         % Create the FOTF object
         G = fotf(a.', na.', b.', nb.', iodel);
