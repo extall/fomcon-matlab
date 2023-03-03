@@ -54,8 +54,8 @@ function [polystr, uintvl] = ufpoly2str(a, na, baseVar, mulSymbol)
           % Is it unity?
           add_sign = '';
           add_coeff = '';
-          if ~fleq(abs(coeff), 1)
-              add_coeff = num2str(coeff, numSigDig);
+          if ~fleq(abs(coeff), 1) % Sign is accounted for later
+              add_coeff = num2str(abs(coeff), numSigDig);
               wasCoeff = 1;
           end
           
