@@ -6,7 +6,7 @@ FOMCON toolbox for MATLAB.
 
 Version compatibility: R2014b+
 
-May be compatible with MATLAB down to R2010a as well (but with a 
+May be compatible with MATLAB down to R2010a as well (if you need a compatible Simulink library, it can be created by exporting it in an older format from a newer Matlab release).
 
 # Installation Instructions
 
