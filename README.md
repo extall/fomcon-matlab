@@ -50,6 +50,15 @@ If you encounter problems, please open corresponding issues on GitHub: [Issues Â
 
 Support is also offered through the official website at http://fomcon.net/ through the documentation.
 
+## Contribute to FOMCON development
+
+The easiest way to do this, is by starring the project on github (top right corner). This gives the toolbox more exposure and potentially attracts interested parties who can contribute to the development of the toolbox.
+
+Other than that, PR can also be considered. At the moment, coding practice guidelines are not available for the toolbox. For that reason, PRs may take a significant time to review.
+
+Potential contributions that are being sought at the moment:
+- Writing tests for low-level functions. For a long time the toolbox had been tested mostly in an ad-hoc fashion, by considering specific applications, and if some problems arose, they were tended to then and there. However, to increase trust in the toolbox, automatic tests could also be deployed for such features like polynomial to string conversion, certain utilities, and so on.
+
 ## Citing FOMCON Toolbox in Academic Works
 
 If you find FOMCON useful in your research projects, kindly cite one or more of the following references choosing the one that is most suitable for your particular research topic. This helps exposing the toolbox to potential future users.
