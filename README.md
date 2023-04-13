@@ -52,7 +52,7 @@ Support is also offered through the official website at http://fomcon.net/ throu
 
 ## Contribute to FOMCON development
 
-The easiest way to do this, is by starring the project on github (top right corner). This gives the toolbox more exposure and potentially attracts interested parties who can contribute to the development of the toolbox.
+The easiest way to do this, is by starring ⭐ the project on github (top right corner). This gives the toolbox more exposure and potentially attracts interested parties who can contribute to the development of the toolbox.
 
 Other than that, PR can also be considered. At the moment, coding practice guidelines are not available for the toolbox. For that reason, PRs may take a significant time to review.
 
