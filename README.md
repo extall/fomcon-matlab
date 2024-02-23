@@ -1,4 +1,4 @@
-[![View FOMCON Toolbox for MATLAB on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://se.mathworks.com/matlabcentral/fileexchange/66323-fomcon-toolbox-for-matlab)
+[![View FOMCON Toolbox for MATLAB on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://se.mathworks.com/matlabcentral/fileexchange/66323-fomcon-toolbox-for-matlab) [![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=extall/fomcon-matlab&file=README.md)
 
 # FOMCON Toolbox for MATLAB
 
