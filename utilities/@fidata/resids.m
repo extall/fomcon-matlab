@@ -83,7 +83,7 @@ function varargout = resids(id, G, opts)
     err = y - id.y;
     
     % Confidence interval
-    intc = quantile(c_p(conf))/sqrt(length(err));
+    intc = resid_quantile(c_p(conf))/sqrt(length(err));
     
     % Compute necessary parameters
     resnorm = sum(err.^2);              % Residual norm
@@ -160,3 +160,8 @@ function cp = c_p(p)
     cp = 1-0.5*(1-p);
 end
 
+% Quantile: local function
+function y = resid_quantile(x)
+    %QUANTILE Compute quantile function Phi^-1(x)
+        y = sqrt(2)*erfinv(2*x-1);
+end
