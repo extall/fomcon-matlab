@@ -1,4 +1,24 @@
 function is_robuststable = robstabfo1(P)
+%ROBSTABFO1 - Robust stability analysis of fractional-order polynomials.
+%
+% Syntax:
+%   is_robuststable = robstabfo1(P)
+%
+% Inputs:
+%   P - A fractional-order polynomial with uncertainty intevals
+%
+% Outputs:
+%   is_robuststable - Logical result indicating robust stability.
+%                     A message is also displayed indicating whether the system is robustly stable.
+%
+% Description:
+%   This function evaluates the robust stability of fractional-order polynomials by generating
+%   all combinations of coefficients within their bounds and analyzing the system's stability
+%   over a defined frequency range. It determines whether or not the origin is included in 
+% the value set of the inteval polynomial.
+% Example:
+%   P = ufpoly('[1,2]s^1.8 + s + s^.65 + 10');
+%   robstabfo1(P)
 lowerbounds = fliplr(P.a(:,1)');
 upperbounds = fliplr(P.a(:,2)');
 alpha =fliplr(P.na(:,1)');
@@ -26,7 +46,7 @@ for j1=1:r
     end
 end
 hh= sum(max(abs(lowerbounds(1:end-1)),abs(upperbounds(1:end-1))))/(min(abs(lowerbounds(end)),abs(upperbounds(end))));
-hhh=hh^(1/(alpha(end)-alpha(end-1)));
+hhh= min(hh^(1/(alpha(end)-alpha(end-1))),500);
 w= 0:.01:hhh;
 s= j*w;
 laplas=[];
@@ -55,9 +75,9 @@ end
 RC = min(TrEnq,[],'all');
 
 
-if RC<.0001
-    display("not robust stable")
+if RC<.00001
+    display("the system is not robustly stable.")
 else
-    display ("robustly stable")
+    display ("the system is robustly stable.")
 
 end

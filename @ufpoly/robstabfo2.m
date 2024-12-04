@@ -1,4 +1,26 @@
 function is_robuststable = robstabfo2(P1,P2)
+% Syntax:
+%   is_robuststable = robstabfo2(P1, P2)
+%
+% Inputs:
+%   P1, P2 - Fractional-order polynomials with uncertainty intervals.
+%
+% Outputs:
+%   is_robuststable -  results indicating robust stability.
+%                     A message is also displayed indicating whether the system is robustly stable.
+%
+% Description:
+%   This function evaluates the robust stability of  fractional-order polynomials 
+%   with interval uncertainties. It computes the value set by generating all combinations 
+%   of coefficients within their respective bounds and analyzes the system's stability 
+%   over a defined frequency range. The function checks whether the origin is included 
+%   in the combined value sets of the interval polynomial and determines robust stability.
+%
+% Example: Assume  the interval fractional order polynomial P as follows:
+% P = P1-P2;
+%   P1 = ufpoly('[1,2]s^1.2 + [2,3]s');
+%   P2 = ufpoly('[-3,-2]s^.6 + [-3,-1]');
+%    robstabfo2(P1, P2);
 lowerbounds1 = fliplr(P1.a(:,1)');
 upperbounds1 = fliplr(P1.a(:,2)');
 alpha1 =fliplr(P1.na(:,1)');
@@ -88,7 +110,8 @@ results2=[];
 sumcoef2=[];
 for b2=1:r2
     for d2=1:numel(alpha2)
-        sumcoef2(d2,1:numel(w2))=h2(b2,d2).*laplas2(d2,:);
+        sumcoef2(d2,1:numel(w2))=h2(b2, ...
+            d2).*laplas2(d2,:);
     end
     results2(b2,1:numel(w2))=sum(sumcoef2,1);
 end
