@@ -1,1014 +1,650 @@
-function varargout = fpid(varargin)
-% FPID Fractional-order PID controller design tool.
+function app = fpid(varargin)
+%FPID Fractional-order PID controller design tool.
 %
-% This tool implements guided fractional-order PID controller design
-% through integer-order methods and optimization.
+%   This function launches a modern UIFIGURE based interface that replaces
+%   the legacy GUIDE implementation. The functional behaviour is preserved
+%   while adopting programmatic UI construction to support the latest
+%   MATLAB releases.
 %
-% Last Modified by GUIDE v2.5 09-Oct-2013 17:13:14
-
-% Begin initialization code - DO NOT EDIT
-gui_Singleton = 1;
-gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @fpid_OpeningFcn, ...
-                   'gui_OutputFcn',  @fpid_OutputFcn, ...
-                   'gui_LayoutFcn',  [] , ...
-                   'gui_Callback',   []);
-if nargin && ischar(varargin{1})
-    gui_State.gui_Callback = str2func(varargin{1});
-end
+%   app = FPID launches the interface and returns the app controller
+%   instance. When an output argument is not requested the app handle is
+%   stored internally and the UI lifetime is managed by the figure. The
+%   function accepts the same name/value arguments as the historic version:
+%   FPID('UserData', SYSNAME) will populate the workspace model field with
+%   SYSNAME.
+%
+%   See also: FOMCON, FRACPID, VAREXISTS, IMPID, IOPID_TUNE.
 
 if nargout
-    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+    app = FpidApp(varargin{:});
 else
-    gui_mainfcn(gui_State, varargin{:});
-end
-% End initialization code - DO NOT EDIT
-
-
-% --- Executes just before fpid is made visible.
-function fpid_OpeningFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to fpid (see VARARGIN)
-
-% Get and set initial data (system name)
-sysName  = get(hObject, 'UserData');
-if ~isempty(sysName)
-    set(handles.txtSystem, 'String', sysName);
+    FpidApp(varargin{:});
 end
 
-% Set time and step values
-set(handles.txtTime, 'String', '0:0.1:100');
-set(handles.txtSV, 'String', '1');
-
-% Set PID parameters
-set(handles.txtKp, 'String', '1');
-set(handles.txtKi, 'String', '1');
-set(handles.txtLambda, 'String', '0.5');
-set(handles.txtKd, 'String', '1');
-set(handles.txtMu, 'String', '0.5');
-
-% Choose default command line output for fpid
-handles.output = hObject;
-
-% Put image inside of picture axes
-pidPlant = importdata('fpid.jpg');
-axes(handles.axSchematic);
-hi = imagesc(pidPlant);
-axis off;
-
-% Update handles structure
-guidata(hObject, handles);
-
-% UIWAIT makes fpid wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
-
-% --- Outputs from this function are returned to the command line.
-function varargout = fpid_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
-varargout{1} = handles.output;
-
-function edit9_Callback(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit9 as text
-%        str2double(get(hObject,'String')) returns contents of edit9 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit9_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
 end
 
+classdef FpidApp < handle
+    %FPIDAPP Modern UI controller for the fractional PID design utility.
 
-
-function txtTime_Callback(hObject, eventdata, handles)
-% hObject    handle to txtTime (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of txtTime as text
-%        str2double(get(hObject,'String')) returns contents of txtTime as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function txtTime_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtTime (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in btnView.
-function btnView_Callback(hObject, eventdata, handles)
-% hObject    handle to btnView (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-    
-    sysName = get(handles.txtSystem, 'String');
-    [varex, varcl, varclass] = varexists(sysName);
-    
-    if varex && varcl
-        % View fractional order controller and system information
-        
-        % Fetch PID parameters
-        [Kp,Ki,lambda,Kd,mu] = getPidParams(handles);
-    
-        % Get corrsponding FOTF PID controller and its type
-        [myPid, pidType] = fracpid(Kp,Ki,lambda,Kd,mu);
-        
-        % Get plant
-        myPlant = evalin('base', sysName);
-        
-        % Full control system
-        cPair    = myPid * myPlant;
-        fullCtrl = feedback(cPair, 1);
-        
-        % Controller information
-        disp(char(13));
-        disp(['Current Controller (type: fractional ' pidType '):']);
-        myPid
-        
-        % System information
-        disp(char(13));
-        disp('Current Plant:');
-        myPlant
-        
-        % Full control system
-        disp(char(13));
-        disp('Full control system:');
-        fullCtrl
-        disp(char(13));
-    elseif varex
-        
-        switch(varclass)
-            case {'tf', 'zpk', 'ss'}
-                % Fetch PID parameters
-                [Kp,Ki,lambda,Kd,delta] = getPidParams(handles);
-    
-                % Get corrsponding FOTF PID controller and its type
-                [myPid, pidType] = fracpid(Kp,Ti,lambda,Kd,mu);
-        
-                % Controller information
-                disp(['Current Controller (type: ' pidType '):']);
-                myPid
-                
-            otherwise
-                errordlg('Object is not a LTI model!', 'Error');
-        end
-        
-    else
-        set(handles.txtSystem, 'String', '');
-        errordlg('Object no longer in workspace or invalid!', 'Error');
-    end    
-
-% --- Executes on button press in btnSimulate.
-function btnSimulate_Callback(hObject, eventdata, handles)
-% hObject    handle to btnSimulate (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-    
-    sysName = get(handles.txtSystem, 'String');
-    [varex, varcl, varclass] = varexists(sysName);
-    
-    % Time vector
-	if ~isempty(get(handles.txtTime, 'String'))
-		timeVec = evalin('base', get(handles.txtTime, 'String'));
-    else
-        set(handles.txtTime, 'String', '0:0.1:30');
-        timeVec = 0:0.1:30;
-	end
-		
-	% SV
-	if ~isempty(get(handles.txtSV, 'String'))
-        SVval = evalin('base', get(handles.txtSV, 'String')); 
-        SV = SVval*ones(1,size(timeVec,2));
-	else
-        set(handles.txtSV, 'String', '1');
-        SV = ones(1,size(timeVec,2));
+    properties (Access = private)
+        Figure matlab.ui.Figure
+        Layout matlab.ui.container.GridLayout
+        SystemField matlab.ui.control.EditField
+        TimeField matlab.ui.control.EditField
+        SvField matlab.ui.control.EditField
+        KpField matlab.ui.control.EditField
+        KiField matlab.ui.control.EditField
+        LambdaField matlab.ui.control.EditField
+        KdField matlab.ui.control.EditField
+        MuField matlab.ui.control.EditField
+        Image matlab.ui.control.Image
+        MessageArea matlab.ui.control.TextArea
+        ViewButton matlab.ui.control.Button
+        SimButton matlab.ui.control.Button
+        ExportPlantButton matlab.ui.control.Button
+        ExportControllerButton matlab.ui.control.Button
+        ApproximateButton matlab.ui.control.Button
+        OpenLoopButton matlab.ui.control.Button
+        ClosedLoopButton matlab.ui.control.Button
+        RealizeButton matlab.ui.control.Button
+        ClearButton matlab.ui.control.Button
+        ImportButton matlab.ui.control.Button
     end
-    
-    % Check for delay system
-    if varex
-        plant = evalin('base', sysName);
-        if ~fleq(plant.ioDelay, 0)
-            hasDelay = 1;
-        else
-            hasDelay = 0;
-        end
-    end
-    
-    if varex && varcl && ~hasDelay
-        
-        % Fetch PID parameters
-        [Kp,Ki,lambda,Kd,mu] = getPidParams(handles);
-    
-        % Get corrsponding FOTF PID controller and its type
-        [myPid, pidType] = fracpid(Kp,Ki,lambda,Kd,mu);
-        
-        % Get plant
-        myPlant = evalin('base', sysName);
-        
-        % Full control system
-        cPair    = myPid * myPlant;
-        fullCtrl = feedback(cPair,1);
-        
-        % Setup figure
-        h  = figure;
-        
-        % Plot figure
-        figureName = [pidType ' Control System Time Response Simulation'];
-        y=lsim(fullCtrl, SV, timeVec);
-        plot(timeVec, y);
-        
-        % Plot SV line
-        line([timeVec(1) timeVec(size(timeVec,2))], ...
-                [SV(1) SV(1)], 'Color', 'red',  ...
-                'LineWidth', 1, 'LineStyle', '-');
-        
-        
-        % Set figure name
-        set(h, 'NumberTitle', 'off');
-        set(h, 'Name', ['''' sysName '''' ' ' figureName]);
-        
-        % Go through axes
-        ax = get(h, 'Children');
-        for n=1:length(ax)
+
+    methods
+        function app = FpidApp(varargin)
+            % Constructor builds the UI and applies optional parameters.
             
-            if strcmp(get(ax(n), 'Type'), 'axes')
-                % Set grids
-                set(ax(n), 'XGrid', 'on', 'YGrid', 'on');
+            % Parse optional legacy parameter/value pairs.
+            sysName = '';
+            if ~isempty(varargin)
+                try
+                    sysName = app.parseLegacyArgs(varargin{:});
+                catch ME
+                    warning('FPID:InvalidArguments', '%s', ME.message);
+                end
             end
-            
+
+            buildUI(app);
+            populateDefaults(app, sysName);
         end
-        
-    elseif varex || (varcl && hasDelay)
-        
-        switch(varclass)
-            
-            case {'tf', 'zpk', 'ss', 'fotf'}
-                
-                % Simulation parameters
-                name='PID approximation parameters';
-                
-                prompt={'Approximation type (oust or ref):', ...
-                'Low frequency bound wb [rad/s]', ...
-                'High frequncy bound wh [rad/s]', ...
-                'Order of approximation:'};
 
-                numlines=1;
-
-                defaultAnswer = {'oust', '0.0001', '10000', '5'};
-
-                options.Resize      = 'on';
-                options.WindowStyle = 'normal';
-
-                ofData=inputdlg(prompt,name,numlines,defaultAnswer,options);
-            
-                if ~isempty(ofData)
-            
-                    ofType  = ofData{1};
-                    ofWb    = str2num(ofData{2});
-                    ofWh    = str2num(ofData{3});
-                    ofN     = str2num(ofData{4});
-                    
-                    % Get plant
-                    myPlant = evalin('base', sysName);
-                    
-                    % Fetch PID parameters
-                    [Kp,Ki,lambda,Kd,mu] = getPidParams(handles);
-    
-                    % Get corrsponding FOTF PID controller and its type
-                    [myPid, pidType] = fracpid(Kp,Ki,lambda,Kd,mu);
-                    
-                    % PID approximation
-                    pidApprox = oustapp(myPid, ofWb, ofWh, ofN, ofType);
-                    
-                    if ~isproper(pidApprox)
-                        pidApprox = toproper(pidApprox, ofWh);
-                    end
-                    
-                    % If plant is given by fotf, convert with same params
-                    if strcmp(varclass, 'fotf')
-                        myPlant = oustapp(myPlant, ofWb, ofWh, ofN, ofType);
-                    end
-                    
-                    % Convert plant
-                    myPlant = ss(myPlant);
-                    
-                    % Get control system
-                    ctrlSys = feedback(pidApprox*myPlant, 1);
-                    assignin('base','gg',ctrlSys);
-                    
-                    % Setup figure
-                    h  = figure;
-
-                    % Plot figure
-                    figureName = [pidType ' Control System Time Response Simulation'];
-                    y=lsim(ctrlSys, SV, timeVec);
-                    plot(timeVec, y);
-
-                    % Plot SV line
-                    line([timeVec(1) timeVec(size(timeVec,2))], ...
-                            [SV(1) SV(1)], 'Color', 'red',  ...
-                            'LineWidth', 1, 'LineStyle', '-');
-
-
-                    % Set figure name
-                    set(h, 'NumberTitle', 'off');
-                    set(h, 'Name', ['''' sysName '''' ' ' figureName]);
-
-                    % Go through axes
-                    ax = get(h, 'Children');
-                    for n=1:length(ax)
-
-                        if strcmp(get(ax(n), 'Type'), 'axes')
-                            % Set grids
-                            set(ax(n), 'XGrid', 'on', 'YGrid', 'on');
-                        end
-
-                    end
-                
-                end
-                
-            otherwise
-                errordlg('Object is not a valid LTI model!', 'Error');
-        end
-        
-    else
-        set(handles.txtSystem, 'String', '');
-        errordlg('Object no longer in workspace or invalid!', 'Error');
-    end    
-
-function txtKp_Callback(hObject, eventdata, handles)
-% hObject    handle to txtKp (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of txtKp as text
-%        str2double(get(hObject,'String')) returns contents of txtKp as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function txtKp_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtKp (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function txtKi_Callback(hObject, eventdata, handles)
-% hObject    handle to txtKi (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of txtKi as text
-%        str2double(get(hObject,'String')) returns contents of txtKi as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function txtKi_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtKi (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function txtLambda_Callback(hObject, eventdata, handles)
-% hObject    handle to txtLambda (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of txtLambda as text
-%        str2double(get(hObject,'String')) returns contents of txtLambda as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function txtLambda_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtLambda (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes during object creation, after setting all properties.
-function txtKd_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtKd (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function txtMu_Callback(hObject, eventdata, handles)
-% hObject    handle to txtMu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of txtMu as text
-%        str2double(get(hObject,'String')) returns contents of txtMu as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function txtMu_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtMu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function txtSystem_Callback(hObject, eventdata, handles)
-% hObject    handle to txtSystem (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of txtSystem as text
-%        str2double(get(hObject,'String')) returns contents of txtSystem as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function txtSystem_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtSystem (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function txtSV_Callback(hObject, eventdata, handles)
-% hObject    handle to txtSV (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of txtSV as text
-%        str2double(get(hObject,'String')) returns contents of txtSV as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function txtSV_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtSV (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end        
-
-% --- Executes on button press in btnExportPID.
-function btnExportPID_Callback(hObject, eventdata, handles)
-% hObject    handle to btnExportPID (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-    
-    % Prompt user for workspace variable to export to
-    name='Export PID-FOTF to Workspace';
-    prompt={'Workspace variable name:'};
-    defaultanswer = {''};
-    numlines=1;
-    options.WindowStyle='normal';
-    toExport=inputdlg(prompt,name,numlines,defaultanswer,options);
-    
-    if ~isempty(toExport)
-        
-        varName =toExport{1};
-
-        % Fetch PID parameters
-        [Kp,Ki,lambda,Kd,mu] = getPidParams(handles);
-
-        % Get corrsponding FOTF PID controller
-        myPid = fracpid(Kp,Ki,lambda,Kd,mu);
-
-        % Export PID controller FOTF object
-        assignin('base', varName, myPid);
-        
-    end
-    
-% --- Fetches PID parameters
-function [Kp,Ki,lambda,Kd,mu] = getPidParams(handles)
-    
-    % Get all values from textboxes
-    tKp     = get(handles.txtKp, 'String');
-    tKi     = get(handles.txtKi, 'String');
-    tLambda = get(handles.txtLambda, 'String');
-    tKd     = get(handles.txtKd, 'String');
-    tMu  = get(handles.txtMu, 'String');
-    
-    % Check if any of the parameters are empty, use default values for
-    % those that are indeed empty
-    if isempty(tKp)
-        set(handles.txtKp, 'String', '1');
-        Kp = 1;
-    else
-        Kp = evalin('base', tKp);
-    end
-    
-    if isempty(tKi)
-        set(handles.txtKi, 'String', '1');
-        Ki = 1;
-    else
-        Ki = evalin('base', tKi);
-    end
-    
-    if isempty(tLambda)
-        set(handles.txtLambda, 'String', '0.5');
-        lambda = 1;
-    else
-        lambda = evalin('base', tLambda);
-    end
-    
-    if isempty(tKd)
-        set(handles.txtKd, 'String', '0');
-        Kd = 0;
-    else
-        Kd = evalin('base', tKd);
-    end
-    
-    if isempty(tMu)
-        set(handles.txtMu, 'String', '0.5');
-        mu = 0.5;
-    else
-        mu = evalin('base', tMu);
-    end
-        
-
-
-% --- Executes during object creation, after setting all properties.
-function axSchematic_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to axSchematic (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: place code in OpeningFcn to populate axSchematic
-
-
-% --------------------------------------------------------------------
-function menuTuning_Callback(hObject, eventdata, handles)
-% hObject    handle to menuTuning (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --------------------------------------------------------------------
-function menuIopid_Callback(hObject, eventdata, handles)
-% hObject    handle to menuIopid (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --------------------------------------------------------------------
-% function menuZxc_Callback(hObject, eventdata, handles)
-% % hObject    handle to menuZxc (see GCBO)
-% % eventdata  reserved - to be defined in a future version of MATLAB
-% % handles    structure with handles and user data (see GUIDATA)
-%     
-%     % Get data
-%     fotfPlant = get(handles.txtSystem, 'String');
-%     [varex, varcl] = varexists(fotfPlant);
-%     
-%     if varex && varcl
-%         
-%         % Get plant model
-%         fotfPlant = evalin('base', fotfPlant);
-%         
-%         % Check object
-%         [a,na,b,nb] = fotfparam(fotfPlant);
-%         
-%         numer = (length(b) == 1) && (b(1) == 1) && (nb(1) == 0); 
-%         denom = (length(a) == 3) && (na(3) == 0);
-%     
-%         % Restrict object class
-%         if ~(numer && denom)
-%             errordlg('Cannot use Zhao-Xue-Chen tuning method for this class of object', 'Error');
-%             return;
-%         end
-%         
-%         % Open the tuning utility
-%         zxc_gui('UserData', get(handles.txtSystem,'String'));
-%         
-%     else
-%        
-%         errordlg('Object no longer in workspace or invalid!', 'Error');
-%         
-%     end
-
-
-% --- Executes during object creation, after setting all properties.
-function figure1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to figure1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-
-% --- Executes on button press in btnExportControl.
-function btnExportControl_Callback(hObject, eventdata, handles)
-% hObject    handle to btnExportControl (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-    
-    sysName = get(handles.txtSystem, 'String');
-    [varex, varcl, varclass] = varexists(sysName);
-    
-    % Fetch PID parameters
-    [Kp,Ki,lambda,Kd,mu] = getPidParams(handles);
-    
-    % Get corrsponding FOTF PID controller and its type
-    [myPid, pidType] = fracpid(Kp,Ki,lambda,Kd,mu);
-    
-    if varex && varcl
-        
-        % Get plant
-        myPlant = evalin('base', sysName);
-        
-        % Full control system
-        cPair    = myPid * myPlant;
-        fullCtrl = feedback(cPair,1);
-        
-        % Prompt user for workspace variable to export to
-        name='Save control system';
-        prompt={'Workspace variable name:'};
-        defaultanswer = {[sysName '_control']};
-        numlines=1;
-        options.WindowStyle='normal';
-        options.Resize = 'on';
-        toExport=inputdlg(prompt,name,numlines,defaultanswer,options);
-        
-        if ~isempty(toExport)
-            
-            % Get export variable name
-            ctrlSys = toExport{1};
-
-            % Save control system
-            if ~strcmp(ctrlSys, '')
-                assignin('base', ctrlSys, fullCtrl);
+        function delete(app)
+            if ~isempty(app.Figure) && isvalid(app.Figure)
+                delete(app.Figure);
             end
-            
         end
-        
-    elseif varex
-        
-        switch(varclass)
+    end
+
+    methods (Access = private)
+        function sysName = parseLegacyArgs(~, varargin)
+            % Supports historic ('UserData', value) invocation style.
+            p = inputParser;
+            addParameter(p, 'UserData', '', @(x) ischar(x) || isstring(x));
+            parse(p, varargin{:});
+            sysName = char(p.Results.UserData);
+        end
+
+        function buildUI(app)
+            app.Figure = uifigure('Name', 'FOMCON - Fractional PID Design', ...
+                                  'Position', [100 100 1100 620]);
+            app.Figure.CloseRequestFcn = @(src, evt)delete(app);
+
+            app.Layout = uigridlayout(app.Figure, [3 3]);
+            app.Layout.RowHeight = {40, '1x', 60};
+            app.Layout.ColumnWidth = {280, '1x', 320};
+            app.Layout.Padding = [10 10 10 10];
+            app.Layout.RowSpacing = 10;
+            app.Layout.ColumnSpacing = 12;
+
+            buildHeader(app);
+            buildPidPanel(app);
+            buildActionPanel(app);
+            buildImagePanel(app);
+            buildMessageArea(app);
+        end
+
+        function buildHeader(app)
+            header = uipanel(app.Layout, 'Title', 'Plant / Simulation setup');
+            header.Layout.Row = 1;
+            header.Layout.Column = [1 3];
+            headerGrid = uigridlayout(header, [1 6]);
+            headerGrid.ColumnWidth = {120, '1x', 100, 120, 120, 100};
+            headerGrid.RowHeight = {'fit'};
+            headerGrid.Padding = [10 10 10 10];
             
-            case {'tf', 'zpk', 'ss'}
-                
-                % Parameters
-                name='Export parameters';
-                
-                prompt={'Workspace variable name:', ...
-                'Approximation type (oust or ref):', ...
-                'Low frequency bound wb [rad/s]', ...
-                'High frequncy bound wh [rad/s]', ...
-                'Order of approximation:'};
+            uilabel(headerGrid, 'Text', 'Workspace model:', 'HorizontalAlignment', 'right');
+            app.SystemField = uieditfield(headerGrid, 'text');
+            app.SystemField.ValueChangedFcn = @(s, e)clearMessage(app);
 
-                numlines=1;
+            uilabel(headerGrid, 'Text', 'Time vector:', 'HorizontalAlignment', 'right');
+            app.TimeField = uieditfield(headerGrid, 'text');
+            app.TimeField.Value = '0:0.1:100';
+            app.TimeField.ValueChangedFcn = @(s, e)clearMessage(app);
 
-                defaultAnswer = {[sysName '_control'], 'oust', '0.0001', '10000', '5'};
+            uilabel(headerGrid, 'Text', 'Setpoint:', 'HorizontalAlignment', 'right');
+            app.SvField = uieditfield(headerGrid, 'text');
+            app.SvField.Value = '1';
+            app.SvField.ValueChangedFcn = @(s, e)clearMessage(app);
+        end
 
-                options.Resize      = 'on';
-                options.WindowStyle = 'normal';
+        function buildPidPanel(app)
+            pidPanel = uipanel(app.Layout, 'Title', 'Controller parameters');
+            pidPanel.Layout.Row = 2;
+            pidPanel.Layout.Column = 1;
 
-                ofData=inputdlg(prompt,name,numlines,defaultAnswer,options);
-            
-                if ~isempty(ofData)
-                    
-                    ctrlSys = ofData{1};
-                    ofType  = ofData{2};
-                    ofWb    = str2num(ofData{3});
-                    ofWh    = str2num(ofData{4});
-                    ofN     = str2num(ofData{5});
-                    
-                    % Get plant
-                    myPlant = evalin('base', sysName);
-                    
-                    % Fetch PID parameters
-                    [Kp,Ki,lambda,Kd,mu] = getPidParams(handles);
-    
-                    % Get corrsponding FOTF PID controller and its type
-                    [myPid, pidType] = fracpid(Kp,Ki,lambda,Kd,mu);
-                    
-                    % PID approximation
-                    pidApprox = oustapp(myPid, ofWb, ofWh, ofN, ofType);
-                    
-                    % Convert plant
-                    myPlant = ss(myPlant);
-                    
-                    % Get control system
-                    fullCtrl = feedback(pidApprox*myPlant, 1);
-                   
-                    assignin('base', ctrlSys, fullCtrl);
-                    
+            grid = uigridlayout(pidPanel, [5 2]);
+            grid.RowHeight = repmat({34}, 1, 5);
+            grid.ColumnWidth = {80, '1x'};
+            grid.Padding = [10 10 10 10];
+            grid.RowSpacing = 8;
+
+            uilabel(grid, 'Text', 'Kp:', 'HorizontalAlignment', 'right');
+            app.KpField = uieditfield(grid, 'text', 'Value', '1');
+            app.KpField.ValueChangedFcn = @(s, e)clearMessage(app);
+
+            uilabel(grid, 'Text', 'Ki:', 'HorizontalAlignment', 'right');
+            app.KiField = uieditfield(grid, 'text', 'Value', '1');
+            app.KiField.ValueChangedFcn = @(s, e)clearMessage(app);
+
+            uilabel(grid, 'Text', 'λ (Integral order):', 'HorizontalAlignment', 'right');
+            app.LambdaField = uieditfield(grid, 'text', 'Value', '0.5');
+            app.LambdaField.ValueChangedFcn = @(s, e)clearMessage(app);
+
+            uilabel(grid, 'Text', 'Kd:', 'HorizontalAlignment', 'right');
+            app.KdField = uieditfield(grid, 'text', 'Value', '1');
+            app.KdField.ValueChangedFcn = @(s, e)clearMessage(app);
+
+            uilabel(grid, 'Text', 'μ (Derivative order):', 'HorizontalAlignment', 'right');
+            app.MuField = uieditfield(grid, 'text', 'Value', '0.5');
+            app.MuField.ValueChangedFcn = @(s, e)clearMessage(app);
+        end
+
+        function buildActionPanel(app)
+            actionPanel = uipanel(app.Layout, 'Title', 'Actions');
+            actionPanel.Layout.Row = 2;
+            actionPanel.Layout.Column = 2;
+
+            grid = uigridlayout(actionPanel, [6 2]);
+            grid.RowHeight = repmat({32}, 1, 6);
+            grid.ColumnWidth = {'1x', '1x'};
+            grid.RowSpacing = 8;
+            grid.Padding = [10 10 10 10];
+
+            app.ViewButton = uibutton(grid, 'Text', 'View controller', ...
+                'ButtonPushedFcn', @(src, evt)onView(app));
+            app.ViewButton.Layout.Row = 1;
+            app.ViewButton.Layout.Column = 1;
+
+            app.SimButton = uibutton(grid, 'Text', 'Simulate', ...
+                'ButtonPushedFcn', @(src, evt)onSimulate(app));
+            app.SimButton.Layout.Row = 1;
+            app.SimButton.Layout.Column = 2;
+
+            app.OpenLoopButton = uibutton(grid, 'Text', 'Open-loop Bode', ...
+                'ButtonPushedFcn', @(src, evt)onOpenLoopBode(app));
+            app.OpenLoopButton.Layout.Row = 2;
+            app.OpenLoopButton.Layout.Column = 1;
+
+            app.ClosedLoopButton = uibutton(grid, 'Text', 'Closed-loop Bode', ...
+                'ButtonPushedFcn', @(src, evt)onClosedLoopBode(app));
+            app.ClosedLoopButton.Layout.Row = 2;
+            app.ClosedLoopButton.Layout.Column = 2;
+
+            app.ExportControllerButton = uibutton(grid, 'Text', 'Export control system', ...
+                'ButtonPushedFcn', @(src, evt)onExportControlSystem(app));
+            app.ExportControllerButton.Layout.Row = 3;
+            app.ExportControllerButton.Layout.Column = 1;
+
+            app.ExportPlantButton = uibutton(grid, 'Text', 'Export PID', ...
+                'ButtonPushedFcn', @(src, evt)onExportPID(app));
+            app.ExportPlantButton.Layout.Row = 3;
+            app.ExportPlantButton.Layout.Column = 2;
+
+            app.ApproximateButton = uibutton(grid, 'Text', 'Approximate PID', ...
+                'ButtonPushedFcn', @(src, evt)onApproximate(app));
+            app.ApproximateButton.Layout.Row = 4;
+            app.ApproximateButton.Layout.Column = 1;
+
+            app.RealizeButton = uibutton(grid, 'Text', 'Realize controller', ...
+                'ButtonPushedFcn', @(src, evt)onRealize(app));
+            app.RealizeButton.Layout.Row = 4;
+            app.RealizeButton.Layout.Column = 2;
+
+            app.ImportButton = uibutton(grid, 'Text', 'Import PID config', ...
+                'ButtonPushedFcn', @(src, evt)onImportConfig(app));
+            app.ImportButton.Layout.Row = 5;
+            app.ImportButton.Layout.Column = 1;
+
+            app.ClearButton = uibutton(grid, 'Text', 'Clear fields', ...
+                'ButtonPushedFcn', @(src, evt)onClear(app));
+            app.ClearButton.Layout.Row = 5;
+            app.ClearButton.Layout.Column = 2;
+
+            % spacer row for layout aesthetic
+            grid.RowHeight{6} = '1x';
+        end
+
+        function buildImagePanel(app)
+            imgPanel = uipanel(app.Layout, 'Title', 'Architecture');
+            imgPanel.Layout.Row = [1 2];
+            imgPanel.Layout.Column = 3;
+            imgPanel.Scrollable = 'on';
+
+            imgGrid = uigridlayout(imgPanel, [1 1]);
+            imgGrid.Padding = [10 10 10 10];
+
+            app.Image = uiimage(imgGrid);
+            imgPath = fullfile(fileparts(mfilename('fullpath')), 'fpid.jpg');
+            if exist(imgPath, 'file')
+                app.Image.ImageSource = imgPath;
+            end
+            app.Image.ScaleMethod = 'fit';
+        end
+
+        function buildMessageArea(app)
+            msgPanel = uipanel(app.Layout, 'Title', 'Messages');
+            msgPanel.Layout.Row = 3;
+            msgPanel.Layout.Column = [1 3];
+            msgPanel.Padding = [10 10 10 10];
+
+            app.MessageArea = uitextarea(msgPanel, 'Editable', 'off');
+            app.MessageArea.Value = {'Welcome to the fractional PID design tool.'};
+            app.MessageArea.FontName = 'monospaced';
+            app.MessageArea.Layout.Row = 1;
+            app.MessageArea.Layout.Column = 1;
+        end
+
+        function populateDefaults(app, sysName)
+            if ~isempty(sysName)
+                app.SystemField.Value = sysName;
+            end
+        end
+
+        function clearMessage(app)
+            if isvalid(app.MessageArea)
+                app.MessageArea.Value = {''};
+            end
+        end
+
+        function appendMessage(app, msg)
+            if ~isvalid(app.MessageArea)
+                return;
+            end
+            current = app.MessageArea.Value;
+            current(end+1) = {char(msg)}; %#ok<AGROW>
+            app.MessageArea.Value = current;
+            drawnow limitrate;
+        end
+
+        function [modelName, plant] = fetchPlant(app)
+            modelName = strtrim(app.SystemField.Value);
+            if isempty(modelName)
+                error('FPID:NoPlant', 'Specify a workspace model name first.');
+            end
+            [existsFlag, classMatch, cls] = varexists(modelName);
+            if ~existsFlag
+                error('FPID:MissingPlant', 'Object %s does not exist in the workspace.', modelName);
+            end
+            if ~classMatch
+                error('FPID:InvalidPlant', 'Object %s is not a supported LTI or FOTF model.', modelName);
+            end
+            plant = evalin('base', modelName);
+            appendMessage(app, sprintf('Using plant ''%s'' (%s).', modelName, cls));
+        end
+
+        function [Kp, Ki, lambda, Kd, mu] = getPidParams(app)
+            [Kp, Ki, lambda, Kd, mu] = evaluateFields(app, ...
+                app.KpField, app.KiField, app.LambdaField, app.KdField, app.MuField);
+        end
+
+        function [Kp, Ki, lambda, Kd, mu] = evaluateFields(app, varargin)
+            vals = cell(1, numel(varargin));
+            defaults = {1, 1, 0.5, 1, 0.5};
+            for idx = 1:numel(varargin)
+                field = varargin{idx};
+                txt = strtrim(field.Value);
+                if isempty(txt)
+                    field.Value = num2str(defaults{idx});
+                    vals{idx} = defaults{idx};
+                else
+                    vals{idx} = evalin('base', txt);
                 end
-                
-            otherwise
-                errordlg('Object is not a valid LTI model!', 'Error');
+            end
+            Kp = vals{1};
+            Ki = vals{2};
+            lambda = vals{3};
+            Kd = vals{4};
+            mu = vals{5};
         end
 
-    else
-        set(handles.txtSystem, 'String', '');
-        errordlg('Object no longer in workspace or invalid!', 'Error');
-    end
+        function [timeVec, sv] = getSimulationSetup(app)
+            timeStr = strtrim(app.TimeField.Value);
+            if isempty(timeStr)
+                timeStr = '0:0.1:30';
+                app.TimeField.Value = timeStr;
+            end
+            timeVec = evalin('base', timeStr);
 
-
-% --------------------------------------------------------------------
-function menuOptimize_Callback(hObject, eventdata, handles)
-% hObject    handle to menuOptimize (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-    
-    % Get data
-    fotfPlant = get(handles.txtSystem, 'String');
-    [varex, varcl, varclass] = varexists(fotfPlant);
-    
-    if varex && (varcl || strcmpi(varclass, 'tf') || ...
-                          strcmpi(varclass, 'zpk') || ...
-                          strcmpi(varclass, 'ss'))
-        
-        % Generate optimization utility object
-        toOpt.G = get(handles.txtSystem,'String');
-        toOpt.Kp = get(handles.txtKp,'String');
-        toOpt.Ki = get(handles.txtKi,'String');
-        toOpt.Kd = get(handles.txtKd,'String');
-        toOpt.lam = get(handles.txtLambda,'String');
-        toOpt.mu = get(handles.txtMu,'String');
-        
-        % Open the optimization utility
-        fpid_optim('UserData', toOpt);
-        
-    else
-        
-        errordlg('Object no longer in workspace or invalid!', 'Error');
-        
-    end
-
-
-% --------------------------------------------------------------------
-function menuIntegerPID_Callback(hObject, eventdata, handles)
-% hObject    handle to menuIntegerPID (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-    % Get data
-    fotfPlant = get(handles.txtSystem, 'String');
-    [varex, varcl] = varexists(fotfPlant);
-    
-    if varex && varcl
-        
-        % Open the integer-order tuning tool
-        iopid_tune('UserData', get(handles.txtSystem,'String'));
-        
-	else
-        
-        errordlg('Object no longer in workspace or invalid!', 'Error');
-        
-    end
-
-
-% --------------------------------------------------------------------
-function menuImport_Callback(hObject, eventdata, handles)
-% hObject    handle to menuImport (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --------------------------------------------------------------------
-function menuImportPID_Callback(hObject, eventdata, handles)
-% hObject    handle to menuImportPID (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-    pr = inputdlg({'PID workspace name:'}, ...
-                   'Import fractional or integer-order PID', ...
-                   1, ...
-                   {''});
-
-    if ~isempty(pr)
-       modelName = pr{1};
-       myModel = evalin('base', modelName);
-       [Kp, Ki, ilam, Kd, dmu] = getpid(myModel);
-       
-	   config = fomcon('config');
-       numSigDig = config.Core.General.Model_significant_digits;
-	   
-       % Set gains/exponents
-       set(handles.txtKp,     'String', num2str(Kp,numSigDig));
-       set(handles.txtKi,     'String', num2str(Ki,numSigDig));
-       set(handles.txtLambda, 'String', num2str(ilam,numSigDig));
-       set(handles.txtKd,     'String', num2str(Kd,numSigDig));
-       set(handles.txtMu,  'String', num2str(dmu,numSigDig));
-       
-    end
-
-
-% --- Executes on button press in btnRealize.
-function btnRealize_Callback(hObject, eventdata, handles)
-% hObject    handle to btnRealize (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-        toImp.Kp  = get(handles.txtKp,'String');
-        toImp.Ki  = get(handles.txtKi,'String');
-        toImp.Kd  = get(handles.txtKd,'String');
-        toImp.lam = get(handles.txtLambda,'String');
-        toImp.mu  = get(handles.txtMu,'String');
-        
-        impid('UserData', toImp);
-
-
-% --- Executes on button press in btnOLBode.
-function btnOLBode_Callback(hObject, eventdata, handles)
-% hObject    handle to btnOLBode (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-    
-    sysName = get(handles.txtSystem, 'String');
-    [varex, varcl, varclass] = varexists(sysName);
-    
-    % Fetch PID parameters
-    [Kp,Ki,lambda,Kd,mu] = getPidParams(handles);
-    
-    % Get corrsponding FOTF PID controller and its type
-    [myPid, pidType] = fracpid(Kp,Ki,lambda,Kd,mu);
-
-    if varex && varcl
-        
-        % Get plant
-        myPlant = evalin('base', sysName);
-        
-        % Full control system
-        cPair    = myPid * myPlant;
-        
-        % Parameters
-        name='Bode plot parameters';
-        
-        prompt={'Frequencies of interest [rad/s]'};
-        
-        numlines=1;
-        
-        defaultAnswer = {'logspace(-5,5,1000)'};
-        
-        options.Resize      = 'on';
-        options.WindowStyle = 'normal';
-        
-        ofData=inputdlg(prompt,name,numlines,defaultAnswer,options);
-        
-        if ~isempty(ofData)
-            
-            w_ev    = evalin('base', ofData{1});
-            
-            h = figure;
-            bode(cPair, w_ev);
-            grid;
-            set(h, 'Name', [pidType ' * ' sysName ' open-loop frequency domain response']);
+            svStr = strtrim(app.SvField.Value);
+            if isempty(svStr)
+                svStr = '1';
+                app.SvField.Value = svStr;
+            end
+            svVal = evalin('base', svStr);
+            sv = svVal * ones(size(timeVec));
         end
-        
-    elseif varex
-        
-        switch(varclass)
-            
-            case {'tf', 'zpk', 'ss'}
-                
-                % Parameters
-                name='Bode plot parameters';
-                
-                prompt={'Approximation type (oust or ref):', ...
-                'Low frequency bound wb [rad/s]', ...
-                'High frequncy bound wh [rad/s]', ...
-                'Order of approximation:', ...
-                'Frequencies of interest [rad/s]'};
 
-                numlines=1;
+        function pid = buildPid(app)
+            [Kp, Ki, lambda, Kd, mu] = getPidParams(app);
+            pid = fracpid(Kp, Ki, lambda, Kd, mu);
+        end
 
-                defaultAnswer = {'oust', '0.0001', '10000', '5', 'logspace(-5,5,1000)'};
+        function [pid, pidType] = buildPidWithType(app)
+            [Kp, Ki, lambda, Kd, mu] = getPidParams(app);
+            [pid, pidType] = fracpid(Kp, Ki, lambda, Kd, mu);
+        end
 
-                options.Resize      = 'on';
-                options.WindowStyle = 'normal';
+        function onView(app)
+            try
+                [pid, pidType] = buildPidWithType(app);
+                appendMessage(app, sprintf('Current controller (%s):', pidType));
+                disp(pid);
+            catch ME
+                handleError(app, ME);
+            end
+        end
 
-                ofData=inputdlg(prompt,name,numlines,defaultAnswer,options);
-            
-                if ~isempty(ofData)
-                    
-                    ofType  = ofData{1};
-                    ofWb    = str2num(ofData{2});
-                    ofWh    = str2num(ofData{3});
-                    ofN     = str2num(ofData{4});
-                    w_ev    = evalin('base', ofData{5});
-                    
-                    % Get plant
-                    myPlant = evalin('base', sysName);
-                    
-                    % Fetch PID parameters
-                    [Kp,Ki,lambda,Kd,mu] = getPidParams(handles);
-    
-                    % Get corrsponding FOTF PID controller and its type
-                    [myPid, pidType] = fracpid(Kp,Ki,lambda,Kd,mu);
-                    
-                    % PID approximation
-                    pidApprox = oustapp(myPid, ofWb, ofWh, ofN, ofType);
-                    
-                    % Convert plant
-                    myPlant = ss(myPlant);
-                    
-                    % Get control system
-                    cPair = pidApprox*myPlant;
-                    
-                    h = figure;
-                    bode(cPair, w_ev);
-                    grid;
-                    set(h, 'Name', [pidType ' * ' sysName ' open-loop frequency domain response']);
+        function onSimulate(app)
+            try
+                [modelName, plant] = fetchPlant(app);
+                [timeVec, sv] = getSimulationSetup(app);
+                [pid, pidType] = buildPidWithType(app);
+
+                controller = pid;
+                if isa(plant, 'fotf')
+                    delay = plant.ioDelay;
+                elseif isprop(plant, 'ioDelay')
+                    delay = plant.ioDelay;
+                else
+                    delay = 0;
                 end
-                
-            otherwise
-                errordlg('Object is not a valid LTI model!', 'Error');
+
+                if any(delay(:))
+                    controller = oustapp(pid, 1e-4, 1e4, 5, 'oust');
+                    appendMessage(app, 'Delay detected. Using Oustaloup approximation for simulation.');
+                    if ~isproper(controller)
+                        controller = toproper(controller, 1e4);
+                    end
+                end
+
+                closedLoop = feedback(controller * plant, 1);
+
+                fig = uifigure('Name', sprintf('%s control response', pidType));
+                ax = uiaxes(fig);
+                y = lsim(closedLoop, sv, timeVec);
+                plot(ax, timeVec, y, 'LineWidth', 1.4);
+                hold(ax, 'on');
+                plot(ax, timeVec, sv, '--r', 'LineWidth', 1);
+                hold(ax, 'off');
+                grid(ax, 'on');
+                xlabel(ax, 'Time [s]');
+                ylabel(ax, 'Amplitude');
+                legend(ax, {'Response', 'Setpoint'}, 'Location', 'best');
+                title(ax, sprintf('%s control system response for %s', pidType, modelName));
+            catch ME
+                handleError(app, ME);
+            end
         end
 
-    else
-        set(handles.txtSystem, 'String', '');
-        errordlg('Object no longer in workspace or invalid!', 'Error');
+        function onExportPID(app)
+            try
+                prompt = {'Workspace variable name:'};
+                answer = inputdlg(prompt, 'Export PID-FOTF to Workspace', 1, {''}, struct('WindowStyle', 'normal'));
+                if isempty(answer)
+                    return;
+                end
+                varName = strtrim(answer{1});
+                if isempty(varName)
+                    error('FPID:InvalidName', 'Specify a valid workspace variable name.');
+                end
+                pid = buildPid(app);
+                assignin('base', varName, pid);
+                appendMessage(app, sprintf('PID controller exported to workspace variable ''%s''.', varName));
+            catch ME
+                handleError(app, ME);
+            end
+        end
+
+        function onExportControlSystem(app)
+            try
+                [modelName, plant] = fetchPlant(app);
+                [pid, pidType] = buildPidWithType(app);
+
+                if isa(plant, 'fotf')
+                    controller = pid;
+                    prompts = {'Workspace variable name:'};
+                    defaults = {sprintf('%s_control', modelName)};
+                    answer = inputdlg(prompts, 'Save control system', 1, defaults, ...
+                        struct('WindowStyle', 'normal', 'Resize', 'on'));
+                    if isempty(answer)
+                        return;
+                    end
+                    varName = strtrim(answer{1});
+                    if isempty(varName)
+                        varName = defaults{1};
+                    end
+                    fullCtrl = feedback(controller * plant, 1);
+                    assignin('base', varName, fullCtrl);
+                    appendMessage(app, sprintf('Control system exported to workspace variable ''%s''.', varName));
+                    appendMessage(app, sprintf('Controller type: %s', pidType));
+                    return;
+                end
+
+                prompts = {'Workspace variable name:', ...
+                           'Approximation type (oust or ref):', ...
+                           'Low frequency bound wb [rad/s]:', ...
+                           'High frequency bound wh [rad/s]:', ...
+                           'Order of approximation:'};
+                defaults = {sprintf('%s_control', modelName), 'oust', '0.0001', '10000', '5'};
+                answer = inputdlg(prompts, 'Export parameters', 1, defaults, ...
+                    struct('WindowStyle', 'normal', 'Resize', 'on'));
+                if isempty(answer)
+                    return;
+                end
+                ctrlVar = strtrim(answer{1});
+                if isempty(ctrlVar)
+                    ctrlVar = defaults{1};
+                end
+                ofType = answer{2};
+                ofWb = str2double(answer{3});
+                ofWh = str2double(answer{4});
+                ofN = str2double(answer{5});
+                controller = oustapp(pid, ofWb, ofWh, ofN, ofType);
+                if ~isproper(controller)
+                    controller = toproper(controller, ofWh);
+                end
+                plant = ss(plant);
+                fullCtrl = feedback(controller * plant, 1);
+                assignin('base', ctrlVar, fullCtrl);
+                appendMessage(app, sprintf('Approximate control system stored to ''%s''.', ctrlVar));
+            catch ME
+                handleError(app, ME);
+            end
+        end
+
+        function onApproximate(app)
+            try
+                [modelName, plant] = fetchPlant(app);
+                [pid, pidType] = buildPidWithType(app);
+                paramsPrompt = {'Approximation type (oust or ref):', ...
+                                'Low frequency bound wb [rad/s]:', ...
+                                'High frequency bound wh [rad/s]:', ...
+                                'Order of approximation:'};
+                defaults = {'oust', '0.0001', '10000', '5'};
+                answer = inputdlg(paramsPrompt, 'PID approximation parameters', 1, defaults, ...
+                    struct('WindowStyle', 'normal', 'Resize', 'on'));
+                if isempty(answer)
+                    return;
+                end
+                ofType = answer{1};
+                ofWb = str2double(answer{2});
+                ofWh = str2double(answer{3});
+                ofN = str2double(answer{4});
+                pidApprox = oustapp(pid, ofWb, ofWh, ofN, ofType);
+                if ~isproper(pidApprox)
+                    pidApprox = toproper(pidApprox, ofWh);
+                end
+                assignin('base', sprintf('%s_pidApprox', modelName), pidApprox);
+                appendMessage(app, sprintf('Stored %s PID approximation in workspace.', pidType));
+            catch ME
+                handleError(app, ME);
+            end
+        end
+
+        function onOpenLoopBode(app)
+            try
+                [modelName, plant] = fetchPlant(app);
+                [pid, pidType] = buildPidWithType(app);
+                defaultFreq = 'logspace(-5,5,1000)';
+                if isa(plant, 'fotf')
+                    freqAnswer = inputdlg({'Frequencies of interest [rad/s]:'}, ...
+                        'Bode plot parameters', 1, {defaultFreq}, ...
+                        struct('WindowStyle', 'normal', 'Resize', 'on'));
+                    if isempty(freqAnswer)
+                        return;
+                    end
+                    w_ev = evalin('base', freqAnswer{1});
+                    controller = pid;
+                    plantToUse = plant;
+                else
+                    paramsPrompt = {'Approximation type (oust or ref):', ...
+                                    'Low frequency bound wb [rad/s]:', ...
+                                    'High frequency bound wh [rad/s]:', ...
+                                    'Order of approximation:', ...
+                                    'Frequencies of interest [rad/s]:'};
+                    defaults = {'oust', '0.0001', '10000', '5', defaultFreq};
+                    answer = inputdlg(paramsPrompt, 'Bode plot parameters', 1, defaults, ...
+                        struct('WindowStyle', 'normal', 'Resize', 'on'));
+                    if isempty(answer)
+                        return;
+                    end
+                    ofType = answer{1};
+                    ofWb = str2double(answer{2});
+                    ofWh = str2double(answer{3});
+                    ofN = str2double(answer{4});
+                    w_ev = evalin('base', answer{5});
+                    controller = oustapp(pid, ofWb, ofWh, ofN, ofType);
+                    if ~isproper(controller)
+                        controller = toproper(controller, ofWh);
+                    end
+                    plantToUse = ss(plant);
+                end
+
+                fig = figure('Name', sprintf('%s * %s open-loop response', pidType, modelName));
+                bode(controller * plantToUse, w_ev);
+                grid on;
+            catch ME
+                handleError(app, ME);
+            end
+        end
+
+        function onClosedLoopBode(app)
+            try
+                [modelName, plant] = fetchPlant(app);
+                [pid, pidType] = buildPidWithType(app);
+                defaultFreq = 'logspace(-5,5,1000)';
+                if isa(plant, 'fotf')
+                    answer = inputdlg({'Frequencies of interest [rad/s]:'}, ...
+                        'Bode plot parameters', 1, {defaultFreq}, ...
+                        struct('WindowStyle', 'normal', 'Resize', 'on'));
+                    if isempty(answer)
+                        return;
+                    end
+                    w_ev = evalin('base', answer{1});
+                    controller = pid;
+                else
+                    paramsPrompt = {'Approximation type (oust or ref):', ...
+                                    'Low frequency bound wb [rad/s]:', ...
+                                    'High frequency bound wh [rad/s]:', ...
+                                    'Order of approximation:', ...
+                                    'Frequencies of interest [rad/s]:'};
+                    defaults = {'oust', '0.0001', '10000', '5', defaultFreq};
+                    answer = inputdlg(paramsPrompt, 'Bode plot parameters', 1, defaults, ...
+                        struct('WindowStyle', 'normal', 'Resize', 'on'));
+                    if isempty(answer)
+                        return;
+                    end
+                    ofType = answer{1};
+                    ofWb = str2double(answer{2});
+                    ofWh = str2double(answer{3});
+                    ofN = str2double(answer{4});
+                    w_ev = evalin('base', answer{5});
+                    controller = oustapp(pid, ofWb, ofWh, ofN, ofType);
+                    if ~isproper(controller)
+                        controller = toproper(controller, ofWh);
+                    end
+                    plant = ss(plant);
+                end
+                closedLoop = feedback(controller * plant, 1);
+                fig = figure('Name', sprintf('%s closed-loop frequency response', modelName));
+                bode(closedLoop, w_ev);
+                grid on;
+            catch ME
+                handleError(app, ME);
+            end
+        end
+
+        function onRealize(app)
+            try
+                params.Kp = app.KpField.Value;
+                params.Ki = app.KiField.Value;
+                params.Kd = app.KdField.Value;
+                params.lam = app.LambdaField.Value;
+                params.mu = app.MuField.Value;
+                impid('UserData', params);
+            catch ME
+                handleError(app, ME);
+            end
+        end
+
+        function onClear(app)
+            app.SystemField.Value = '';
+            app.KpField.Value = '1';
+            app.KiField.Value = '1';
+            app.LambdaField.Value = '0.5';
+            app.KdField.Value = '1';
+            app.MuField.Value = '0.5';
+            app.TimeField.Value = '0:0.1:100';
+            app.SvField.Value = '1';
+            app.MessageArea.Value = {'Fields reset to defaults.'};
+        end
+
+        function onImportConfig(app)
+            try
+                [filename, path] = uigetfile({'*.mat', 'MAT-files (*.mat)'}, 'Import PID configuration');
+                if isequal(filename, 0) || isequal(path, 0)
+                    return;
+                end
+                fileData = load(fullfile(path, filename));
+                if ~isfield(fileData, 'FPID_Optimizer_GUI_config')
+                    error('FPID:InvalidFile', 'Selected file does not contain FPID configuration.');
+                end
+                cfg = fileData.FPID_Optimizer_GUI_config;
+                app.KpField.Value = cfg.FPIDParams.Kp;
+                app.KiField.Value = cfg.FPIDParams.Ki;
+                app.KdField.Value = cfg.FPIDParams.Kd;
+                app.LambdaField.Value = cfg.FPIDParams.Lam;
+                app.MuField.Value = cfg.FPIDParams.Mu;
+                appendMessage(app, sprintf('PID parameters imported from %s.', filename));
+            catch ME
+                handleError(app, ME);
+            end
+        end
+
+        function handleError(app, ME)
+            appendMessage(app, sprintf('Error: %s', ME.message));
+            errordlg(ME.message, 'FOMCON FPID error', 'modal');
+        end
     end
-
-
-% --------------------------------------------------------------------
-function menuImportPIDConfig_Callback(hObject, eventdata, handles)
-% hObject    handle to menuImportPIDConfig (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-[filename,path] = uigetfile();
-if ~isequal(filename, 0) && ~isequal(path, 0)
-    config_struct   = load([path filename]);
-    config = config_struct.FPID_Optimizer_GUI_config;
-    
-    % Handles shortcut
-    h = handles;
-    FPIDParams = config.FPIDParams;
-    set(h.txtKp, 'String', FPIDParams.Kp);
-    set(h.txtKi, 'String', FPIDParams.Ki);
-    set(h.txtKd, 'String', FPIDParams.Kd);
-    set(h.txtLambda, 'String', FPIDParams.Lam);
-    set(h.txtMu, 'String', FPIDParams.Mu);
 end
-
-
-
-function txtKd_Callback(hObject, eventdata, handles)
-% hObject    handle to txtKd (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of txtKd as text
-%        str2double(get(hObject,'String')) returns contents of txtKd as a double
