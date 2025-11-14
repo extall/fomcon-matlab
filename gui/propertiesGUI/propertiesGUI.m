@@ -1,8 +1,13 @@
-function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
+function [hPropsPane,parameters] = propertiesGUI(hParent, parameters, filename, selectedBranch) %#ok<*DSTRRD,*CHARTEN,*GVMIS>
 % propertiesGUI displays formatted editable list of properties
 %
 % Syntax:
+%
+%   Initialization:
 %    [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
+%
+%   Run-time interaction:
+%    propertiesGUI(hPropsPane, mode, filename, branch)
 %
 % Description:
 %    propertiesGUI processes a list of data properties and displays
@@ -17,6 +22,8 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
 %    font, struct and class object.
 %
 % Inputs:
+%  Initialization (up to 2 inputs)
+%  
 %    hParent - optional handle of a parent GUI container (figure/uipanel
 %              /uitab) in which the properties table will appear.
 %              If missing or empty or 0, the table will be shown in a
@@ -28,6 +35,23 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
 %              editor. If parameters is not specified, then the global
 %              test_data will be used. If test_data is also empty, then
 %              a demo of several different data types will be used.
+%
+%  Run-time interactions (4 inputs)
+%
+%   hPropsPane - handle to the properties panel width (see output below)
+%
+%   mode - char string, 'save', 'load' or 'update', to indicate the operation
+%          mode to save or load data. 'update' is currently implemented
+%          specifically for 'Element selector' callbacks. When user selects
+%          an element selector, the GUI updates to display only the relevant
+%          parameters of the algorithm of choice.
+%
+%   filename - char string of the filename to be saved.  Can be full path
+%              or relative.
+%
+%   branch - char string to the branch to be saved or loaded.  If it is a 
+%            sub branch then the items are to be delimited by '.'
+%            If branch is empty -> then the full tree data is saved/loaded.
 %
 % Outputs:
 %    hPropsPane - handle of the properties panel widget, which can be
@@ -43,11 +67,10 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
 %              bad programming, but it simplifies component interaction.
 %
 % Customization:
-%    This utility is meant to be used either as stand-alone, or as a
-%    template for customization. For example, you can attach a unique
-%    description to each property that will be shown in an internal
-%    sub-panel: see the customizePropertyPane() and preparePropsList()
-%    sub-functions.
+%    This utility is meant to be used either as stand-alone, or as a template
+%    for customization. For example, you can attach a unique description
+%    to each property that will be shown in an internal sub-panel:
+%    See the customizePropertyPane() and preparePropsList() sub-functions.
 %
 %    When passing the properties in an input parameters struct, the
 %    utility automatically inspects each struct field and assigns a
@@ -83,6 +106,10 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
 %    params.size.height = 20;
 %    [hPropsPane, params] = propertiesGUI(params);
 %
+%    % runtime interation:
+%    propertiesGUI(hPropsPane, 'save', 'width.mat', 'size.width');
+%    propertiesGUI(hPropsPane, 'load', 'width.mat', 'size.width');
+%
 % Bugs and suggestions:
 %    Please send to Yair Altman (altmany at gmail dot com)
 %
@@ -91,32 +118,38 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
 %    functionality. It works on Matlab 7+, but use at your own risk!
 %
 %    A technical description of the implementation can be found at:
-%    http://undocumentedmatlab.com/blog/propertiesGUI/
-%    http://undocumentedmatlab.com/blog/jide-property-grids/
-%    http://undocumentedmatlab.com/blog/advanced-jide-property-grids/
+%    http://undocumentedmatlab.com/articles/propertiesGUI
+%    http://undocumentedmatlab.com/articles/jide-property-grids
+%    http://undocumentedmatlab.com/articles/advanced-jide-property-grids
 %
 % Change log:
-%    2013-12-24: Fixes for R2013b & R2014a; added support for Font property
+%    2012-10-31: First version posted on <a href="http://www.mathworks.com/matlabcentral/fileexchange/authors/27420">MathWorks File Exchange</a>
+%    2012-11-07: Accept any object having properties/fields as input parameter; support multi-level properties
+%    2012-11-07: Minor fix for file/folder properties
+%    2013-01-26: Updated help section
 %    2013-04-23: Handled multi-dimensional arrays
 %    2013-04-23: Fixed case of empty ([]) data, handled class objects & numeric/cell arrays, fixed error reported by Andrew Ness
-%    2013-01-26: Updated help section
-%    2012-11-07: Minor fix for file/folder properties
-%    2012-11-07: Accept any object having properties/fields as input parameter; support multi-level properties
-%    2012-10-31: First version posted on <a href="http://www.mathworks.com/matlabcentral/fileexchange/authors/27420">MathWorks File Exchange</a>
+%    2013-12-24: Fixes for R2013b & R2014a; added support for Font property
+%    2015-03-12: Fixes for R2014b; added support for matrix data, data save/load, feedback links
+%    2022-01-26: Fixes for R2022a; many small improvements/fixes
+%    2022-09-19: Fixes for class objects; prevent endless recursion (>5 levels); restored drop-down selections
+%    2024-05-26: Fixed prop names column visibility; fixed default drop-down selection (was always set to 1st value); minor code cleanup
 %
 % See also:
-%    inspect, uiinspect (#17935 on the MathWorks File Exchange)
+%    inspect, uiinspect (MathWorks File Exchange #17935), createTable (FEX #14225)
 
 % License to use and modify this code is granted freely to all interested, as long as the original author is
 % referenced and attributed as such. The original author maintains the right to be solely associated with this work.
 
 % Programmed and Copyright by Yair M. Altman: altmany(at)gmail.com
-% + Revised by Aleksei Tepljakov: alex(at)starspirals.net
-% + Changes: Replaced default "double" datatype widget
-% $Revision: 1.09a $  $Date: 2014/04/23 10:00:00 $
 
+% Get data from propertiesGUI using:
+% keyStr = hParent.ApplicationData.propertiesGUI.key;
+% updatedData = hFig.ApplicationData.propertiesGUI.(keyStr).mirror;
+ 
   % Get the initial data
   global test_data
+  isDemo = false;
   if nargin < 2
       try
           isObj = nargin==1;
@@ -134,7 +167,35 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
               % demo mode
               parameters = demoParameters;
           end
+          isDemo = true;
       end
+  elseif nargin == 4  % check if load or save mode
+      mode = parameters;
+      if ischar(mode) && ischar(filename) && ...
+                                          ((strcmp(mode,'update') ||...
+                                            ischar(selectedBranch) ||...
+                                            iscell(selectedBranch) ||...
+                                            isstruct(selectedBranch) ))
+          hParent = handle(hParent);
+          hFig = ancestor(hParent,'figure');
+          % Create a unique key for this object
+          thisKey = GetUniqueKey(hFig,hParent);
+
+          %mirrorData = getappdata(hFig, 'mirror');
+          hgrid = GetApplicationData(hFig,thisKey,'hgrid');
+          %hgrid = getappdata(hFig, 'hgrid');
+          if strcmp(mode,'load') && isempty(selectedBranch)
+              parameters = load(filename, '-mat');
+              container = hParent.Parent;
+              delete(hParent)
+              hPropsPane = propertiesGUI(container,parameters);
+          else
+              fileIO_Callback(hgrid, selectedBranch, mode, hFig, thisKey, filename)
+          end
+      else
+          error('propertiesGUI:incorrectUsage', 'Incorrect input parameters in input');
+      end
+      return
   end
 
   % Accept any object having data fields/properties
@@ -147,13 +208,34 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
   end
   
   % Init JIDE
-  com.mathworks.mwswing.MJUtilities.initJIDE;
+  com.mathworks.mwswing.MJUtilities.initJIDE; %#ok<JAPIMATHWORKS> 
 
   % Prepare the list of properties
   oldWarn = warning('off','MATLAB:hg:JavaSetHGProperty');
   warning off MATLAB:hg:PossibleDeprecatedJavaSetHGProperty
   isEditable = true; %=nargin < 1;
-  propsList = preparePropsList(parameters, isEditable);
+  % 
+  % If no parent (or the root) was specified
+  noParent = nargin < 1 || isempty(hParent) || isequal(hParent,0);
+  if noParent
+      % Create a new figure window
+      delete(findall(0, '-depth',1, 'Tag','fpropertiesGUI'));
+      hFig = figure('NumberTitle','off', 'Name','Application properties', 'Units','pixel', 'Pos',[300,200,500,500], 'Menu','none', 'Toolbar','none', 'Tag','fpropertiesGUI', 'Visible','off');
+      % Create a unique key for this object
+      thisKey = GetUniqueKey(hFig);
+  else
+      % Set the component's position
+      drawnow;
+      oldWarn = warning('off','MATLAB:nargchk:deprecated');
+      pos = getpixelposition(hParent);
+      warning(oldWarn);
+      pos(1:2) = 5;
+      pos = pos - [0,0,10,10];% RJC TODO: item 4 was 15 in (9)
+      hFig = ancestor(hParent,'figure');
+      % Create a unique key for this object
+      thisKey = GetUniqueKey(hFig);
+  end
+  propsList = preparePropsList(parameters, isEditable, thisKey);
   
   % Create a mapping propName => prop
   propsHash = java.util.Hashtable;
@@ -183,50 +265,83 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
   % If no parent (or the root) was specified
   if nargin < 1 || isempty(hParent) || isequal(hParent,0)
       % Create a new figure window
-      delete(findall(0, '-depth',1, 'Tag','fpropertiesGUI'));
-      hFig = figure('NumberTitle', 'Off', 'Name','Application properties', 'Units','pixel', 'Pos',[300,200,500,500], 'Menu','none', 'Toolbar','none', 'Tag','fpropertiesGUI', 'Visible','off');
       hParent = hFig;
+
       setappdata(0,'isParamsGUIApproved',false)
 
       % Add the bottom action buttons
-      btOK     = uicontrol('String','OK',     'Units','pixel', 'Pos',[ 50,5,60,30], 'Tag','btOK',     'Callback',@btOK_Callback);
-      btCancel = uicontrol('String','Cancel', 'Units','pixel', 'Pos',[150,5,60,30], 'Tag','btCancel', 'Callback',@(h,e)close(hFig)); %#ok<NASGU>
+      btOK     = uicontrol('String','OK',     'Units','pixel', 'Pos',[ 20,5,60,30], 'Tag','btOK',     'Callback',@(h,e)btOK_Callback(h,e,thisKey));
+      btCancel = uicontrol('String','Cancel', 'Units','pixel', 'Pos',[100,5,60,30], 'Tag','btCancel', 'Callback',@(h,e)close(hFig)); %#ok<NASGU>
+
+      % Add the rating link (demo mode only)
+      if isDemo
+          cursor = java.awt.Cursor(java.awt.Cursor.HAND_CURSOR);
+          blogLabel = javax.swing.JLabel('<html><center>Additional interesting stuff at<br/><b><a href="">UndocumentedMatlab.com');
+          set(handle(blogLabel,'CallbackProperties'), 'MouseClickedCallback', 'web(''http://UndocumentedMatlab.com'',''-browser'');');
+          blogLabel.setCursor(cursor);
+          oldWarn = warning('off','MATLAB:ui:javacomponent:FunctionToBeRemoved');
+          javacomponent(blogLabel, [200,5,170,30], hFig); %#ok<JAVCM> 
+
+          url = 'http://www.mathworks.com/matlabcentral/fileexchange/38864-propertiesgui';
+          rateLabel = javax.swing.JLabel('<html><center><b><a href="">Feedback / rating for this utility');
+          set(handle(rateLabel,'CallbackProperties'), 'MouseClickedCallback', ['web(''' url ''',''-browser'');']);
+          rateLabel.setCursor(cursor);
+          javacomponent(rateLabel, [380,5,110,30], hFig); %#ok<JAVCM> 
+          warning(oldWarn)
+      end
 
       % Check the property values to determine whether the <OK> button should be enabled or not
       checkProps(propsList, btOK, true);
   
-      % Since we will be using a JavaFrame, a warning will pop up with the
-      % deprecation in future MATLAB release message. We will ignore it for now.
-      warning('off','MATLAB:HandleGraphics:ObsoletedProperty:JavaFrame');
-      
       % Set the figure icon & make visible
-      jFrame = get(handle(hFig),'JavaFrame');
-      icon = javax.swing.ImageIcon(fullfile(matlabroot, '/toolbox/matlab/icons/tool_legend.gif'));
-      jFrame.setFigureIcon(icon);
-      set(hFig, 'WindowStyle','modal', 'Visible','on');
+      % oldWarn = warning('off','MATLAB:ui:javaframe:PropertyToBeRemoved');
+      % jFrame = get(handle(hFig),'JavaFrame'); %#ok<JAVFM>
+      % warning(oldWarn);
+      % icon = javax.swing.ImageIcon(fullfile(matlabroot, '/toolbox/matlab/icons/tool_legend.gif'));
+      % jFrame.setFigureIcon(icon);
+      set(hFig, 'WindowStyle','normal', 'Visible','on'); %% RJC -> change back to modal
       
       % Set the component's position
       %pos = [5,40,490,440];
       hFigPos = getpixelposition(hFig);
       pos = [5,40,hFigPos(3)-10,hFigPos(4)-50];
+
+      wasFigCreated = true;
   else
-      % Set the component's position
-      drawnow;
-      pos = getpixelposition(hParent);
-      pos(1:2) = 5;
-      pos = pos - [0,0,10,10];
-      hFig = [];
+      
+      wasFigCreated = false;
+
+      % Clear the parent container
+      if isequal(hFig,hParent)
+          clf(hFig);
+      else
+          delete(allchild(hParent));
+      end
   end
 
   %drawnow; pause(0.05);
   pane = javaObjectEDT(com.jidesoft.grid.PropertyPane(grid));
   customizePropertyPane(pane);
-  [jPropsPane, hPropsPane_] = javacomponent(pane, pos, hParent);
-  setappdata(hParent, 'jPropsPane',jPropsPane);
-  setappdata(hParent, 'propsList',propsList);
-  setappdata(hParent, 'propsHash',propsHash);
-  setappdata(hParent, 'mirror',parameters);
+  oldWarn = warning('off','MATLAB:ui:javacomponent:FunctionToBeRemoved');
+  [jPropsPane, hPropsPane_] = javacomponent(pane, pos, hParent); %#ok<JAVCM>
+  warning(oldWarn)
+ 
+  % A callback for touching the mouse
+  hgrid = handle(grid, 'CallbackProperties');
+  set(hgrid, 'MousePressedCallback', {@MousePressedCallback, hFig, thisKey});
+% thisKey
+  propGuiAppData = getappdata(hFig,'propertiesGUI');
+  propGuiAppData.(thisKey).jPropsPane = jPropsPane;
+  propGuiAppData.(thisKey).propsList  = propsList;
+  propGuiAppData.(thisKey).propsHash  = propsHash;
+  propGuiAppData.(thisKey).mirror     = parameters;
+  propGuiAppData.(thisKey).hgrid      = hgrid;
+  
+  setappdata(hFig, 'propertiesGUI', propGuiAppData );
   set(hPropsPane_,'tag','hpropertiesGUI');
+  hPropAppData = get(hPropsPane_,'ApplicationData');
+  hPropAppData.propertiesGUI.key = thisKey;
+  set(hPropsPane_,'ApplicationData',hPropAppData);
 
   set(hPropsPane_, 'Units','norm');
 
@@ -235,8 +350,16 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
   try set(hParent, 'Color', bgcolor(1:3)); catch, end  % this fails in uitabs - never mind (works ok in stand-alone figures)
   try pane.setBorderColor(pane.getBackground); catch, end  % error reported by Andrew Ness
   
+  % Ensure that the prop names column is visible at first
+  drawnow; grid.repaint
+  col0 = grid.getColumnModel.getColumn(0);
+  if col0.getWidth < 50
+      col0.setMinWidth(120); grid.repaint
+      col0.setMinWidth(20);
+  end
+
   % If a new figure was created, make it modal and wait for user to close it
-  if ~isempty(hFig)
+  if wasFigCreated
       uiwait(hFig);
       if getappdata(0,'isParamsGUIApproved')
           parameters = test_data; %=getappdata(hFig, 'mirror');
@@ -245,8 +368,133 @@ function [hPropsPane,parameters] = propertiesGUI(hParent, parameters)
   
   if nargout, hPropsPane = hPropsPane_; end  % prevent unintentional printouts to the command window
 end  % propertiesGUI
+function thisKey = GetUniqueKey(hFig,hParent)
+  if nargin == 2
+      hPropAppData = get(hParent,'ApplicationData');
+      thisKey = hPropAppData.propertiesGUI.key;
+  else    
+      thisKey = sprintf ( 'F%s', datestr(now,'YYmmDD_HHMMSSFFF') );
+      propGuiAppData = getappdata(hFig,'propertiesGUI');
+      if isempty ( propGuiAppData ); propGuiAppData = struct; end
+      % Check that the key doesn't exist
+      while isfield(propGuiAppData,thisKey)
+          thisKey = sprintf ( 'F%s', datestr(now,'YYmmDD_HHMMSSFFF') );
+      end
+  end
+end
+% Mouse-click callback function
+function MousePressedCallback(grid, eventdata, hFig, thisKey)
+    % Get the clicked location
+    %grid = eventdata.getSource;
+    %columnModel = grid.getColumnModel;
+    %leftColumn = columnModel.getColumn(0);
+    clickX = eventdata.getX;
+    clickY = eventdata.getY;
+    %rowIdx = grid.getSelectedRow + 1;
 
-%% Determine whether a specified object should be considered as having fields/properties
+    if clickX <= 20  %leftColumn.getWidth % clicked the side-bar
+        return
+    %elseif grid.getSelectedColumn==0 % didn't press on the value (second column)
+    %    return
+    end
+
+    % bail-out if right-click
+    if eventdata.isMetaDown
+        showGridContextMenu(hFig, grid, clickX, clickY,thisKey);
+    else
+        % bail-out if the grid is disabled
+        if ~grid.isEnabled,  return;  end
+
+        %data = GetApplicationData(hFig,thisKey,'mirror'); %getappdata(hFig, 'mirror');
+        selectedProp = grid.getSelectedProperty; % which property (java object) was selected
+        if ~isempty(selectedProp)
+            if ismember('arrayData',fieldnames(get(selectedProp)))
+                % Get the current data and update it
+                actualData = get(selectedProp,'ArrayData');
+                updateDataInPopupTable(selectedProp.getName, actualData, hFig, selectedProp, thisKey);
+            end
+        end
+    end
+end %Mouse pressed
+
+% Update data in a popup table
+function updateDataInPopupTable(titleStr, data, hGridFig, selectedProp,thisKey)
+    figTitleStr = [char(titleStr) ' data'];
+    hFig = findall(0, '-depth',1, 'Name',figTitleStr);
+    if isempty(hFig)
+        hFig = figure('NumberTitle','off', 'Name',figTitleStr, 'Menubar','none', 'Toolbar','none');
+    else
+        figure(hFig);  % bring into focus
+    end
+    try
+        oldWarn = warning('off','MATLAB:uitable:DeprecatedFunction');
+        c = onCleanup(@()warning(oldWarn));
+        mtable = createTable(hFig, [], data);
+        set(mtable,'DataChangedCallback',{@tableDataUpdatedCallback,hGridFig,selectedProp,thisKey});
+        %uiwait(hFig)  % modality
+    catch
+        delete(hFig);
+        errMsg = {'Editing this data requires Yair Altman''s Java-based data table (createTable) utility from the Matlab File Exchange.', ...
+                  ' ', 'If you have already downloaded and unzipped createTable, then please ensure that it is on the Matlab path.'};
+        uiwait(msgbox(errMsg,'Error','warn'));
+        web('http://www.mathworks.com/matlabcentral/fileexchange/14225-java-based-data-table');
+    end
+end  % updateDataInPopupTable
+
+% User updated the data in the popup table
+function tableDataUpdatedCallback(mtable,eventData,hFig,selectedProp,thisKey) %#ok<INUSL>
+    % Get the latest data
+    updatedData = cell(mtable.Data);
+    try
+        if ~iscellstr(updatedData)
+            updatedData = cell2mat(updatedData);
+        end
+    catch
+        % probably hetrogeneous data
+    end
+
+    propName = getRecursivePropName(selectedProp); % get the property name
+    set(selectedProp,'ArrayData',updatedData); % update the appdata of the
+    % specific property containing the actual information of the array
+
+    %% Update the displayed value in the properties GUI
+    dataClass = class(updatedData);
+    value = regexprep(sprintf('%dx',size(updatedData)),{'^(.)','x$'},{'<$1',['> ' dataClass ' array']});
+    % set(selectProp,'value',value);
+    selectedProp.setValue(value); % update the table
+
+    % Update the display
+    propsList = GetApplicationData(hFig,thisKey,'propsList'); %propsList = getappdata(hFig, 'propsList');
+    checkProps(propsList, hFig);
+
+    % Refresh the GUI
+    propsPane = GetApplicationData(hFig,thisKey,'jPropsPane'); %propsPane = getappdata(hFig, 'jPropsPane');
+    try propsPane.repaint; catch; end    
+
+    % Update the local mirror
+    data = GetApplicationData(hFig,thisKey,'mirror' ); %data = getappdata(hFig, 'mirror');
+    eval(['data.' propName ' = updatedData;']); %#ok<EVLDOT>
+    SetApplicationData(hFig,thisKey,'mirror',data);% setappdata(hFig, 'mirror',data);
+end  % tableDataUpdatedCallback
+function output = GetApplicationData ( hFig, thisKey, name )
+    output = [];
+    try
+        propGuiAppData = getappdata(hFig,'propertiesGUI');
+        output = propGuiAppData.(thisKey).(name);
+    catch
+        % ignore
+    end
+end
+function SetApplicationData ( hFig, thisKey, name, data )
+    try
+        propGuiAppData = getappdata(hFig,'propertiesGUI');
+        propGuiAppData.(thisKey).(name) = data;
+        setappdata(hFig,'propertiesGUI',propGuiAppData);
+    catch
+        % ignore
+    end
+end
+% Determine whether a specified object should be considered as having fields/properties
 % Note: HG handles must be processed seperately for the main logic to work
 function [hasProps,isHG] = hasProperties(object)
     % A bunch of tests, some of which may croak depending on the Matlab release, platform
@@ -258,24 +506,24 @@ function [hasProps,isHG] = hasProperties(object)
     hasProps = ~isempty(object) && (isst || isjav || isobj || isco);
 end
 
-%% Customize the property-pane's appearance
+% Customize the property-pane's appearance
 function customizePropertyPane(pane)
   pane.setShowDescription(false);  % YMA: we don't currently have textual descriptions of the parameters, so no use showing an empty box that just takes up GUI space...
   pane.setShowToolBar(false);
   pane.setOrder(2);  % uncategorized, unsorted - see http://undocumentedmatlab.com/blog/advanced-jide-property-grids/#comment-42057
 end
 
-%% Prepare a list of some parameters for demo mode
+% Prepare a list of some parameters for demo mode
 function parameters = demoParameters
     parameters.floating_point_property = pi;
     parameters.signed_integer_property = int16(12);
     parameters.unsigned_integer_property = uint16(12);
     parameters.flag_property = true;
-    parameters.file_property = mfilename('fullpath');
+    parameters.file_property = [mfilename('fullpath') '.m'];
     parameters.folder_property = pwd;
     parameters.text_property = 'Sample text';
-    parameters.fixed_choice_property = {'Yes','No','Maybe'};
-    parameters.editable_choice_property = {'Yes','No','Maybe',''};  % editable if the last cell element is ''
+    parameters.fixed_choice_property = {'Yes','No','Maybe', 'No'};
+    parameters.editable_choice_property = {'Yes','No','Maybe','', {3}};  % editable if the last cell element is ''
     parameters.date_property = java.util.Date;  % today's date
     parameters.another_date_property = now-365;  % last year
     parameters.time_property = datestr(now,'HH:MM:SS');
@@ -285,6 +533,9 @@ function parameters = demoParameters
     parameters.my_category.height = 3;
     parameters.my_category.and_a_subcategory.is_OK = true;
     parameters.numeric_array_property = [11,12,13,14];
+    parameters.numeric_matrix = magic(5);
+    parameters.logical_matrix = true(2,5);
+    parameters.mixed_data_matrix = {true,'abc',pi,uint8(123); false,'def',-pi,uint8(64)};
     parameters.cell_array_property  = {1,magic(3),'text',-4};
     parameters.color_property = [0.4,0.5,0.6];
     parameters.another_color_property = java.awt.Color.red;
@@ -292,9 +543,10 @@ function parameters = demoParameters
     try parameters.class_object_property = matlab.desktop.editor.getActive; catch, end
 end  % demoParameters
 
-%% Prepare a list of properties
-function propsList = preparePropsList(parameters, isEditable)
+% Prepare a list of properties
+function propsList = preparePropsList(parameters, isEditable, thisKey)
   propsList = java.util.ArrayList();
+  if isempty(parameters),  return,  end
 
   % Convert a class object into a struct
   if isobject(parameters)
@@ -307,7 +559,11 @@ function propsList = preparePropsList(parameters, isEditable)
   % Prepare a dynamic list of properties, based on the struct fields
   if isstruct(parameters) && ~isempty(parameters)
       %allParameters = parameters(:);  % convert ND array => 3D array
-      allParameters = reshape(parameters, size(parameters,1),size(parameters,2),[]);
+      try
+        allParameters = reshape(parameters, size(parameters,1),size(parameters,2),[]);
+      catch
+          allParameters = parameters;
+      end
       numParameters = numel(allParameters);
       if numParameters > 1
           for zIdx = 1 : size(allParameters,3)
@@ -317,7 +573,7 @@ function propsList = preparePropsList(parameters, isEditable)
                       field_name = '';
                       field_label = sprintf('(%d,%d,%d)',rowIdx,colIdx,zIdx);
                       field_label = regexprep(field_label,',1\)',')');  % remove 3D if unnecesary
-                      newProp = newProperty(parameters, field_name, field_label, isEditable, '', '', @propUpdatedCallback);
+                      newProp = newProperty(parameters, field_name, field_label, isEditable, '', '', thisKey, @propUpdatedCallback);
                       propsList.add(newProp);
                   end
               end
@@ -326,15 +582,16 @@ function propsList = preparePropsList(parameters, isEditable)
           % Dynamically (generically) inspect all the fields and assign corresponding props
           field_names = fieldnames(parameters);
           for field_idx = 1 : length(field_names)
+              arrayData = [];
               field_name = field_names{field_idx};
               value = parameters.(field_name);
-              field_label = strrep(field_name,'_',' ');
-              field_label(1) = upper(field_label(1));
+              field_label = getFieldLabel(field_name);
               %if numParameters > 1,  field_label = [field_label '(' num2str(parametersIdx) ')'];  end
               field_description = '';  % TODO
               type = 'string';
               if isempty(value)
                   type = 'string';  % not really needed, but for consistency
+                  value = '';
               elseif isa(value,'java.awt.Color')
                   type = 'color';
               elseif isa(value,'java.awt.Font')
@@ -364,9 +621,11 @@ function propsList = preparePropsList(parameters, isEditable)
                               type = 'signed';
                           else
                               type = 'float';
-							  value = num2str(value,10);
                           end
-                      else
+                      else % a vector or a matrix
+                          arrayData = value;
+                          value = regexprep(sprintf('%dx',size(value)),{'^(.)','x$'},{'<$1','> numeric array'});
+                          %{
                           value = num2str(value);
                           if size(value,1) > size(value,2)
                               value = value';
@@ -382,11 +641,18 @@ function propsList = preparePropsList(parameters, isEditable)
                               value = [value '...']; %#ok<AGROW>
                           end
                           value = ['[ ' value ' ]']; %#ok<AGROW>
+                          %}
                       end
                   end
               elseif islogical(value)
-                  type = 'boolean';
-              elseif ischar(value)
+                  if numel(value)==1
+                      % a single value
+                      type = 'boolean';
+                  else % an array of boolean values
+                      arrayData = value;
+                      value = regexprep(sprintf('%dx',size(value)),{'^(.)','x$'},{'<$1','> logical array'});
+                  end
+              elseif ischar(value) || isa(value,'string')
                   if exist(value,'dir')
                       type = 'folder';
                       value = java.io.File(value);
@@ -397,6 +663,8 @@ function propsList = preparePropsList(parameters, isEditable)
                       type = 'password';
                   elseif sum(value=='.')==3
                       type = 'IPAddress';
+                  elseif any(value==':')
+                      type = 'time';
                   else
                       type = 'string';
                       if length(value) > 50
@@ -404,8 +672,40 @@ function propsList = preparePropsList(parameters, isEditable)
                           value = [value '...']; %#ok<AGROW>
                       end
                   end
-              elseif iscellstr(value)
+              elseif iscell(value) 
                   type = value;  % editable if the last cell element is ''
+                  if numel(value) == 1  % single value
+                      try
+                          if isnumeric(value{1})
+                              value = ['{' num2str(value{1}) '}'];
+                          else
+                              try  %Eddie comment on FEX 2024-05-21 https://www.mathworks.com/matlabcentral/fileexchange/38864-propertiesgui?tab=discussions#discussions_2601411
+                                  value = ['{''' value{1} '''}'];
+                              catch
+                                  value = strtrim(regexprep(evalc('disp(value{1})'),' +',' '));
+                              end
+                          end
+                      catch
+                          value = ['{' class(value{1}) '}'];
+                      end
+                  elseif size(value,1)==1 || size(value,2)==1  %TODO: ListComboBoxCellEditor fails on 20a for unknown reason
+                      % vector - treat as a drop-down (combo-box/popup) of values
+                      if ~iscellstr(value)
+                          type = value;
+                          for ii=1:length(value)
+                              if isnumeric(value{ii})  % if item is numeric -> change to string for display.
+                                  type{ii} = num2str(value{ii});
+                              else
+                                  type{ii} = value{ii};
+                              end
+                          end
+                      end
+                      value = type{1};
+                  else  % Matrix - use table popup
+                      %value = ['{ ' strtrim(regexprep(evalc('disp(value)'),' +',' ')) ' }'];
+                      arrayData = value;
+                      value = regexprep(sprintf('%dx',size(value)),{'^(.)','x$'},{'<$1','> cell array'});
+                  end                  
               elseif isa(value,'java.util.Date')
                   type = 'date';
               elseif isa(value,'java.io.File')
@@ -414,9 +714,6 @@ function propsList = preparePropsList(parameters, isEditable)
                   else  % value.isDirectory
                       type = 'folder';
                   end
-              elseif iscell(value)
-                  value = strtrim(regexprep(evalc('disp(value)'),' +',' '));
-                  value = ['{ ' value ' }']; %#ok<AGROW>
               elseif isobject(value)
                   oldWarn = warning('off','MATLAB:structOnObject');
                   value = struct(value);
@@ -425,145 +722,272 @@ function propsList = preparePropsList(parameters, isEditable)
                   value = strtrim(regexprep(evalc('disp(value)'),' +',' '));
               end
               parameters.(field_name) = value;  % possibly updated above
-              newProp = newProperty(parameters, field_name, field_label, isEditable, type, field_description, @propUpdatedCallback);
+              newProp = newProperty(parameters, field_name, field_label, isEditable, type, field_description, thisKey, @propUpdatedCallback);
               propsList.add(newProp);
+
+              % Save the array as a new property of the object
+              if ~isempty(arrayData)
+                  try
+                      set(newProp,'arrayData',arrayData)
+                  catch
+                      %setappdata(hProp,'UserData',propName)
+                      hp = schema.prop(handle(newProp),'arrayData','mxArray'); %#ok<NASGU>
+                      set(handle(newProp),'arrayData',arrayData)
+                  end
+                  newProp.setEditable(false);
+              end
           end
       end
   else
       % You can also use direct assignments, instead of the generic code above. For example:
       % (Possible property types: signed, unsigned, float, file, folder, text or string, color, IPAddress, password, date, boolean, cell-array of strings)
-      propsList.add(newProperty(parameters, 'flag_prop_name',   'Flag value:',     isEditable, 'boolean',            'Turn this on if you want to make extra plots', @propUpdatedCallback));
-      propsList.add(newProperty(parameters, 'float_prop_name',  'Boolean prop',    isEditable, 'float',              'description 123...',   @propUpdatedCallback));
-      propsList.add(newProperty(parameters, 'string_prop_name', 'My text msg:',    isEditable, 'string',             'Yaba daba doo',        @propUpdatedCallback));
-      propsList.add(newProperty(parameters, 'int_prop_name',    'Now an integer',  isEditable, 'unsigned',           '123 456...',           @propUpdatedCallback));
-      propsList.add(newProperty(parameters, 'choice_prop_name', 'And a drop-down', isEditable, {'Yes','No','Maybe'}, 'no description here!', @propUpdatedCallback));
+      propsList.add(newProperty(parameters, 'flag_prop_name',   'Flag value:',     isEditable, 'boolean',            'Turn this on if you want to make extra plots', thisKey, @propUpdatedCallback));
+      propsList.add(newProperty(parameters, 'float_prop_name',  'Boolean prop',    isEditable, 'float',              'description 123...',   thisKey, @propUpdatedCallback));
+      propsList.add(newProperty(parameters, 'string_prop_name', 'My text msg:',    isEditable, 'string',             'Yaba daba doo',        thisKey, @propUpdatedCallback));
+      propsList.add(newProperty(parameters, 'int_prop_name',    'Now an integer',  isEditable, 'unsigned',           '123 456...',           thisKey, @propUpdatedCallback));
+      propsList.add(newProperty(parameters, 'choice_prop_name', 'And a drop-down', isEditable, {'Yes','No','Maybe'}, 'no description here!', thisKey, @propUpdatedCallback));
   end
 end  % preparePropsList
 
-%% Prepare a data property
-function prop = newProperty(dataStruct, propName, label, isEditable, dataType, description, propUpdatedCallback)
+% Get a normalized field label (see also checkFieldName() below)
+function field_label = getFieldLabel(field_name)
+    field_label = regexprep(field_name, '__(.*)', ' ($1)');
+    field_label = strrep(field_label,'_',' ');
+    %field_label(1) = upper(field_label(1));
+end
+    
+% Prepare a data property
+function prop = newProperty(dataStruct, propName, label, isEditable, dataType, description, thisKey, propUpdatedCallback)
+    persistent doubleEditor stringEditor doubleType stringType RIGHT
+    % Bail out if empty dataStruct
+    if isempty(dataStruct),  prop = []; return,  end
+    if isempty(doubleEditor)
+        RIGHT = javax.swing.SwingConstants.RIGHT;
 
-  % Auto-generate the label from the property name, if the label was not specified
-  if isempty(label)
-      label = strrep(propName,'_',' ');
-      label(1) = upper(label(1));
-  end
+        doubleEditor = com.jidesoft.grid.DoubleCellEditor;
+        doubleEditor.getTextField.setHorizontalAlignment(RIGHT);
+        doubleType = javaclass('double');
 
-  % Create a new property with the chosen label
-  prop = javaObjectEDT(com.jidesoft.grid.DefaultProperty);  % UNDOCUMENTED internal MATLAB component
-  prop.setName(label);
-  
-  % Set the property to the current patient's data value
-  try
-      thisProp = dataStruct.(propName);
-  catch
-      thisProp = dataStruct;
-  end
-  origProp = thisProp;
-  if isstruct(thisProp)  %hasProperties(thisProp)
-      % Accept any object having data fields/properties
-      try
-          thisProp = get(thisProp);
-      catch
-          oldWarn = warning('off','MATLAB:structOnObject');
-          thisProp = struct(thisProp);
-          warning(oldWarn);
-      end
+        stringEditor = com.jidesoft.grid.TextFieldCellEditor(getClass(java.lang.String));
+        stringEditor.getTextField.setHorizontalAlignment(RIGHT);
+        stringType = javaclass('cellstr');
+    end
 
-      % Parse the children props and add them to this property
-      %summary = regexprep(evalc('disp(thisProp)'),' +',' ');
-      %prop.setValue(summary);  % TODO: display summary dynamically
-      if numel(thisProp) < 2
-          prop.setValue('');
-      else
-          sz = size(thisProp);
-          szStr = regexprep(num2str(sz),' +','x');
-          prop.setValue(['[' szStr ' struct array]']);
-      end
-      prop.setEditable(false);
-      children = toArray(preparePropsList(thisProp, isEditable));
-      for childIdx = 1 : length(children)
-          prop.addChild(children(childIdx));
-      end
-  else
-      prop.setValue(thisProp);
-      prop.setEditable(isEditable);
-  end
+    % Auto-generate the label from the property name, if the label was not specified
+    if isempty(label)
+        label = getFieldLabel(propName);
+    end
 
-  % Set property editor, renderer and alignment
-  if iscell(dataType)
-      % treat this as drop-down values
-      cbIsEditable = true;
-      if isempty(dataType{end})  % ends with '' - editable
-          dataType(end) = [];  % remove from the drop-down list
-      else  % standard drop-down, non-editable
-          cbIsEditable = false;
-      end
-      editor = com.jidesoft.grid.ListComboBoxCellEditor(dataType);
-      try editor.getComboBox.setEditable(cbIsEditable); catch, end % #ok<NOCOM>
-      %set(editor,'EditingStoppedCallback',{@propUpdatedCallback,tagName,propName});
-      alignProp(prop, editor);
-      try prop.setValue(origProp{1}); catch, end
-  else
-      switch lower(dataType)
-          case 'signed',    %alignProp(prop, com.jidesoft.grid.IntegerCellEditor,    'int32');
-                            model = javax.swing.SpinnerNumberModel(prop.getValue, -intmax, intmax, 1);
-                            editor = com.jidesoft.grid.SpinnerCellEditor(model);
-                            alignProp(prop, editor, 'int32');
-          case 'unsigned',  %alignProp(prop, com.jidesoft.grid.IntegerCellEditor,    'uint32');
-                            val = max(0, min(prop.getValue, intmax));
-                            model = javax.swing.SpinnerNumberModel(val, 0, intmax, 1);
-                            editor = com.jidesoft.grid.SpinnerCellEditor(model);
-                            alignProp(prop, editor, 'uint32');
-          case 'float',     alignProp(prop);
-          case 'boolean',   alignProp(prop, com.jidesoft.grid.BooleanCheckBoxCellEditor, 'logical');
-          case 'folder',    alignProp(prop, com.jidesoft.grid.FolderCellEditor);
-          case 'file',      alignProp(prop, com.jidesoft.grid.FileCellEditor);
-          case 'ipaddress', alignProp(prop, com.jidesoft.grid.IPAddressCellEditor);
-          case 'password',  alignProp(prop, com.jidesoft.grid.PasswordCellEditor);
-          case 'color',     alignProp(prop, com.jidesoft.grid.ColorCellEditor);
-          case 'font',      alignProp(prop, com.jidesoft.grid.FontCellEditor);
-          case 'text',      alignProp(prop);
-          case 'time',      alignProp(prop);  % maybe use com.jidesoft.grid.FormattedTextFieldCellEditor ?
+    % Create a new property with the chosen label
+    prop = javaObjectEDT(com.jidesoft.grid.DefaultProperty);  % UNDOCUMENTED internal MATLAB component
+    prop.setName(label);
+    prop.setExpanded(true);
 
-          case 'date',      dateModel = com.jidesoft.combobox.DefaultDateModel;
-                            dateFormat = java.text.SimpleDateFormat('dd/MM/yyyy');
-                            dateModel.setDateFormat(dateFormat);
-                            editor = com.jidesoft.grid.DateCellEditor(dateModel, 1);
-                            alignProp(prop, editor, 'java.util.Date');
-                            try
-                                prop.setValue(dateFormat.parse(prop.getValue));  % convert string => Date
-                            catch
-                                % ignore
-                            end
+    % Set the property to the current patient's data value
+    try
+        thisProp = dataStruct.(propName);
+    catch
+        thisProp = dataStruct;
+    end
+    s = dbstack;  % prevent endless recursion (>5 levels)
+    if isstruct(thisProp) && sum(strcmpi({s.name},'newProperty')) <= 5  %hasProperties(thisProp)
+        % Accept any object having data fields/properties
+        try
+            thisProp = get(thisProp);
+        catch
+            oldWarn = warning('off','MATLAB:structOnObject');
+            thisProp = struct(thisProp);
+            warning(oldWarn);
+        end
 
-          otherwise,        alignProp(prop);  % treat as a simple text field
-      end
-  end  % for all possible data types
+        % Parse the children props and add them to this property
+        %summary = regexprep(evalc('disp(thisProp)'),' +',' ');
+        %prop.setValue(summary);  % TODO: display summary dynamically
+        if numel(thisProp) < 2
+            prop.setValue('');
+        else
+            sz = size(thisProp);
+            szStr = regexprep(num2str(sz),' +','x');
+            prop.setValue(['[' szStr ' struct array]']);
+        end
+        prop.setEditable(false);
+        children = toArray(preparePropsList(thisProp, isEditable, thisKey));
+        for childIdx = 1 : length(children)
+            prop.addChild(children(childIdx));
+        end
+    else
+        try
+            prop.setValue(thisProp);
+        catch
+            prop.setValue(evalc('disp(thisProp)'));
+        end
+        prop.setEditable(isEditable);
+    end
 
-  prop.setDescription(description);
-  if ~isempty(description)
-      renderer = com.jidesoft.grid.CellRendererManager.getRenderer(prop.getType, prop.getEditorContext);
-      renderer.setToolTipText(description);
-  end
+    % Set property editor, renderer and alignment
+    if iscell(dataType)
+        % treat this as drop-down values
+        % Set the defaults
+        firstIndex = 1;
+        cbIsEditable = false;
+        % Extract out the number of items in the user list
+        nItems = length(dataType);
+        % Check for any empty items
+        emptyItem = find(cellfun('isempty', dataType) == 1);
+        % If only 1 empty item found check editable rules
+        if length(emptyItem) == 1
+            % If at the end - then remove it and set editable flag
+            if emptyItem == nItems
+                cbIsEditable = true;
+                dataType(end) = []; % remove from the drop-down list
+            elseif emptyItem == nItems - 1
+                cbIsEditable = true;
+                dataType(end-1) = []; % remove from the drop-down list
+            end
+        end
 
-  % Set the property's editability state
-  if prop.isEditable
-      % Set the property's label to be black
-      prop.setDisplayName(['<html><font size="4" color="black">' label]);
+        % Try to find the initial (default) drop-down index
+        if ~isempty(dataType)
+            if iscell(dataType{end})
+                if isnumeric(dataType{end}{1})
+                    firstIndex = dataType{end}{1};
+                    dataType(end) = []; % remove the [] from drop-down list
+                end
+            else
+                try
+                    if ismember(dataType{end}, dataType(1:end-1))
+                        firstIndex = find(strcmp(dataType(1:end-1),dataType{end}));
+                        dataType(end) = [];
+                    end
+                catch
+                    % ignore - possibly mixed data
+                end
+            end
 
-      % Add callbacks for property-change events
-      hprop = handle(prop, 'CallbackProperties');
-      set(hprop,'PropertyChangeCallback',{propUpdatedCallback,propName});
-  else
-      % Set the property's label to be gray
-      prop.setDisplayName(['<html><font size="4" color="gray">' label]);
-  end
-  
-  setPropName(prop,propName);
+            % Build the editor
+            editor = com.jidesoft.grid.ListComboBoxCellEditor(dataType);
+            try editor.getComboBox.setEditable(cbIsEditable); catch, end % #ok<NOCOM>
+            %set(editor,'EditingStoppedCallback',{@propUpdatedCallback,tagName,propName});
+            alignProp(prop, editor);
+            try prop.setValue(dataType{firstIndex}); catch, end
+        end
+    else
+        switch lower(dataType)
+            case 'signed'     %alignProp(prop, com.jidesoft.grid.IntegerCellEditor,    'int32');
+                try
+                    model = javax.swing.SpinnerNumberModel(prop.getValue, -intmax, intmax, 1);
+                catch
+                    model = javax.swing.SpinnerNumberModel(int32(thisProp), -intmax, intmax, 1);
+                    prop.setValue(int32(thisProp));
+                end
+                editor = com.jidesoft.grid.SpinnerCellEditor(model);
+                alignProp(prop, editor, 'int32');
+            case 'unsigned'   %alignProp(prop, com.jidesoft.grid.IntegerCellEditor,    'uint32');
+                try
+                    val = max(0, min(prop.getValue, intmax));
+                catch
+                    val = max(0, min(int32(thisProp), intmax));
+                    prop.setValue(int32(thisProp));
+                end
+                model = javax.swing.SpinnerNumberModel(val, 0, intmax, 1);
+                editor = com.jidesoft.grid.SpinnerCellEditor(model);
+                alignProp(prop, editor, 'uint32');
+            case 'float'      %alignProp(prop, com.jidesoft.grid.CalculatorCellEditor, 'double');  % DoubleCellEditor
+                if false && is11()  %% RJC TODO
+                    alignProp(prop, doubleEditor, 'double', RIGHT, doubleType);
+                else
+                    alignProp(prop, com.jidesoft.grid.DoubleCellEditor, 'double');
+                end
+            case 'boolean',   alignProp(prop, com.jidesoft.grid.BooleanCheckBoxCellEditor, 'logical');
+            case 'folder',    alignProp(prop, com.jidesoft.grid.FolderCellEditor);
+            case 'file',      alignProp(prop, com.jidesoft.grid.FileCellEditor);
+            case 'ipaddress', alignProp(prop, com.jidesoft.grid.IPAddressCellEditor);
+            case 'password',  alignProp(prop, com.jidesoft.grid.PasswordCellEditor);
+            case 'color',     alignProp(prop, com.jidesoft.grid.ColorCellEditor, 'color'); %%% RJC TODO TEST
+            case 'font',      alignProp(prop, com.jidesoft.grid.FontCellEditor);
+            case 'text',      alignProp(prop);
+            case 'time',      alignProp(prop); %TODO use com.jidesoft.grid.FormattedTextFieldCellEditor ?
+                %{
+                numColons = sum(char(thisProp)==':');
+                hasMillis = any(char(thisProp)=='.');
+                if numColons > 2 || numel(char(thisProp)) > 2 + 3*numColons + 4*hasMillis
+                    alignProp(prop);  % simple text string that contains : chars
+                else
+                    %dateFormat = java.text.SimpleDateFormat('HH:mm:ss');
+                    msStr = ''; if hasMillis, msStr = '.SSS'; end
+                    if numColons > 1
+                        formatStr = ['HH:mm:ss' msStr];
+                    elseif numColons == 1
+                        if hasMillis
+                            formatStr = ['mm:ss' msStr];
+                        else
+                            formatStr = 'HH:mm';
+                        end
+                    else
+                        formatStr = ['ss' msStr];
+                    end
+                    dateFormat = java.text.SimpleDateFormat(formatStr);
+                    editor = com.jidesoft.grid.FormattedTextFieldCellEditor([],dateFormat);
+                    alignProp(prop, editor);
+                    prop.setValue(dateFormat.parse(prop.getValue));  % convert string => Date
+                    % {
+                    dateModel = com.jidesoft.combobox.DefaultDateModel;
+                    dateModel.setDateFormat(dateFormat);
+                    editor = com.jidesoft.grid.DateCellEditor(dateModel, true);
+                    editor.setDataType(3); %TYPE_SQL_TIME==3 (default=1=TYPE_UTIL_DATE)
+                    editor.setTimeDisplayed(true);
+                    alignProp(prop, editor, 'java.util.Date');
+                    try
+                        prop.setValue(dateFormat.parse(prop.getValue));  % convert string => Date
+                    catch
+                        % ignore
+                    end
+                    % }
+                end
+                %}
+            case 'date',      dateModel = com.jidesoft.combobox.DefaultDateModel;
+                dateFormat = java.text.SimpleDateFormat('dd/MM/yyyy');
+                dateModel.setDateFormat(dateFormat);
+                editor = com.jidesoft.grid.DateCellEditor(dateModel, true);
+                alignProp(prop, editor, 'java.util.Date');
+                try
+                    prop.setValue(dateFormat.parse(prop.getValue));  % convert string => Date
+                catch
+                    % ignore
+                end
+
+            otherwise
+                if false && is11  %% RJC TODO
+                    alignProp(prop, stringEditor, 'cellstr', RIGHT, stringType);
+                else
+                    alignProp(prop);  % treat as a simple text field
+                end
+        end  %%% TODO: is this end in the right place?
+    end  % for all possible data types
+
+    prop.setDescription(description);
+    if ~isempty(description)
+        renderer = com.jidesoft.grid.CellRendererManager.getRenderer(prop.getType, prop.getEditorContext);
+        renderer.setToolTipText(description);
+    end
+
+    % Set the property's editability state
+    if prop.isEditable
+        % Set the property's label to be black
+        prop.setDisplayName(['<html><font color="black">' label]);
+
+        % Add callbacks for property-change events
+        hprop = handle(prop, 'CallbackProperties');
+        set(hprop,'PropertyChangeCallback',{propUpdatedCallback,propName,thisKey});
+    else
+        % Set the property's label to be gray
+        prop.setDisplayName(['<html><font color="gray">' label]);
+    end
+
+    setPropName(prop,propName);
 end  % newProperty
 
-%% Set property name in the Java property reference
+% Set property name in the Java property reference
 function setPropName(hProp,propName)
     try
         set(hProp,'UserData',propName)
@@ -574,7 +998,7 @@ function setPropName(hProp,propName)
     end
 end  % setPropName
 
-%% Get property name from the Java property reference
+% Get property name from the Java property reference
 function propName = getPropName(hProp)
     try
         propName = get(hProp,'UserData');
@@ -584,122 +1008,278 @@ function propName = getPropName(hProp)
     end
 end  % getPropName
 
-%% Align a text property to right/left
-function alignProp(prop, editor, propTypeStr, direction)
-  if nargin < 2 || isempty(editor),      editor = com.jidesoft.grid.StringCellEditor;  end  %(javaclass('char',1));
-  if nargin < 3 || isempty(propTypeStr), propTypeStr = 'cellstr';  end  % => javaclass('char',1)
-  if nargin < 4 || isempty(direction),   direction = javax.swing.SwingConstants.RIGHT;  end
+% Get recursive property name
+function propName = getRecursivePropName(prop, propBaseName)
+    try
+        oldWarn = warning('off','MATLAB:hg:JavaSetHGProperty');
+        try prop = java(prop); catch, end
+        if nargin < 2
+            propName = getPropName(prop);
+        else
+            propName = propBaseName;
+        end
+        while isa(prop,'com.jidesoft.grid.Property')
+            prop = get(prop,'Parent');
+            newName = getPropName(prop);
+            if isempty(newName)
+                %% check to see if it's a (1,1)
+                displayName = char(prop.getName);
+                [flag, index] = CheckStringForBrackets(displayName);
+                if flag
+                    propName = sprintf('(%i).%s',index,propName); 
+                else                
+                    break; 
+                end
+            else
+                propName = [newName '.' propName]; %#ok<AGROW>
+            end
+        end
+    catch
+        % Reached the top of the property's heirarchy - bail out
+        warning(oldWarn);
+    end
+end  % getRecursivePropName
 
-  % Set this property's data type
-  propType = javaclass(propTypeStr);
-  prop.setType(propType);
+% Align a text property to right/left
+function alignProp(prop, editor, propTypeStr, direction, propType)
+    persistent propTypeCache
+    persistent renderer
+    if isempty(propTypeCache),  propTypeCache = java.util.Hashtable;  end
 
-  % Prepare a specific context object for this property
-  if strcmpi(propTypeStr,'logical')
-      %TODO - FIXME
-      context = editor.CONTEXT;
-      prop.setEditorContext(context);
-      %renderer = CheckBoxRenderer;
-      %renderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-      %com.jidesoft.grid.CellRendererManager.registerRenderer(propType, renderer, context);
-  else
-      context = com.jidesoft.grid.EditorContext(prop.getName);
-      prop.setEditorContext(context);
+    if false && is11 %%% TODO RJC
+        if nargin < 2 || isempty(editor),      editor = com.jidesoft.grid.TextFieldCellEditor(getClass(java.lang.String)); end %com.jidesoft.grid.StringCellEditor;  end  %(javaclass('char',1));
+    else
+        if nargin < 2 || isempty(editor),      editor = com.jidesoft.grid.StringCellEditor;  end  %(javaclass('char',1));
+    end
+    if nargin < 3 || isempty(propTypeStr), propTypeStr = 'cellstr';  end  % => javaclass('char',1)
+    if nargin < 4 || isempty(direction),   direction = javax.swing.SwingConstants.RIGHT;  end
 
-      % Register a unique cell renderer so that each property can be modified seperately
-      %renderer = com.jidesoft.grid.CellRendererManager.getRenderer(propType, prop.getEditorContext);
-      renderer = com.jidesoft.grid.ContextSensitiveCellRenderer;
-      com.jidesoft.grid.CellRendererManager.registerRenderer(propType, renderer, context);
-      renderer.setBackground(java.awt.Color.white);
-      renderer.setHorizontalAlignment(direction);
-      %renderer.setHorizontalTextPosition(direction);
-  end
+    % Set this property's data type
+    if false && is11 % TODO RJC
+        if nargin < 5 || isempty(propType),    propType = propTypeCache.get(propTypeStr);  end
+    else
+        propType = propTypeCache.get(propTypeStr);
+    end
+    if isempty(propType)
+        propType = javaclass(propTypeStr);
+        propTypeCache.put(propTypeStr,propType);
+    end
+    prop.setType(propType);
 
-  % Update the property's cell editor
-  try editor.setHorizontalAlignment(direction); catch, end
-  try editor.getTextField.setHorizontalAlignment(direction); catch, end
-  try editor.getComboBox.setHorizontalAlignment(direction); catch, end
-  
-  % Set limits on unsigned int values
-  try
-      if strcmpi(propTypeStr,'uint32')
-          %pause(0.01);
-          editor.setMinInclusive(java.lang.Integer(0));
-          editor.setMinExclusive(java.lang.Integer(-1));
-          editor.setMaxExclusive(java.lang.Integer(intmax));
-          editor.setMaxInclusive(java.lang.Integer(intmax));
-      end
-  catch
-      % ignore
-  end
-  com.jidesoft.grid.CellEditorManager.registerEditor(propType, editor, context);
+    % Prepare a specific context object for this property
+    if strcmpi(propTypeStr,'logical')
+        %TODO - FIXME
+        context = editor.CONTEXT;
+        prop.setEditorContext(context);
+        %renderer = CheckBoxRenderer;
+        %renderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        %com.jidesoft.grid.CellRendererManager.registerRenderer(propType, renderer, context);
+    else
+        context = com.jidesoft.grid.EditorContext(prop.getName);
+        prop.setEditorContext(context);
+
+        % Register a unique cell renderer so that each property can be modified seperately
+        %renderer = com.jidesoft.grid.CellRendererManager.getRenderer(propType, prop.getEditorContext);
+        if strcmpi(propTypeStr,'color')
+            renderer = com.jidesoft.grid.ColorCellRenderer;
+        else
+            renderer = com.jidesoft.grid.ContextSensitiveCellRenderer;
+        end
+        com.jidesoft.grid.CellRendererManager.registerRenderer(propType, renderer, context);
+        if ~false || is11
+            renderer.setBackground(java.awt.Color.white);
+        end
+        renderer.setHorizontalAlignment(direction);
+        %renderer.setHorizontalTextPosition(direction);
+    end
+
+    % Update the property's cell editor
+    if false && is11 && strcmpi(propTypeStr, 'cellstr')
+        try  %if nargin < 2  % single string
+            %editor.getTextField.setHorizontalAlignment(direction);
+        catch  %else %if isa(editor,'com.jidesoft.grid.ListComboBoxCellEditor')  % combo-box (cell-array)
+            %try editor.getComboBox.setHorizontalAlignment(direction); catch, end
+        end
+    else
+      %if false && is11 && ~strcmpi(propTypeStr,'double')
+      %    try editor.setHorizontalAlignment(direction); catch, end
+      %end
+      try editor.setHorizontalAlignment(direction); catch, end
+    end
+    %try editor.setHorizontalAlignment(direction); catch, end
+    try editor.getTextField.setHorizontalAlignment(direction); catch, end
+    try editor.getComboBox.setHorizontalAlignment(direction); catch, end
+
+    % Set limits on unsigned int values
+    try
+        if strcmpi(propTypeStr,'uint32')
+            %pause(0.01);
+            editor.setMinInclusive(java.lang.Integer(0));
+            editor.setMinExclusive(java.lang.Integer(-1));
+            editor.setMaxExclusive(java.lang.Integer(intmax));
+            editor.setMaxInclusive(java.lang.Integer(intmax));
+        end
+    catch
+        % ignore
+    end
+    com.jidesoft.grid.CellEditorManager.registerEditor(propType, editor, context);
 end  % alignProp
 
-%% Property updated callback function
-function propUpdatedCallback(prop, eventData, propName)
-  try if strcmpi(char(eventData.getPropertyName),'parent'),  return;  end;  catch, end
-  hFig = findall(0, '-depth',1, 'Tag','fpropertiesGUI');
-  if isempty(hFig)
-      hPropsPane = findall(0,'Tag','hpropertiesGUI');
-      if isempty(hPropsPane),  return;  end
-      hFig = get(hPropsPane,'Parent');
-  end
-  if isempty(hFig),  return;  end
-  propsList = getappdata(hFig, 'propsList');
-  propsPane = getappdata(hFig, 'jPropsPane');
-  data = getappdata(hFig, 'mirror');
+% Property updated callback function
+function propUpdatedCallback(prop, eventData, propName, thisKey, fileData)
+    try if strcmpi(char(eventData.getPropertyName),'parent'),  return;  end;  catch, end
 
-  % Get the updated property value
-  propValue = get(prop,'Value');
-  if isjava(propValue)
-      if isa(propValue,'java.util.Date')
-          sdf = java.text.SimpleDateFormat('MM-dd-yyyy');
-          propValue = datenum(sdf.format(propValue).char);  %#ok<NASGU>
-      elseif isa(propValue,'java.awt.Color')
-          propValue = propValue.getColorComponents([])';  %#ok<NASGU>
-      else
-          propValue = char(propValue);  %#ok<NASGU>
-      end
-  else
-      if ~isempty(str2num(propValue))   % Convert to number if possible
-              propValue = str2num(propValue);
-      end
-  end
+    % Retrieve the containing figure handle
+    %hFig = findall(0, '-depth',1, 'Tag','fpropertiesGUI');
+    hFig = get(0,'CurrentFigure'); %gcf;
+    if isempty(hFig)
+      % RJC TODO -> get panel from this key
+        hPropsPane = findall(0,'Tag','hpropertiesGUI');
+        if isempty(hPropsPane),  return;  end
+        hFig = ancestor(hPropsPane,'figure'); %=get(hPropsPane,'Parent');
+    end
+    if isempty(hFig),  return;  end
+    
+    hPropAppData = getappdata(hFig); %,'propertiesGUI');
+    if ~isstruct(hPropAppData); return; end
+    if ~isfield(hPropAppData, 'propertiesGUI' ); return; end
+    if ~isfield(hPropAppData.propertiesGUI, thisKey ); return; end
+    
 
-  % Get the actual recursive propName
-  try
-      oldWarn = warning('off','MATLAB:hg:JavaSetHGProperty');
-      try prop = java(prop); catch, end
-      while isa(prop,'com.jidesoft.grid.Property')
-          prop = get(prop,'Parent');
-          newName = getPropName(prop);
-          if isempty(newName), break; end
-          propName = [newName '.' propName]; %#ok<AGROW>
-      end
-  catch
-      % Reached the top of the property's heirarchy - bail out
-      warning(oldWarn);
-  end
-  
-  % Update the mirror with the updated field value
-  %data.(propName) = propValue;  % croaks on multiple sub-fields
-  eval(['data.' propName ' = propValue;']);
+    % Get the props data from the figure's ApplicationData
+    propsList = GetApplicationData(hFig,thisKey,'propsList' );
+    propsPane = GetApplicationData(hFig,thisKey,'jPropsPane' );
+    data = GetApplicationData(hFig,thisKey,'mirror' );
 
-  % Update the local mirror
-  setappdata(hFig, 'mirror',data);
-  
-  % Update the display
-  checkProps(propsList, hFig);
-  try propsPane.repaint; catch; end
+    % Bail out if arriving from tableDataUpdatedCallback
+    try
+        s = dbstack;
+        if strcmpi(s(2).name, 'tableDataUpdatedCallback')
+            return;
+        end
+    catch
+        % ignore
+    end
+
+    % Get the updated property value
+    propValue = get(prop,'Value');
+    if isjava(propValue)
+        if isa(propValue,'java.util.Date')
+            sdf = java.text.SimpleDateFormat('MM-dd-yyyy');
+            propValue = datenum(sdf.format(propValue).char);
+        elseif isa(propValue,'java.awt.Color')
+            propValue = propValue.getColorComponents([])';
+        else
+            propValue = char(propValue);
+        end
+    end
+
+    % Get the actual recursive propName
+    propName = getRecursivePropName(prop, propName);
+
+    % Find if the original item was a cell array and the mirror accordingly
+    items = strread(propName,'%s','delimiter','.');
+    if ~isempty(data)
+        cpy = data;
+        for idx = 1 : length(items)
+            % This is for dealing with structs with multiple levels...
+            [flag, index] = CheckStringForBrackets(items{idx});
+            if flag
+                cpy = cpy(index);
+            else
+                if isfield(cpy,items{idx})
+                    cpy = cpy.(items{idx});
+                else
+                    return
+                end
+            end
+        end
+        if nargin > 4
+            if iscell(cpy) && iscell(fileData) %%&& length(fileData)==1 % if mirror and filedata are cells then update the data -> otherwise overright.
+                propValue=UpdateCellArray(cpy,fileData);
+            end
+        else
+            if iscell(cpy)
+                propValue = UpdateCellArray(cpy, propValue);
+            end
+        end
+    end
+
+    % Check for loading from file and long string which has been truncated
+    if nargin > 4
+        propValue = checkCharFieldForAbreviation(propValue,fileData);
+        if ~isempty(propValue) && strcmp(propValue(1),'[') && ~isempty(strfind(propValue,' struct array]')) %#ok<STREMP>
+            propValue = fileData;
+        end
+        if isempty(propValue) % a struct
+            propValue = fileData; %#ok<NASGU>
+        end
+    end
+    
+    % For items with .(N) in the struct -> remove from path for eval
+    propName = regexprep(propName,'\.(','(');
+    
+    % Update the mirror with the updated field value
+    %data.(propName) = propValue;  % croaks on multiple sub-fields
+    eval(['data.' propName ' = propValue;']); %#ok<EVLDOT> 
+
+    % If Element Selector has been changed, update the GUI parameters accordingly
+    if strcmp(propName, 'Element_selector.ES_algorithm')
+        hjProps = propsList.toArray();
+        for nProperty = 1:length(hjProps)
+            propStr = get(hjProps(nProperty),'UserData');
+            if strcmp(propStr, 'Element_selector')
+                %propsList.remove(hjProps(nProperty));
+                % add relevant parameters for selected ES
+                esNum = data.Element_selector.ES_algorithm{end};
+                esStr = data.Element_selector.ES_algorithm{cell2mat(esNum)};
+                newPropsList = feval(['ARS_NSL_Parallel_', esStr]); % get list of relevant parameters from the algo
+                propertiesGUI(hFig, 'update', propStr, newPropsList); % update the GUI with relevant parameters
+                % Update 'data' to have the 'ES_algorithm' field, plus all the algo-relevant fields:
+                es_algorithmIdx = strcmp(fieldnames(data.Element_selector),'ES_algorithm');
+                esFieldNames = fieldnames(data.Element_selector);
+                data.Element_selector = rmfield(data.Element_selector,esFieldNames(~es_algorithmIdx));
+                newFieldNames = fieldnames(newPropsList);
+                for nNewProp = 1:length(newFieldNames)
+                    newFieldName = char(newFieldNames(nNewProp));
+                    data.Element_selector.(newFieldName) = newPropsList.(newFieldName);
+                end
+            end
+        end
+    end
+    
+    % Update the local mirror
+    %setappdata(hFig, 'mirror',data);    
+    SetApplicationData(hFig,thisKey,'mirror',data);
+
+    % Update the display
+    checkProps(propsList, hFig);
+    try propsPane.repaint; catch; end
 end  % propUpdatedCallback
 
-%% <OK> button callback function
-function btOK_Callback(btOK, eventData) %#ok<INUSD>
-  global test_data
+function selectedValue = UpdateCellArray(originalData,selectedValue)
+    if length(originalData)==length(selectedValue) || ~iscell(selectedValue)
+        index=find(strcmp(originalData,selectedValue)==1);
+        if iscell(originalData{end})
+            originalData{end}={index};
+        else
+            if index~=1 % If it's not first index then we can save it
+                originalData{end+1} = {index};
+            end
+        end
+        selectedValue=originalData;
+    else
+        selectedValue=originalData;
+    end
+end  % UpdateCellArray
+
+% <OK> button callback function
+function btOK_Callback(btOK, eventData, thisKey)
+  global test_data 
 
   % Store the current data-info struct mirror in the global struct
   hFig = ancestor(btOK, 'figure');
-  test_data = getappdata(hFig, 'mirror');
+  test_data = GetApplicationData(hFig,thisKey,'mirror');%getappdata(hFig, 'mirror');
   setappdata(0,'isParamsGUIApproved',true);
 
   % Close the window
@@ -710,9 +1290,9 @@ function btOK_Callback(btOK, eventData) %#ok<INUSD>
   end
 end  % btOK_Callback
 
-%% Check whether all mandatory fields have been filled, update background color accordingly
+% Check whether all mandatory fields have been filled, update background color accordingly
 function checkProps(propsList, hContainer, isInit)
-    if nargin < 3,  isInit = false;  end
+    if nargin < 4,  isInit = false;  end
     okEnabled = 'on';
     try propsArray = propsList.toArray(); catch, return; end
     for propsIdx = 1 : length(propsArray)
@@ -723,7 +1303,16 @@ function checkProps(propsList, hContainer, isInit)
     % Update the <OK> button's editability state accordingly
     btOK = findall(hContainer, 'Tag','btOK');
     set(btOK, 'Enable',okEnabled);
-    drawnow; pause(0.01);
+    set(findall(get(hContainer,'parent'), 'tag','btApply'),  'Enable',okEnabled);
+    set(findall(get(hContainer,'parent'), 'tag','btRevert'), 'Enable',okEnabled);
+    try drawnow; pause(0.01); end %#ok<TRYNC>
+
+    % Update the figure title to indicate dirty-ness (if the figure is visible)
+    hFig = ancestor(hContainer,'figure');
+    if strcmpi(get(hFig,'Visible'),'on')
+        sTitle = regexprep(get(hFig,'Name'), '\*$','');
+        set(hFig,'Name',[sTitle '*']);
+    end
 end  % checkProps
 
 function isOk = checkProp(prop)
@@ -739,14 +1328,15 @@ function isOk = checkProp(prop)
       isOk = false;
   elseif ~prop.isEditable
       %propColor = java.awt.Color.gray;
-      propColor = renderer.getBackground();
+      %propColor = renderer.getBackground();
+      propColor = java.awt.Color.white;
   else
       propColor = java.awt.Color.white;
   end
-  renderer.setBackground(propColor);
+  try renderer.setBackground(propColor); catch, end
 end  % checkProp
 
-%% Return java.lang.Class instance corresponding to the Matlab type
+% Return java.lang.Class instance corresponding to the Matlab type
 function jclass = javaclass(mtype, ndims)
     % Input arguments:
     % mtype:
@@ -767,7 +1357,7 @@ function jclass = javaclass(mtype, ndims)
         validateattributes(ndims, {'numeric'}, {'nonnegative','integer','scalar'});
     end
     
-    if ndims == 1 && strcmp(mtype, 'char');  % a character vector converts into a string
+    if ndims == 1 && strcmp(mtype, 'char')  % a character vector converts into a string
         jclassname = 'java.lang.String';
     elseif ndims > 0
         jclassname = javaarrayclass(mtype, ndims);
@@ -795,6 +1385,8 @@ function jclass = javaclass(mtype, ndims)
                 jclassname = 'java.lang.Double';
             case 'cellstr'  % a single cell or a character array
                 jclassname = 'java.lang.String';
+            case 'color'  % a color
+                jclassname = 'java.awt.Color';
             otherwise
                 jclassname = mtype;
                 %error('java:javaclass:InvalidArgumentValue', ...
@@ -808,7 +1400,7 @@ function jclass = javaclass(mtype, ndims)
     jclass = java.lang.Class.forName(jclassname, true, java.lang.Thread.currentThread().getContextClassLoader());
 end  % javaclass
     
-%% Return the type qualifier for a multidimensional Java array
+% Return the type qualifier for a multidimensional Java array
 function jclassname = javaarrayclass(mtype, ndims)
     switch mtype
         case 'logical'  % logical array of true and false values
@@ -836,3 +1428,516 @@ function jclassname = javaarrayclass(mtype, ndims)
     end
     jclassname = [repmat('[',1,ndims), jclassid];
 end  % javaarrayclass
+
+% Set up the uitree context (right-click) menu
+function showGridContextMenu(hFig, grid, clickX, clickY, thisKey)
+    % Prepare the context menu (note the use of HTML labels)
+    import javax.swing.*
+    row = grid.rowAtPoint(java.awt.Point(clickX, clickY));
+    selectedProp = grid.getPropertyTableModel.getPropertyAt(row);
+    if ~isempty(selectedProp)
+        branchName = char(selectedProp.getName);
+    else
+        branchName = 'branch';
+    end
+    menuItem1 = JMenuItem(['Save ' branchName '...']);
+    menuItem2 = JMenuItem(['Load ' branchName '...']);
+
+    % Set the menu items' callbacks
+    set(handle(menuItem1,'CallbackProperties'),'ActionPerformedCallback',@(obj,event)fileIO_Callback(grid,selectedProp,'save',hFig,thisKey));
+    set(handle(menuItem2,'CallbackProperties'),'ActionPerformedCallback',@(obj,event)fileIO_Callback(grid,selectedProp,'load',hFig,thisKey));
+
+    % Add all menu items to the context menu (with internal separator)
+    jmenu = JPopupMenu;
+    jmenu.add(menuItem1);
+    jmenu.addSeparator;
+    jmenu.add(menuItem2);
+
+    % Display the context-menu
+    jmenu.show(grid, clickX, clickY);
+    jmenu.repaint;
+end  % setGridContextMenu
+function fileIO_Callback(grid, selectedProp, mode, hFig, thisKey, filename)
+    persistent lastdir
+    mirrorData = GetApplicationData(hFig,thisKey,'mirror');
+    if nargin == 5 % interactive
+        filename = [];
+    end
+
+    % Initialize the persistent variable with the current Dir if not populated.
+    if isempty(lastdir); lastdir = pwd; end
+    switch mode
+        case 'save'
+            filename = saveBranch_Callback(grid, selectedProp, lastdir, mirrorData, hFig, filename, thisKey);
+        case 'load'
+            filename = loadBranchCallback(grid, selectedProp, lastdir, mirrorData, thisKey, filename);
+        case {'update', 'select'} % hidden calling method
+            if false && isFrom7(struct) %TODO RJC -> this line below was from 7 -> which had the isstruct flag earlier...???
+                runtimeUpdateElementSelector(grid,filename,selectedProp);
+            else
+                runtimeUpdateBranch(grid,filename,mirrorData,selectedProp,thisKey);
+            end
+            return
+        otherwise
+            error('propertiesGUI:fileIOCallback:invalidMethod', 'invalid calling method to propertiesGUI');            
+%             SetApplicationData(hFig,thisKey,'mirror',data);%setappdata(hFig, 'mirror',mirrorData);
+    end
+
+    % Check that the save/load wsa processed
+    if ischar(filename)
+        filePath = fileparts(filename);
+        if ~isempty(filePath)
+            lastdir = filePath;
+        end
+    end
+end  % fileIO_Callback
+
+function filename = loadBranchCallback(grid, selectedProp, lastdir, mirrorData, thisKey, filename)
+    if isempty(filename)
+        [filename, pathname] = uigetfile({'*.branch','Branch files (*.branch)'}, 'Load a file', lastdir);
+        if filename == 0
+            return
+        end
+        filename = fullfile(pathname, filename);
+    else
+        selectedProp = findUserProvidedProp(grid, selectedProp);
+    end
+    propName = char(selectedProp.getName);
+    propName = checkFieldName(propName);
+    data = load(filename, '-mat');
+    fnames = fieldnames(data);
+    index = strcmpi(fnames,propName);
+
+    % If a match was found then it's okay to proceed
+    if any(index)
+        % Remove any children
+        selectedProp.removeAllChildren();
+
+        % Make a new list
+        newList = preparePropsList(data, true, thisKey);
+
+        % Conver the list to an array
+        newArray = newList.toArray();
+        updatedProp = newArray(1);
+        
+        isStruct = false;
+        propValue = selectedProp.getValue;
+        if ~isempty(propValue) && strcmp(propValue(1),'[') && ~isempty(strfind(propValue,' struct array]')) %#ok<STREMP> 
+            isStruct = true;
+        end
+        
+        % If individual value update it.  TODO: Bug when it is a cell array....
+            
+        if isStruct == false && ~isempty(propValue)
+            selectedProp.setValue (updatedProp.getValue)
+            propName = checkFieldName(char(updatedProp.getName));
+            if iscell(data.(fnames{index})) && ischar(data.(fnames{index}){end}) && ismember(data.(fnames{index})(end),data.(fnames{index})(1:end-1))
+                data.(fnames{index})(end) = [];
+            end
+            propUpdatedCallback(selectedProp, [], propName, thisKey, data.(fnames{index}));
+        else
+            % Add children to the original property.
+            for ii=1:updatedProp.getChildrenCount
+                childProp = updatedProp.getChildAt(ii-1);
+                propName = checkFieldName(char(childProp.getName));
+                [flag, sIndex] = CheckStringForBrackets(propName); %#ok<ASGLU>
+                if flag
+%                     propUpdatedCallback(childProp, [], propName, thisKey, data.(fnames{index}).(propName));
+                else
+                    propUpdatedCallback(childProp, [], propName, thisKey, data.(fnames{index}).(propName));
+                end                
+                selectedProp.addChild(childProp);
+            end
+        end
+    else
+        errMsg = 'The selected branch does not match the data in the data file';
+        %error('propertieGUI:load:branchName', errMsg);
+        errordlg(errMsg, 'Load error');
+    end
+end
+
+function runtimeUpdateElementSelector(grid, selectedProp, newData, thisKey)
+    % When user selects an ES algorithm, display the relevant parameters in the Element selector GUI
+    selectedProp = findUserProvidedProp(grid, selectedProp);
+    for nChild = 0:selectedProp.getAllVisibleChildrenCount-1
+        if isempty(strfind(selectedProp.getChildAt(nChild).getDisplayName, 'algorithm'))
+            selectedProp.removeChild(nChild);
+            selectedProp.notifyChildDeleted(selectedProp.getChildAt(nChild));
+        end
+    end
+    children = toArray(preparePropsList(newData, true, thisKey));
+    for childIdx = 1 : length(children)
+        selectedProp.addChild(children(childIdx));
+    end
+end  % runtimeUpdateBranch
+
+% runtime update item in branch (undocumented - for easier testing)
+function runtimeUpdateBranch(grid, selectedProp, mirrorData, newData, thisKey ) %TODO RJC
+    userStr = strread(selectedProp,'%s','delimiter','.');
+    if length(userStr)~= 1
+        mirrorData = findMirrorDataLevel(mirrorData, userStr);
+    end    
+    selectedProp = findUserProvidedProp(grid, selectedProp);
+    if ~isempty(selectedProp.getValue)
+        propName = checkFieldName(char(selectedProp.getName));
+        if iscell(newData) && length(newData)==1 && isnumeric(newData{1}) % user specifying index to select.
+            propData = mirrorData.(propName);
+            if iscell(mirrorData.(propName))
+                userSelection = propData{newData{1}};
+            else
+                userSelection = newData;
+            end
+            if any(ismember(propData,userSelection))
+                selectedProp.setValue (userSelection);
+                propUpdatedCallback(selectedProp, [], propName, thisKey, propData);
+            end
+        else
+          propData = mirrorData.(propName);
+          selectedProp.setValue (newData);
+          propUpdatedCallback(selectedProp, [], propName, thisKey, propData);
+        end
+    end
+end  % runtimeUpdateBranch
+
+% Save callback and subfunctions
+function filename = saveBranch_Callback(grid, selectedProp, lastdir, mirrorData, hFig, filename, thisKey)
+    % Interactive use
+    runtimeCall = isempty(filename);
+    if runtimeCall
+        [filename, pathname] = uiputfile ({'*.branch','Branch files (*.branch)'}, 'Save as', lastdir);
+        if filename == 0
+            return
+        end
+        filename = fullfile(pathname, filename);
+    else % from commandline
+        if isempty(selectedProp) % user wants to save everything.
+            selectedProp = grid;            
+        else
+            userStr = strread(selectedProp,'%s','delimiter','.');
+            if length(userStr)~= 1
+                mirrorData = findMirrorDataLevel(mirrorData, userStr);
+            end
+            selectedProp = findUserProvidedProp(grid, selectedProp);
+        end
+    end
+    
+    if ~isempty(selectedProp.getName)
+        fieldname = checkFieldName(selectedProp.getName);
+        data.(fieldname) = selfBuildStruct(selectedProp);
+        fieldname = {fieldname};
+    else
+        [rootProps, data] = buildFullStruct(hFig,thisKey);  % (grid,mirrorData)
+        fieldname = fieldnames(data);
+        selectedProp = rootProps{1};
+    end
+    
+    % option to save combo boxes as well...
+    if nargin >= 4
+        for fieldIdx = 1 : length(fieldname)
+            if fieldIdx>1 % This only happens when loading to replace the full data
+                 selectedProp = rootProps{fieldIdx};
+            end
+            dataNames = fieldnames(mirrorData);
+            match = strcmpi(dataNames,fieldname{fieldIdx});
+
+            % This sub function will add all the extra items
+            if any(match)
+                % This looks in the mirrorData to update the output with cell array items.
+                data.(fieldname{fieldIdx}) = addOptionsToOutput(data.(fieldname{fieldIdx}), mirrorData.(dataNames{match}), selectedProp);
+                % Update the original var names (case sensitive)
+                data = updateOriginalVarNames(data, mirrorData); %data is used in the save command.
+            else
+                propName = getRecursivePropName(selectedProp, fieldname{fieldIdx});
+                items = strread(propName,'%s','delimiter','.');
+                for idx = 1 : length(items)-1
+                    if strcmp(items{idx}(1),'(') && strcmp(items{idx}(end),')')
+                        index = str2double(items{idx}(2:end-1));
+                        mirrorData = mirrorData(index);
+                    else
+                        mirrorData = mirrorData.(items{idx});
+                    end
+                end
+                data.(fieldname{fieldIdx}) = addOptionsToOutput(data.(fieldname{fieldIdx}), mirrorData.(items{end}), selectedProp);
+                % Update the original var names (case sensitive)
+                data = updateOriginalVarNames(data, mirrorData); %data is used in the save command.
+            end
+        end
+    end
+    
+    % Save the data to file
+    save(filename, '-struct', 'data')
+end 
+
+% Descent through the mirror data to find the matching variable for the user requested data
+function mirrorData = findMirrorDataLevel(mirrorData, userStr)
+    if length(userStr)==1
+        return
+    else
+        [flag, index] = CheckStringForBrackets(userStr{1});
+        if flag
+            mirrorData = findMirrorDataLevel(mirrorData(index), userStr(2:end));
+        else
+            mirrorData = mirrorData.(userStr{1});
+            mirrorData = findMirrorDataLevel(mirrorData, userStr(2:end));
+        end
+    end
+end  % findMirrorDataLevel
+
+% Search for the user specified property to load or to save
+function selectedProp = findUserProvidedProp(grid, selectedProp)
+if false && isFrom7(struct)
+        index = 0;
+        selectedProp = [];  % initialize
+        % Loop through the properties to find the matching branch
+        strItems  = strread(selectedPropName, '%s', 'delimiter', '.');
+
+        strItems_ = strrep(strItems,' ','_');
+        model = grid.getPropertyTableModel;
+        while index < model.getRowCount
+            incProp = model.getPropertyAt(index);
+            index = index + 1;
+            if isempty(incProp)
+                %error('propertiesGUI:InvalidBranch', 'User provied property name which was invalid')
+                continue
+            end
+            % Search the full user defined string for the item to be saved.
+            selectedProp = searchForPropName(incProp, strItems);
+            if isempty(selectedProp)
+                selectedProp = searchForPropName(incProp, strItems_);
+            end
+            if ~isempty(selectedProp); break; end
+
+        end
+else
+        index = 0;
+        % Loop through the properties to find the matching branch
+        strItems = strread(selectedProp, '%s', 'delimiter', '.');
+        while true
+            incProp = grid.getPropertyTableModel.getPropertyAt(index);
+            if isempty(incProp)
+                error('propertiesGUI:InvalidBranch', 'User provied property name which was invalid')
+            end
+            % Search the full user defined string for the item to be saved.
+            selectedProp = searchForPropName(incProp, strItems);
+            if ~isempty(selectedProp); break; end
+            index = index + 1;
+        end
+end
+end  % findUserProvidedProp
+
+% Sub function for searching down through the user provided string when A.B.C provided.
+function selectedProp = searchForPropName(parentNode, userString)
+    selectedProp = [];
+    nodeName = char(parentNode.getName);
+%     if strcmp(nodeName(1),'(') && strcmp(nodeName(end),')')
+    if strcmpi(userString{1},checkFieldName(nodeName)) % ? shoudl this be case sensitive?
+        if length(userString) == 1
+            selectedProp = parentNode;
+        else
+            for jj=1:parentNode.getChildrenCount
+                selectedProp = searchForPropName(parentNode.getChildAt(jj-1), userString(2:end));
+                if ~isempty(selectedProp)
+                    break
+                end
+            end
+        end
+    end
+end  % searchForPropName
+
+% Build full struct
+function [rootProps, output] = buildFullStruct(hFig,thisKey)  % (grid,mirrorData)
+    %{
+    % This fails if some of the top-level props are expanded (open)
+    index = 0;
+    rootProps = {};
+    while true
+        incProp = grid.getPropertyTableModel.getPropertyAt(index);
+        if isempty(incProp); break; end
+        % Search the full user defined string for the item to be saved.
+        propName = checkFieldName(incProp.getName);
+        if isfield(mirrorData,propName)
+          output.(propName) = selfBuildStruct(incProp);
+          rootProps{end+1} = incProp;
+        end
+        index = index + 1;
+    end
+    %}
+    propsList = GetApplicationData(hFig,thisKey,'propsList');%getappdata(hFig, 'propsList');
+    rootProps = cell(propsList.toArray)';
+    for propIdx = 1 : numel(rootProps)
+        thisProp = rootProps{propIdx};
+        propName = checkFieldName(thisProp.getName);
+        output.(propName) = selfBuildStruct(thisProp);
+    end
+end  % buildFullStruct
+
+% Build the structure for saving from the selected Prop
+function output = selfBuildStruct(selectedProp)
+    % Self calling loop to build the output structure.
+    propValue = selectedProp.getValue;
+    % If property empty then the selectedProp is a struct.
+    
+    isStruct = isempty(propValue);
+    nStructs = 1;
+    
+    % Check if it's an array of structs
+    M = 1;
+    if ~isempty(propValue) && strcmp(propValue(1),'[') && ~isempty(strfind(propValue,' struct array]')) %#ok<STREMP>
+        isStruct = true;
+        nStructs = selectedProp.getChildrenCount;
+        xIndex = strfind(propValue,'x');
+        %spIndex = strfind(propValue,' ');
+        M=str2double(propValue(2:xIndex-1));
+        %N=str2double(propValue(xIndex+1:spIndex(1)-1));
+    end
+        
+    if isStruct
+        output=struct;
+        % Extract out each child
+        for ii=1:nStructs
+            if nStructs>1
+                structLoopProp = selectedProp.getChildAt(ii-1);
+            else
+                structLoopProp = selectedProp;
+            end
+            
+            for jj=1:structLoopProp.getChildrenCount
+                child = structLoopProp.getChildAt(jj-1);
+                fieldname = checkFieldName(child.getName);
+                if M==1
+                    output(1,ii).(fieldname) = selfBuildStruct(child);
+                else
+                    output(ii,1).(fieldname) = selfBuildStruct(child);
+                end
+            end
+        end
+    else
+        switch class(propValue)
+            case 'java.io.File'
+                output = char(propValue);
+            otherwise
+                output = propValue;
+        end
+    end
+end  % selfBuildStruct
+
+% Replace any ' ' with an '_' in the output fieldname (see also getFieldLabel() above)
+function fieldname = checkFieldName(fieldname)
+    fieldname = char(fieldname);
+    fieldname = regexprep(fieldname, ' \((.*)\)', '__$1');
+    fieldname = strrep(fieldname, ' ', '_');
+    %fieldname(1) = upper(fieldname(1));
+end  % checkFieldName
+
+% Function to add the extra options (when popupmenu) to the output
+function output = addOptionsToOutput(output, mirrorData, selectedProp)
+    if isstruct(output) && isstruct(mirrorData)
+        outputFields = fieldnames(output);
+        mirrorFields = fieldnames(mirrorData);
+        for ii=1:length(output)
+            if length(output)>1
+                structLoopProp = selectedProp.getChildAt(ii-1);
+            else
+                structLoopProp = selectedProp;
+            end
+            for jj=1:numel(outputFields)
+                childProp = structLoopProp.getChildAt(jj-1);
+                % sanity check this??????childProp.getName
+                mirrorIndex = strcmpi(mirrorFields,outputFields{jj});
+                if any(mirrorIndex)
+                    mirrorField = mirrorFields{mirrorIndex};
+                    if isfield(mirrorData(ii), mirrorField)
+                        if ismember('arrayData',fieldnames(get(childProp)))
+                            arrayData = get(childProp,'ArrayData');
+                            output(ii).(outputFields{jj}) = arrayData;
+                        else
+                            if iscell(mirrorData(ii).(mirrorField))
+                                % If original was a cell -> save originals as extra items in the cell array.
+
+                                output(ii).(outputFields{jj}) = UpdateCellArray(mirrorData(ii).(outputFields{jj}),output(ii).(outputFields{jj}));
+        %                         selectedIndex = find(strcmp(mirrorData.(mirrorField),output.(outputFields{ii})))==1;
+        %                         
+        %                         output.(outputFields{ii}) = {mirrorData.(mirrorField){:} {selectedIndex}};
+                            elseif isstruct(mirrorData(ii).(mirrorField))
+                                output(ii).(outputFields{jj}) = addOptionsToOutput(output(ii).(outputFields{jj}),mirrorData(ii).(mirrorField), childProp);
+                            else
+                                output(ii).(outputFields{jj}) = checkCharFieldForAbreviation(output(ii).(outputFields{jj}),mirrorData(ii).(mirrorField));
+                            end
+                        end
+                    end                    
+                end
+            end
+        end
+    else
+        if ismember('arrayData',fieldnames(get(selectedProp)))
+            arrayData = get(selectedProp,'ArrayData');
+            output = arrayData;            
+        else
+            if iscell(mirrorData)
+                output = UpdateCellArray(mirrorData,output);
+            else
+                output = checkCharFieldForAbreviation(output,mirrorData);
+            end
+        end
+    end
+end  % addOptionsToOutput
+
+% Check to see if a char was truncated on GUI building (>50)
+function output = checkCharFieldForAbreviation(output,mirrorData)
+    % This is to replace the ... with the original data
+    if ischar(output) && ...       % Is it a char which has been truncated?
+            length(output) == 53 && ...
+            length(mirrorData) > 50 && ...
+            strcmp(output(end-2:end),'...') && ...
+            strcmp(output(1:50),mirrorData(1:50))
+        output = mirrorData;
+        
+    end
+end  % checkCharFieldForAbreviation
+
+% Loop through the structure and replace any in case sensitive names
+function output = updateOriginalVarNames(output, mirrorData)
+    outputFields = fieldnames(output);
+    for jj=1:length(output)
+        if isempty(outputFields)
+            output = mirrorData;
+        else
+            mirrorFields = fieldnames(mirrorData);
+            for ii=1:numel(outputFields)
+                mirrorIndex = strcmpi(mirrorFields,outputFields{ii});
+                if any(mirrorIndex)
+                    mirrorField = mirrorFields{mirrorIndex};
+                    if ~strcmp(mirrorField, outputFields{ii})
+                        output(jj).(mirrorField) = output(jj).(outputFields{ii});
+                        if jj==length(output)
+                            output = rmfield(output,outputFields{ii});
+                        end
+                    end
+                    if isstruct(output(jj).(mirrorField))
+                        output(jj).(mirrorField) = updateOriginalVarNames(output(jj).(mirrorField), mirrorData(jj).(mirrorField));
+                    end
+                end
+            end
+        end
+    end
+end  % updateOriginalVarNames
+function [flag, index] = CheckStringForBrackets(str)
+    index = [];
+    flag = strcmp(str(1),'(') && strcmp(str(end),')');
+    if flag
+        index = max(str2num(regexprep(str,'[()]','')));  %#ok<ST2NM> % this assumes it's always (1,N) or (N,1)
+    end
+end  % CheckStringForBrackets
+
+% Strip a string (or cell-srray of strings) from HTML tags
+function str = deHTML(str, deCell)
+    if isjava(str),  str = cell(str);  end
+    if nargin < 2 || deCell
+        try str = strjoin(str, char(10)); catch, end  % in case it's a cell-string
+    end
+    try
+        str = strtrim(regexprep(str, {'<sub>','<[^>]*>','&nbsp;'}, {'.','',' '}));
+    catch
+        % str is probably no a string - just leave it as-is!
+    end
+end
